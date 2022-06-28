@@ -12,7 +12,7 @@ class MainPage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold (
       backgroundColor: Colors.white,
-      appBar: searchMountainHeader()
+      appBar: searchMountainHeader() //
       )
     );
   }
