@@ -30,7 +30,7 @@ class _joinPage extends State<joinPage> {
 
   FocusNode _emailFocus = new FocusNode();
   FocusNode _passwordFocus = new FocusNode();
-  TextEditingController emailEditingController = TextEditingController();
+  TextEditingController passwordEditingController = TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -92,7 +92,6 @@ class _joinPage extends State<joinPage> {
                       passwordCheck(), // 비밀번호 체크
                       Email(), // 이메일 입력
                       nameInput(), // 이름 입력
-                      SizedBox(height: 30), // 중간에 공간
                       birthInput(),
                       Container(
                         color: Colors.white,
@@ -199,16 +198,15 @@ class _joinPage extends State<joinPage> {
   Widget idInput() {
     // 아이디 위젯
     return SizedBox(
-      height: 70,
+      height: 80,
       child: Flexible(
         child: TextFormField(
-          controller: emailEditingController,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
           decoration: _textFormDecoration('영문 + 숫자 조합 4~12자', '아이디'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
           validator: (value) =>
-              CheckValidate().validateEmail(_emailFocus, value.toString()),
+              CheckValidate().validateId(value.toString()),
         ),
       ),
     );
@@ -217,17 +215,18 @@ class _joinPage extends State<joinPage> {
   Widget passwordInput() {
     // 비밀번호 위젯
     return SizedBox(
-      height: 70,
+      height: 80,
       child: Flexible(
         child: TextFormField(
-          controller: emailEditingController,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.visiblePassword,
+          controller: passwordEditingController,
           decoration:
               _textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
           validator: (value) =>
-              CheckValidate().validateEmail(_emailFocus, value.toString()),
+              CheckValidate().validatePassword(value.toString()),
+          obscureText:true,
         ),
       ),
     );
@@ -236,16 +235,20 @@ class _joinPage extends State<joinPage> {
   Widget passwordCheck() {
     // 비밀번호 확인 위젯
     return SizedBox(
-      height: 70,
+      height: 80,
       child: Flexible(
         child: TextFormField(
-          controller: emailEditingController,
           keyboardType: TextInputType.emailAddress,
-          decoration: _textFormDecoration('비밀번호 확인', '비밀번호'),
+          decoration: _textFormDecoration('비밀번호를 다시 입력해주세요', '비밀번호 확인'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
-          validator: (value) =>
-              CheckValidate().validateEmail(_emailFocus, value.toString()),
+          validator: (value) {
+            if (value.toString() != passwordEditingController.text.toString()) {
+              return '비밀번호가 일치하지 않습니다.';
+            } else {
+              return null;            }
+          },
+          obscureText:true,
         ),
       ),
     );
@@ -254,10 +257,10 @@ class _joinPage extends State<joinPage> {
   Widget Email() {
     // 이메일 위젯
     return SizedBox(
-      height: 70,
+      height: 80,
       child: Flexible(
         child: TextFormField(
-          controller: emailEditingController,
+
           keyboardType: TextInputType.emailAddress,
           decoration: _textFormDecoration('이메일 형식에 맞게 입력', '이메일'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -272,17 +275,16 @@ class _joinPage extends State<joinPage> {
   Widget nameInput() {
     // 이름 위젯
     return SizedBox(
-      height: 70,
+      height: 80,
       child: Flexible(
         child: TextFormField(
-          controller: emailEditingController,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
           decoration:
           _textFormDecoration('실명입력', '이름'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
           validator: (value) =>
-              CheckValidate().validateEmail(_emailFocus, value.toString()),
+              CheckValidate().validateName(value.toString()),
         ),
       ),
     );
@@ -291,17 +293,16 @@ class _joinPage extends State<joinPage> {
   Widget birthInput() {
     // 생년월일 위젯
     return SizedBox(
-      height: 70,
+      height: 80,
       child: Flexible(
         child: TextFormField(
-          controller: emailEditingController,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
           decoration:
-          _textFormDecoration('990820', '생년월일'),
+          _textFormDecoration('ex) 1999-08-20', '생년월일'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
           validator: (value) =>
-              CheckValidate().validateEmail(_emailFocus, value.toString()),
+              CheckValidate().validateBirth(value.toString()),
         ),
       ),
     );
@@ -310,10 +311,17 @@ class _joinPage extends State<joinPage> {
   InputDecoration _textFormDecoration(hintText, labelText) {
     // 텍스트 필드 꾸미기
     return new InputDecoration(
-      focusedBorder: UnderlineInputBorder(
+      enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+            width: 1.0,
+          )
+      ),
+
+      focusedBorder: OutlineInputBorder(
         // 해당 포커스 밑줄 파란색에서 검은색으로 변경
         borderSide: BorderSide(
-          color: Colors.black,
+          color: Colors.teal,
         ),
       ),
       contentPadding: EdgeInsets.all(8),
@@ -331,30 +339,4 @@ class _joinPage extends State<joinPage> {
     );
   }
 
-  Widget EmailInput() {
-    return Flexible(
-      child: TextFormField(
-        decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-            // 해당 포커스 밑줄 파란색에서 검은색으로 변경
-            borderSide: BorderSide(
-              color: Colors.black,
-            ),
-          ),
-          labelText: '이메일',
-          labelStyle: TextStyle(
-            color: Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
-          ),
-          hintText: '이메일 형식에 맞게 입력',
-          hintStyle: TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-          filled: true,
-          fillColor: Colors.white,
-        ),
-        keyboardType: TextInputType.emailAddress,
-      ),
-    );
-  }
 }
