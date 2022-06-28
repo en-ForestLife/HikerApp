@@ -158,6 +158,10 @@ class joinPage extends StatelessWidget {
                 );
               },
               child: Text("회원가입"),
+              style: ElevatedButton.styleFrom(
+              primary: Colors.grey, // 버튼색상
+               onPrimary: Colors.black, // 글자색상
+              ),
             )),
       ),
     );
