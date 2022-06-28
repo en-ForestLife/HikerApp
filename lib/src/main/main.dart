@@ -79,6 +79,11 @@ class MyApp extends StatelessWidget {
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: '아이디',
+                              hintText:'영문 + 숫자 조합 4~12자',
+                              hintStyle:TextStyle(
+                                fontSize:14,
+                                color:Colors.grey,
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
@@ -89,6 +94,11 @@ class MyApp extends StatelessWidget {
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: '비밀번호',
+                              hintText:'영문 대.소문자 + 숫자 + 특수문자 조합 8~15자',
+                              hintStyle:TextStyle(
+                                fontSize:14,
+                                color:Colors.grey,
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
@@ -100,6 +110,11 @@ class MyApp extends StatelessWidget {
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: '비밀번호확인',
+                              hintText:'비밀번호 재입력',
+                              hintStyle:TextStyle(
+                                fontSize:14,
+                                color:Colors.grey,
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
@@ -111,6 +126,11 @@ class MyApp extends StatelessWidget {
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: '이메일',
+                              hintText:'이메일 형식에 맞게 입력',
+                              hintStyle:TextStyle(
+                                fontSize:14,
+                                color:Colors.grey,
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
@@ -121,6 +141,11 @@ class MyApp extends StatelessWidget {
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: '이름',
+                              hintText:'실명 입력',
+                                hintStyle:TextStyle(
+                                  fontSize:14,
+                                  color:Colors.grey,
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
@@ -138,29 +163,54 @@ class MyApp extends StatelessWidget {
                             keyboardType: TextInputType.name,
                           ),
                         ),
-                        Row(
+
+                        Container(
+                          color: Colors.white,
+                          height : 50,
+
+                        child : Row(
                           children: <Widget>[
-                            SizedBox(width: 10,),
-                            Text('성별', style: TextStyle(fontSize: 17.0),),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 40, 0, 0),
+                            ),
+                            Expanded( // 비율조정
+                              flex : 10,
+                            child: Text('성별',
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  color:Colors.grey,
+                                ),
+                              ),
+                            ),
+
+                            Expanded( // 비율조정
+                              flex : 1,
+                             child : Text('남자', style: TextStyle(fontSize: 17.0),),
+                            ),
                             Checkbox(
                               checkColor: Colors.greenAccent,
                               activeColor: Colors.red,
                               value: this.valuefirst,
                               onChanged: (value) {
+                                if(!this.valuesecond)
                                 setState(() {
                                   this.valuefirst = value!;
                                 });
                               },
                             ),
+
+                            Text('여자', style: TextStyle(fontSize: 17.0),),
                             Checkbox(
                               value: this.valuesecond,
                               onChanged: (value) {
+                                if(!this.valuefirst)
                                 setState(() {
                                   this.valuesecond = value!;
                                 });
                               },
                             ),
                           ],
+                        ),
                         ),
                       ],
                     ),
