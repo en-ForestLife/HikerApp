@@ -78,7 +78,15 @@ class MyApp extends StatelessWidget {
                         Flexible(
                           child: TextFormField(
                             decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(// 해당 포커스 밑줄 파란색에서 검은색으로 변경
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
                               labelText: '아이디',
+                              labelStyle:TextStyle(
+                                color:Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
+                              ),
                               hintText:'영문 + 숫자 조합 4~12자',
                               hintStyle:TextStyle(
                                 fontSize:14,
@@ -93,7 +101,15 @@ class MyApp extends StatelessWidget {
                         Flexible(
                           child: TextFormField(
                             decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(// 해당 포커스 밑줄 파란색에서 검은색으로 변경
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
                               labelText: '비밀번호',
+                              labelStyle:TextStyle(
+                                color:Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
+                              ),
                               hintText:'영문 대.소문자 + 숫자 + 특수문자 조합 8~15자',
                               hintStyle:TextStyle(
                                 fontSize:14,
@@ -109,7 +125,15 @@ class MyApp extends StatelessWidget {
                         Flexible(
                           child: TextFormField(
                             decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(// 해당 포커스 밑줄 파란색에서 검은색으로 변경
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
                               labelText: '비밀번호확인',
+                              labelStyle:TextStyle(
+                                color:Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
+                              ),
                               hintText:'비밀번호 재입력',
                               hintStyle:TextStyle(
                                 fontSize:14,
@@ -125,7 +149,15 @@ class MyApp extends StatelessWidget {
                         Flexible(
                           child: TextFormField(
                             decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(// 해당 포커스 밑줄 파란색에서 검은색으로 변경
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
                               labelText: '이메일',
+                              labelStyle:TextStyle(
+                                color:Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
+                              ),
                               hintText:'이메일 형식에 맞게 입력',
                               hintStyle:TextStyle(
                                 fontSize:14,
@@ -140,7 +172,15 @@ class MyApp extends StatelessWidget {
                         Flexible(
                           child: TextFormField(
                             decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(// 해당 포커스 밑줄 파란색에서 검은색으로 변경
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
                               labelText: '이름',
+                              labelStyle:TextStyle(
+                                color:Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
+                              ),
                               hintText:'실명 입력',
                                 hintStyle:TextStyle(
                                   fontSize:14,
@@ -156,7 +196,15 @@ class MyApp extends StatelessWidget {
                         Flexible(
                           child: TextFormField(
                             decoration: InputDecoration(
+                               focusedBorder: UnderlineInputBorder(// 해당 포커스 밑줄 파란색에서 검은색으로 변경
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
                               labelText: '생년월일',
+                              labelStyle:TextStyle(
+                                color:Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
@@ -178,13 +226,13 @@ class MyApp extends StatelessWidget {
                             child: Text('성별',
                               style: TextStyle(
                                   fontSize: 15.0,
-                                  color:Colors.grey,
+                                  color:Colors.black,
                                 ),
                               ),
                             ),
 
                             Expanded( // 비율조정
-                              flex : 1,
+
                              child : Text('남자', style: TextStyle(fontSize: 17.0),),
                             ),
                             Checkbox(
