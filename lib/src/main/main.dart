@@ -1,15 +1,16 @@
 import 'dart:js';
-
 import 'package:flutter/material.dart';
-
 import '../utils/checkInformation.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+ // Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  //const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,12 @@ class joinPage extends StatefulWidget {
 class _joinPage extends State<joinPage> {
   bool valuefirst = false;
   bool valuesecond = false;
+
+  String id = '';
+  String password = '';
+  String email = '';
+  String name = '';
+  String birth = '';
 
   FocusNode _emailFocus = new FocusNode();
   FocusNode _passwordFocus = new FocusNode();
@@ -75,6 +82,7 @@ class _joinPage extends State<joinPage> {
               ),
 
               child: Form(
+                key: formKey,
                 child: Theme(
                   // 왜 스타일 적용 안되냐
                   data: ThemeData(
@@ -84,7 +92,6 @@ class _joinPage extends State<joinPage> {
                         fontSize: 15,
                       ))),
 
-                  key: formKey,
                   child: Column(
                     children: [
                       idInput(), // 아이디
@@ -92,10 +99,11 @@ class _joinPage extends State<joinPage> {
                       passwordCheck(), // 비밀번호 체크
                       Email(), // 이메일 입력
                       nameInput(), // 이름 입력
-                      birthInput(),
+                      birthInput(), // 생일 입
                       Container(
                         color: Colors.white,
                         height: 50,
+                        key : ValueKey(7),
                         child: Row(
                           children: <Widget>[
                             Padding(
@@ -114,6 +122,7 @@ class _joinPage extends State<joinPage> {
                             ),
                             Expanded(
                               // 비율조정
+                              flex: 1,
                               child: Text(
                                 '남자',
                                 style: TextStyle(fontSize: 17.0),
@@ -137,7 +146,7 @@ class _joinPage extends State<joinPage> {
                             Checkbox(
                               value: this.valuesecond,
                               onChanged: (value) {
-                                if (!this.valuefirst) // 남녀 하나만 선택
+                                if (!this.valuefirst) // 남녀 하나만 선택히
                                   setState(() {
                                     this.valuesecond = value!;
                                   });
@@ -162,8 +171,7 @@ class _joinPage extends State<joinPage> {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                formKey.currentState?.validate();
-                /*
+                checkValidation();
                   showDialog(
                     context: context,
                     barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
@@ -171,11 +179,12 @@ class _joinPage extends State<joinPage> {
                       // return object of type Dialog
                       return AlertDialog(
                         title: Text("안내메시지"),
-                        content: Text("회원가입이 완료되었습니다!"),
+                        content: Text('회원가입이 완료되었습니다.'),
                         actions: <Widget>[
                           FlatButton(
                             child: Text("닫기"),
                             onPressed: () {
+                              print(id);
                               Navigator.pop(context);
                             },
                           ),
@@ -183,7 +192,6 @@ class _joinPage extends State<joinPage> {
                       );
                     },
                   );
-                  */
               },
               child: Text("회원가입"),
               style: ElevatedButton.styleFrom(
@@ -199,16 +207,18 @@ class _joinPage extends State<joinPage> {
     // 아이디 위젯
     return SizedBox(
       height: 80,
-      child: Flexible(
         child: TextFormField(
+          key : ValueKey(1),
           keyboardType: TextInputType.text,
           decoration: _textFormDecoration('영문 + 숫자 조합 4~12자', '아이디'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
           validator: (value) =>
               CheckValidate().validateId(value.toString()),
+          onSaved : (value){
+            id = value!;
+          },
         ),
-      ),
     );
   }
 
@@ -216,8 +226,9 @@ class _joinPage extends State<joinPage> {
     // 비밀번호 위젯
     return SizedBox(
       height: 80,
-      child: Flexible(
+
         child: TextFormField(
+          key : ValueKey(2),
           keyboardType: TextInputType.visiblePassword,
           controller: passwordEditingController,
           decoration:
@@ -226,9 +237,12 @@ class _joinPage extends State<joinPage> {
           onChanged: (dynamic val) {},
           validator: (value) =>
               CheckValidate().validatePassword(value.toString()),
+          onSaved : (value){
+            password = value!;
+          },
           obscureText:true,
         ),
-      ),
+
     );
   }
 
@@ -236,21 +250,26 @@ class _joinPage extends State<joinPage> {
     // 비밀번호 확인 위젯
     return SizedBox(
       height: 80,
-      child: Flexible(
+
         child: TextFormField(
+          key : ValueKey(3),
           keyboardType: TextInputType.emailAddress,
           decoration: _textFormDecoration('비밀번호를 다시 입력해주세요', '비밀번호 확인'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
           validator: (value) {
-            if (value.toString() != passwordEditingController.text.toString()) {
+            if (value == '') {
+              return '비밀번호를 입력하세요';
+            }
+            else if (value.toString() != passwordEditingController.text.toString()) {
               return '비밀번호가 일치하지 않습니다.';
             } else {
-              return null;            }
+              return null;
+            }
           },
           obscureText:true,
         ),
-      ),
+
     );
   }
 
@@ -258,17 +277,20 @@ class _joinPage extends State<joinPage> {
     // 이메일 위젯
     return SizedBox(
       height: 80,
-      child: Flexible(
-        child: TextFormField(
 
+        child: TextFormField(
+          key : ValueKey(4),
           keyboardType: TextInputType.emailAddress,
           decoration: _textFormDecoration('이메일 형식에 맞게 입력', '이메일'),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (dynamic val) {},
           validator: (value) =>
-              CheckValidate().validateEmail(_emailFocus, value.toString()),
+              CheckValidate().validateEmail(value.toString()),
+          onSaved : (value){
+            email = value!;
+          },
         ),
-      ),
+
     );
   }
 
@@ -276,8 +298,8 @@ class _joinPage extends State<joinPage> {
     // 이름 위젯
     return SizedBox(
       height: 80,
-      child: Flexible(
         child: TextFormField(
+          key : ValueKey(5),
           keyboardType: TextInputType.text,
           decoration:
           _textFormDecoration('실명입력', '이름'),
@@ -285,8 +307,11 @@ class _joinPage extends State<joinPage> {
           onChanged: (dynamic val) {},
           validator: (value) =>
               CheckValidate().validateName(value.toString()),
+          onSaved : (value){
+            name = value!;
+          },
         ),
-      ),
+
     );
   }
 
@@ -294,8 +319,9 @@ class _joinPage extends State<joinPage> {
     // 생년월일 위젯
     return SizedBox(
       height: 80,
-      child: Flexible(
+
         child: TextFormField(
+          key : ValueKey(6),
           keyboardType: TextInputType.text,
           decoration:
           _textFormDecoration('ex) 1999-08-20', '생년월일'),
@@ -303,8 +329,11 @@ class _joinPage extends State<joinPage> {
           onChanged: (dynamic val) {},
           validator: (value) =>
               CheckValidate().validateBirth(value.toString()),
+          onSaved : (value){
+            birth = value!;
+          },
         ),
-      ),
+
     );
   }
 
@@ -337,6 +366,13 @@ class _joinPage extends State<joinPage> {
       filled: true,
       fillColor: Colors.white,
     );
+  }
+
+  void checkValidation(){
+    final isValid = formKey.currentState!.validate();
+    if(isValid){
+      formKey.currentState!.save();
+    }
   }
 
 }
