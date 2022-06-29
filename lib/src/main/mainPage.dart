@@ -25,7 +25,7 @@ class MainPage extends GetView<ForestInformationController> {
               children: [
                 Row(children: [
                   Text(
-                    "산 이름 : ",
+                    "산 이름",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Text(
