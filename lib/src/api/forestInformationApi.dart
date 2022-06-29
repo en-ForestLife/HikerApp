@@ -1,4 +1,7 @@
+import 'dart:html';
 import 'package:dio/dio.dart';
+import 'package:xml/xml.dart';
+import '../model/forestInformation.dart';
 
 class ForestInformationApi {
   late var dio;
@@ -15,7 +18,14 @@ class ForestInformationApi {
     );
   }
 
-  fetchMountainInformation()async{
+  Future<ForestInformationModel> fetchForestInformation()async{
     var response = await dio.get('/openapi/service/trailInfoService/getforeststoryservice');
+    final document = XmlDocument.parse(response.data);
+    final results = document.findAllElements('item');
+    if(results.isNotEmpty) {
+      return ForestInformationModel.fromXml(results.first);
+    }else {
+      return Future.value(null);
+    }
   }
 }
