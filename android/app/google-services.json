@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "974972266799",
+    "project_id": "enforestlife-d26ef",
+    "storage_bucket": "enforestlife-d26ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974972266799:android:f1f8fbac8571a5438959da",
+        "android_client_info": {
+          "package_name": "com.example.hiker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974972266799-27p7ukrc1ulff7mcplid787e0gqnqpcp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCixnmrkfi9PHOKja6DKeIsj_K3yExnXlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974972266799-27p7ukrc1ulff7mcplid787e0gqnqpcp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "974972266799-aitjmgn69gu08su4nc5mqaf4aqni74tp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hiker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
