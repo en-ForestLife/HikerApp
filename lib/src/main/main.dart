@@ -8,7 +8,6 @@ void main() {
 }
 
 class HikerApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
+import 'package:hiker/src/main/ForestListSquare.dart';
 
 void runMainPage() {
   runApp(const MainPage());
@@ -17,7 +18,15 @@ class MainPage extends GetView<ForestInformationController> {
       home: Scaffold (
         backgroundColor: Colors.white,
         appBar: ForestSearchingHeader(),
-        body: getList(),
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(itemBuilder: (context, index){
+                return ForestListSquare();
+              }),
+            )
+          ],
+        ),
       )
     );
   }
@@ -33,9 +42,12 @@ class MainPage extends GetView<ForestInformationController> {
 //           }),
 //         ),
   Widget getList() {
-    return ListView.builder(itemBuilder: (context, index) {
-      return getCard();
-    });
+    return ListView.builder(
+        padding:const EdgeInsets.all(8),
+        itemBuilder: (context, index){
+          return getCard();
+        }
+    );
   }
 
   Widget getCard() {
