@@ -1,15 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../utils/checkInformation.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../utils/inputDecoration.dart';
 
-class joinWidgets {
+class joinWidgets extends StatefulWidget {
+  joinWidgets({Key? key}) : super(key: key);
 
-  TextEditingController passwordEditingController = TextEditingController();
-  bool valuefirst = false;
-  bool valuesecond = false;
+  String id='';
+  @override
+  State<joinWidgets> createState() => joinWidgetsState();
+}
+
+class joinWidgetsState extends State<joinWidgets> {
+
+  final passwordEditingController = TextEditingController();
+  //bool valuefirst = false;
+  //bool valuesecond = false;
 
   String id = '';
   String password = '';
@@ -20,6 +25,11 @@ class joinWidgets {
 
   var message = '';
   String check = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 
   Widget idInput() {
     // 아이디 위젯
@@ -49,13 +59,14 @@ class joinWidgets {
 
       child: TextFormField(
         key : ValueKey(2),
-        keyboardType: TextInputType.visiblePassword,
+        keyboardType: TextInputType.text,
         controller: passwordEditingController,
         decoration:
         decoration().textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           password = val;
+          print(password);
         },
         validator: (value) =>
             CheckValidate().validatePassword(value.toString()),
@@ -75,10 +86,14 @@ class joinWidgets {
 
       child: TextFormField(
         key : ValueKey(3),
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.text,
         decoration: decoration().textFormDecoration('비밀번호를 다시 입력해주세요', '비밀번호 확인'),
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        onChanged: (dynamic val) {},
+        onChanged: (dynamic val) {
+          print(val);
+          print(passwordEditingController.text);
+          //print(password);
+        },
         validator: (value) {
           if (value == '') {
             return '비밀번호를 입력하세요';
@@ -165,3 +180,6 @@ class joinWidgets {
     );
   }
 }
+
+
+
