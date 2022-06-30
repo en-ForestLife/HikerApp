@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/inputDecoration.dart';
 import 'joinPageScreen.dart';
+import 'memberSearch.dart';
 
 class loginPage extends StatefulWidget {
   loginPage({Key? key}) : super(key: key);
@@ -183,7 +184,15 @@ class _loginPageState extends State<loginPage> {
     // 계정찾기
     return Expanded(
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) {
+                  return searchAccount();
+                }),
+          );
+        },
         child: Text('계정찾기'),
         style: TextButton.styleFrom(
           primary: Colors.black,
