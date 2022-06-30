@@ -187,8 +187,8 @@ class _joinPage extends State<joinPage> {
               },
               child: Text("회원가입"),
               style: ElevatedButton.styleFrom(
-                primary: Colors.grey, // 버튼색상
-                onPrimary: Colors.black, // 글자색상
+                primary: Colors.black, // 버튼색상
+                onPrimary: Colors.white, // 글자색상
               ),
             )),
       ),
