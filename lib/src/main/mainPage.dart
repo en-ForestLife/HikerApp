@@ -17,31 +17,63 @@ class MainPage extends GetView<ForestInformationController> {
       home: Scaffold (
         backgroundColor: Colors.white,
         appBar: ForestSearchingHeader(),
-        body: Container(
-          padding: const EdgeInsets.all(15),
-          child: Obx((){
-            var information = controller.forestInformation.value;
-            return Column(
-              children: [
-                Row(children: [
-                  Text(
-                    "산 이름",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  ),
-                  Text(
-                    " : ${information.mntnnm}",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  )
-                ],)
-              ],
-            );
-          }),
-        ),
+        body: getList(),
       )
+    );
+  }
+//Container(
+//           padding: const EdgeInsets.all(25),
+//           child: Obx((){
+//             var information = controller.forestInformation.value;
+//             return Column(
+//               children: [
+//                 informationWidget("산이름", information.mntnnm ?? ''),
+//               ],
+//             );
+//           }),
+//         ),
+  Widget getList() {
+    return ListView.builder(itemBuilder: (context, index) {
+      return getCard();
+    });
+  }
+
+  Widget getCard() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Card(
+      child: ListTile(
+        title: Row(
+          children: <Widget> [
+            Container(
+              width:10,
+              height:400,
+            )
+          ]
+        )
+      )
+    )
+    );
+  }
+
+  Widget informationWidget(String title, String value) {
+    return Row (
+      children: [
+        Text (
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+        ),
+        Text (
+          " : $value",
+          style: TextStyle(fontSize: 15),
+        ),
+      ],
     );
   }
 
 }
+
+/////// 상단 검색바 ////////
 
 TextEditingController textEditingController = TextEditingController(); // 검색 컨트롤러
 
