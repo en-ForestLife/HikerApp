@@ -40,14 +40,21 @@ class MainPage extends GetView<ForestInformationController> {
 
   Widget getCard() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10),
       child: Card(
       child: ListTile(
-        title: Row(
+        title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget> [
+            Image.network("https://a.cdn-hotels.com/gdcs/production1/d1156/f6d7ba6d-b1b2-4cc6-bc62-9cef6e70db29.jpg?impolicy=fcrop&w=800&h=533&q=medium"),
+            Text('한라산', style: TextStyle(fontSize:19, fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
+            Text('화산이 잉태한 남한 최고(最高)의 영산', style: TextStyle(fontSize:14)),
+            Text('제주도 제주시, 서귀포시', style: TextStyle(fontSize:14)),
+            Text('1947m', style: TextStyle(fontSize:14)),
             Container(
               width:10,
-              height:400,
+              height:10,
+              //alignment: Alignment.centerLeft,
             )
           ]
         )
