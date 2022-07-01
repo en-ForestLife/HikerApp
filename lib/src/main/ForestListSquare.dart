@@ -6,7 +6,7 @@ class ForestListSquare extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: SizedBox(
-        width: 450,
+        width: 500,
         height: 510,
         child:
         Column(
@@ -22,7 +22,7 @@ class ForestListSquare extends StatelessWidget {
                 ),
               ),
               Column(
-
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                 children:<Widget> [
                 Text('\n한라산', style:TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2.0), textAlign: TextAlign.left,),
                 Text('화산이 잉태한 남한 최고(最高)의 영산', style: TextStyle(fontSize: 14,)),
