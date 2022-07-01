@@ -16,7 +16,7 @@ class joinPage extends StatefulWidget {
 }
 
 class _joinPage extends State<joinPage> {
-  final _authentication = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
 
   final passwordEditingController = TextEditingController();
@@ -31,7 +31,7 @@ class _joinPage extends State<joinPage> {
   String email = '';
   String name = '';
   String birth = '';
-  String sex = '';
+  //String sex = '';
 
   var message = '';
   String check = "";
@@ -110,7 +110,7 @@ class _joinPage extends State<joinPage> {
         child: Container(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
 
                 checkIdAndEmail();
                 if(checkValidation()){ // 회원정보 다 채움
@@ -136,10 +136,15 @@ class _joinPage extends State<joinPage> {
                     );
                   }
                   else if(checkIdAndEmail() == "pass"){ // 아이디 비밀번호 중복 없을 때
-                    final newUser = _authentication.createUserWithEmailAndPassword( // 회원가입 메서드
-                        email: email,
-                        password: password
-                    );
+                    try {
+                      final newUser = await auth
+                          .createUserWithEmailAndPassword( // 회원가입 메서드
+                          email: email,
+                          password: password
+                      );
+                    }catch(error){
+                      print(error);
+                    }
 
                     fireStore.collection('User').doc().set({ // 데베에 정보 저장
                       "id" : id,

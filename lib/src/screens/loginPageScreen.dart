@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +14,31 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  final auth = FirebaseAuth.instance;
+  User? loggedUser;
+
   String password = '';
   String email = '';
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser(){
+    final user = auth.currentUser;
+    try {
+      if (user != null) {
+        loggedUser = user;
+        print(loggedUser!.email);
+      }
+    }catch(error){
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,33 +109,20 @@ class _loginPageState extends State<loginPage> {
                             height: 50,
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
-                                  builder: (BuildContext context) {
-                                    // return object of type Dialog
-                                    return AlertDialog(
-                                      title: Text("안내메시지"),
-                                      content: Text('로그인 되었습니다.'),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("닫기"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                                return joinPage();
-                                              }),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                              onPressed: () async {
+                                try {
+                                  final newUser = await auth
+                                      .signInWithEmailAndPassword( // 회원가입 메서드
+                                      email: email,
+                                      password: password
+                                  );
+                                  if (newUser.user != null) { // 로그인 되었을 때
+                                    movePage(); // 로그인 되었을 때 페이지 이동함
+                                  }
+                                }catch(error){
+                                  print(error);
+                                  errorMessage(); // 로그인 안되면 회원정보 일치하지 않습니다. 라고 알림창 뜸
+                                }
                               },
                               child: Text("로그인"),
                               style: ElevatedButton.styleFrom(
@@ -152,7 +161,6 @@ class _loginPageState extends State<loginPage> {
             .textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
         onChanged: (dynamic val) {
           password = val;
-          print(password);
         },
         onSaved: (value) {
           password = value!;
@@ -224,6 +232,56 @@ class _loginPageState extends State<loginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void movePage(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text('로그인 되었습니다.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) {
+                        return joinPage();
+                      }),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void errorMessage(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text('회원정보가 일치하지 않습니다.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

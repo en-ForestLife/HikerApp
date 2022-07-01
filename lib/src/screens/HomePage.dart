@@ -30,10 +30,13 @@ class _homePageState extends State<homePage> {
       child: Scaffold(
 
         body: TabBarView( //
-          children: Options, // 어떤 아이템을 넣어줄 지
+          children: Options, // 위에 Option에 넣으면 넣은 페이지로 이동 가능
         ),
 
-        bottomNavigationBar: TabBar( //(1)
+        bottomNavigationBar:
+        SizedBox(
+          height : 70, // 네비게이션 바 높이조절
+        child: TabBar( //(1)
           tabs: <Widget>[
             Tab(
               icon: Icon(Icons.home_outlined),
@@ -57,6 +60,7 @@ class _homePageState extends State<homePage> {
           indicatorColor: Colors.transparent, // indicator 없애기(밑에 파란 밑줄)
           unselectedLabelColor: Colors.black, // 선택되지 않은 tab 색
           labelColor: Colors.red, // 선택된 tab의 색
+        ),
         ),
       ),
     );
