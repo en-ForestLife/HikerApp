@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../utils/checkInformation.dart';
 import '../utils/inputDecoration.dart';
-import '../widgets/joinPageWidgets.dart';
 import 'loginPageScreen.dart';
 
 class joinPage extends StatefulWidget {
@@ -112,8 +111,8 @@ class _joinPage extends State<joinPage> {
             child: ElevatedButton(
               onPressed: () async{
 
-                checkIdAndEmail();
                 if(checkValidation()){ // 회원정보 다 채움
+
                   if(checkIdAndEmail() == "idOverlap" || checkIdAndEmail() == "emailOverlap") { // 아이디, 비밀번호 중복 있을 때
                     showDialog(
                       context: context,
@@ -135,6 +134,7 @@ class _joinPage extends State<joinPage> {
                       },
                     );
                   }
+
                   else if(checkIdAndEmail() == "pass"){ // 아이디 비밀번호 중복 없을 때
                     try {
                       final newUser = await auth
@@ -146,14 +146,15 @@ class _joinPage extends State<joinPage> {
                       print(error);
                     }
 
-                    fireStore.collection('User').doc().set({ // 데베에 정보 저장
-                      "id" : id,
-                      "email" : email,
-                      "password" : password,
-                      "name" : name,
-                      "birth" : birth,
-                      //"sex" : sex,
-                    });
+                    await fireStore.collection('User').doc().set(
+                        { // 데베에 정보 저장
+                          "id": id,
+                          "email": email,
+                          "password": password,
+                          "name": name,
+                          "birth": birth,
+                        });
+
                     showDialog(
                       context: context,
                       barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
@@ -195,20 +196,11 @@ class _joinPage extends State<joinPage> {
                 primary: Colors.black, // 버튼색상
                 onPrimary: Colors.white, // 글자색상
               ),
-            )),
+            ),),
       ),
     );
   }
 
-  void _getSubCnt() { // 컬렉션 안의 도큐먼트 갯수 가져오기
-    FirebaseFirestore.instance
-        .collection('User')
-        .get()
-        .then((snapShot) {
-      var qTotal = snapShot.docs.length;
-      print(qTotal);
-    });
-  }
   bool checkValidation(){
     final isValid = formKey.currentState!.validate();
     if(isValid){
@@ -217,25 +209,43 @@ class _joinPage extends State<joinPage> {
     return isValid;
   }
 
+  void checkId() { // 컬렉션 안의 도큐먼트 갯수 가져오기
+    FirebaseFirestore.instance
+        .collection('User')
+        .get()
+        .then((snapShot) {
+      snapShot.docs.forEach((element) {
+        if(element["email"] == email){
+          print(element["id"]);
+          return;
+        }
+      });
+    });
+  }
+
   String checkIdAndEmail(){
     fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
         .collection('User')
-        .snapshots()
-        .listen((data){
-      data.docs.forEach((element) {
-        if(element['id'] == id){
+        .get()
+        .then((snapShot) {
+      snapShot.docs.forEach((element) {
+        if(element["id"] == id){
           check = 'idOverlap';
           message = '이미 존재하는 아이디입니다.';
         }
-        else if(element['email'] == email){
+        else if(element["email"] == email){
           check = 'emailOverlap';
           message = '이미 존재하는 이메일입니다.';
         }
-        else check = "pass";
+        else {
+          check = "pass";
+          message = '회원가입이 완료되었습니다.';
+        }
       });
     });
     return check;
   }
+
 
   Widget idInput() {
     // 아이디 위젯

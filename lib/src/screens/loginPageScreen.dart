@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +16,12 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   final auth = FirebaseAuth.instance;
-  User? loggedUser;
+  FirebaseFirestore fireStore=FirebaseFirestore.instance;
 
+  User? loggedUser;
   String password = '';
   String email = '';
+  String id ='';
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -97,9 +100,8 @@ class _loginPageState extends State<loginPage> {
                           padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
                         ),
 
-                        Email(), // 이메일 입력
+                        idInput(), // 이메일 입력
                         passwordInput(), // 비밀번호
-
                         Padding(
                           // 로그인 버튼이랑 텍스트 필드 사이 공간
                           padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
@@ -110,19 +112,30 @@ class _loginPageState extends State<loginPage> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
+                                checkId();
                                 try {
                                   final newUser = await auth
-                                      .signInWithEmailAndPassword( // 회원가입 메서드
+                                      .signInWithEmailAndPassword( // 로그인 메서드
                                       email: email,
                                       password: password
                                   );
                                   if (newUser.user != null) { // 로그인 되었을 때
                                     movePage(); // 로그인 되었을 때 페이지 이동함
                                   }
-                                }catch(error){
+                                } catch (error) {
                                   print(error);
                                   errorMessage(); // 로그인 안되면 회원정보 일치하지 않습니다. 라고 알림창 뜸
                                 }
+
+                                getData() async{
+                                  var post = await fireStore.collection("User")
+                                    ..get().then(
+                                          (res) =>
+                                          print("Successfully completed"),
+                                      onError: (e) =>
+                                          print("Error completing: $e"),
+                                    );
+                                };
                               },
                               child: Text("로그인"),
                               style: ElevatedButton.styleFrom(
@@ -170,23 +183,6 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
-  Widget Email() {
-    // 이메일 위젯
-    return SizedBox(
-      height: 80,
-      child: TextFormField(
-        key: ValueKey(4),
-        keyboardType: TextInputType.emailAddress,
-        decoration: decoration().textFormDecoration('이메일 형식에 맞게 입력', '이메일'),
-        onChanged: (dynamic val) {
-          email = val;
-        },
-        onSaved: (value) {
-          email = value!;
-        },
-      ),
-    );
-  }
 
   Widget searchMember() {
     // 계정찾기
@@ -262,6 +258,37 @@ class _loginPageState extends State<loginPage> {
         );
       },
     );
+  }
+  Widget idInput() {
+    // 아이디 위젯
+    return SizedBox(
+      height: 80,
+      child: TextFormField(
+        key : ValueKey(1),
+        keyboardType: TextInputType.text,
+        decoration: decoration().textFormDecoration('영문 + 숫자 조합 4~12자', '아이디'),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        onChanged: (dynamic val) {
+          id = val;
+        },
+        onSaved : (value){
+          id = value!;
+        },
+      ),
+    );
+  }
+  void checkId() { // 컬렉션 안의 도큐먼트 갯수 가져오기
+    FirebaseFirestore.instance
+        .collection('User')
+        .get()
+        .then((snapShot) {
+      snapShot.docs.forEach((element) {
+        if(element["id"] == id){
+          email = element["email"];
+          return;
+        }
+      });
+    });
   }
   void errorMessage(){
     showDialog(
