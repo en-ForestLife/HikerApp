@@ -22,7 +22,6 @@ class ForestInformationApi {
     var response = await dio.get('/openapi/service/trailInfoService/getforeststoryservice');
     final document = XmlDocument.parse(response.data);
     final results = document.findAllElements('item');
-    print(response);
     if(results.isNotEmpty) {
       return ForestInformationModel.fromXml(results.first);
     }else {

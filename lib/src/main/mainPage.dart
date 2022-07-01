@@ -18,18 +18,23 @@ class MainPage extends GetView<ForestInformationController> {
       home: Scaffold (
         backgroundColor: Colors.white,
         appBar: ForestSearchingHeader(),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(itemBuilder: (context, index){
-                return ForestListSquare();
-              }),
-            )
-          ],
-        ),
+        body: getList(),
       )
     );
   }
+
+  //Column(
+  //           children: [
+  //             Expanded(
+  //               child: ListView.builder(itemBuilder: (context, index){
+  //                 var information = controller.forestInformation.value;
+  //
+  //                 return ForestListSquare();
+  //               }),
+  //             )
+  //           ],
+  //         ),
+
 //Container(
 //           padding: const EdgeInsets.all(25),
 //           child: Obx((){
@@ -42,36 +47,49 @@ class MainPage extends GetView<ForestInformationController> {
 //           }),
 //         ),
   Widget getList() {
+    List items = [];
     return ListView.builder(
         padding:const EdgeInsets.all(8),
-        itemBuilder: (context, index){
-          return getCard();
+        itemBuilder: (context, index) {
+          return getCard(index);
         }
     );
   }
 
-  Widget getCard() {
+  Widget getCard(int index) {
     return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Card(
-      child: ListTile(
-        title: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget> [
-            Image.network("https://a.cdn-hotels.com/gdcs/production1/d1156/f6d7ba6d-b1b2-4cc6-bc62-9cef6e70db29.jpg?impolicy=fcrop&w=800&h=533&q=medium"),
-            Text('한라산', style: TextStyle(fontSize:19, fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
-            Text('화산이 잉태한 남한 최고(最高)의 영산', style: TextStyle(fontSize:14)),
-            Text('제주도 제주시, 서귀포시', style: TextStyle(fontSize:14)),
-            Text('1947m', style: TextStyle(fontSize:14)),
-            Container(
-              width:10,
-              height:10,
-              //alignment: Alignment.centerLeft,
-            )
-          ]
-        )
-      )
-    )
+      padding: const EdgeInsets.all(10.0),
+      child: SizedBox(
+        width: 500,
+        height: 510,
+        child: Obx(() {
+          var information = controller.forestInformation.value;
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget> [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Image.network(
+                      "https://a.cdn-hotels.com/gdcs/production1/d1156/f6d7ba6d-b1b2-4cc6-bc62-9cef6e70db29.jpg?impolicy=fcrop&w=800&h=533&q=medium",
+                      width:450,
+                      height:400,
+                      fit: BoxFit.fill
+                  ),
+                ),
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children:<Widget> [
+                      Text('\n', style:TextStyle(fontSize:5)),
+                      Text(information.mntnnm ?? '', style:TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2.0), textAlign: TextAlign.left,),
+                      Text(information.mntnsbttlinfo ?? '', style: TextStyle(fontSize: 14,)),
+                      Text(information.mntninfopoflc ?? '', style: TextStyle(fontSize: 14,)),
+                      Text(information.mntninfohght ?? '', style: TextStyle(fontSize: 14,)),
+                    ]
+                )
+              ]
+          );
+        }),
+      ),
     );
   }
 

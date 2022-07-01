@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 
-class ForestListSquare extends StatelessWidget {
+import '../controller/forestInformationController.dart';
+
+class ForestListSquare extends GetView<ForestInformationController> {
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: SizedBox(
         width: 500,
         height: 510,
-        child:
-        Column(
+        child: Obx(() {
+          var information = controller.forestInformation.value;
+         return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
               ClipRRect(
@@ -22,16 +28,18 @@ class ForestListSquare extends StatelessWidget {
                 ),
               ),
               Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                 children:<Widget> [
-                Text('\n한라산', style:TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2.0), textAlign: TextAlign.left,),
-                Text('화산이 잉태한 남한 최고(最高)의 영산', style: TextStyle(fontSize: 14,)),
-                Text('제주도 제주시, 서귀포시', style: TextStyle(fontSize: 14,)),
-                Text('1947m', style: TextStyle(fontSize: 14,)),
+                  Text('\n', style:TextStyle(fontSize:5)),
+                  Text(information.mntnnm ?? '', style:TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2.0), textAlign: TextAlign.left,),
+                  Text(information.mntnsbttlinfo ?? '', style: TextStyle(fontSize: 14,)),
+                  Text(information.mntninfopoflc ?? '', style: TextStyle(fontSize: 14,)),
+                  Text(information.mntninfohght ?? '', style: TextStyle(fontSize: 14,)),
               ]
               )
             ]
-        ),
+        );
+  }),
         ),
     );
   }
