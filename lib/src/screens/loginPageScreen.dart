@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../utils/inputDecoration.dart';
 import 'joinPageScreen.dart';
@@ -18,6 +19,7 @@ class _loginPageState extends State<loginPage> {
   final auth = FirebaseAuth.instance;
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
 
+  bool loddingSpinner = false;
   User? loggedUser;
   String password = '';
   String email = '';
@@ -71,7 +73,9 @@ class _loginPageState extends State<loginPage> {
         // 붕 떠 있는 효과를 줌
         backgroundColor: Colors.white, // 배경색상 흰색
       ),
-      body: SingleChildScrollView(
+      body: ModalProgressHUD( // 로그인 할 때 로딩스피너
+      inAsyncCall: loddingSpinner, // 로그인 할 때 로딩스피너
+      child : SingleChildScrollView(
         child: Stack(
           children: [
             Positioned(
@@ -112,6 +116,9 @@ class _loginPageState extends State<loginPage> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
+                                setState((){
+                                  loddingSpinner = true;// 로그인 할 때 로딩스피너보이게함
+                                });
                                 checkId();
                                 try {
                                   final newUser = await auth
@@ -126,16 +133,9 @@ class _loginPageState extends State<loginPage> {
                                   print(error);
                                   errorMessage(); // 로그인 안되면 회원정보 일치하지 않습니다. 라고 알림창 뜸
                                 }
-
-                                getData() async{
-                                  var post = await fireStore.collection("User")
-                                    ..get().then(
-                                          (res) =>
-                                          print("Successfully completed"),
-                                      onError: (e) =>
-                                          print("Error completing: $e"),
-                                    );
-                                };
+                                setState((){
+                                  loddingSpinner = false; // 로딩스피너 꺼짐
+                                });
                               },
                               child: Text("로그인"),
                               style: ElevatedButton.styleFrom(
@@ -159,6 +159,7 @@ class _loginPageState extends State<loginPage> {
           ],
         ),
       ),
+    ),
       bottomNavigationBar: BottomAppBar(),
     );
   }
@@ -231,7 +232,7 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
-  void movePage(){
+  void movePage(){ // 로그인 후 페이지 이동
     showDialog(
       context: context,
       barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
@@ -277,7 +278,7 @@ class _loginPageState extends State<loginPage> {
       ),
     );
   }
-  void checkId() { // 컬렉션 안의 도큐먼트 갯수 가져오기
+  void checkId() { // 아이디 체크 후 있는 아이디이면 이메일 반환
     FirebaseFirestore.instance
         .collection('User')
         .get()
@@ -290,6 +291,7 @@ class _loginPageState extends State<loginPage> {
       });
     });
   }
+
   void errorMessage(){
     showDialog(
       context: context,
