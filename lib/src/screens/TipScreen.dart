@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TipScreen extends StatelessWidget{
 
@@ -33,46 +34,50 @@ class TipScreen extends StatelessWidget{
       body: SingleChildScrollView(
         child : Stack(
           children: [
-
             Positioned(
               child: Container(
-                // 아이디 비밀번호 레이아웃 박스
-                padding: EdgeInsets.all(50.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white), // 테두리
-                  borderRadius: BorderRadius.circular(5), //모서리 둥글게
-                ),
+                  padding: EdgeInsets.all(50.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white), // 테두리
+                    borderRadius: BorderRadius.circular(5), //모서리 둥글게
+                  ),
                   child: Column(
                     children: [
                       Card(
                         elevation: 50,
                         shadowColor: Colors.black,
                         color: Colors.greenAccent[100],
-                        child: SizedBox(
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.green[500],
-                                radius: 108,
-                                backgroundImage: AssetImage('assets/mountain_icon.png'),
-                              ), //CircleAvatar
-                              const SizedBox(
-                                width: 60,
-                              ), //SizedBox
-                              Text(
-                                '등산용품 대여 정보',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.green[900],
-                                  fontWeight: FontWeight.w500,
-                                ), //Textstyle
-                              ), //Text
-                              const SizedBox(
-                                height: 10,
-                              ), //SizedBox
-                            ],
-                          ), //Column
-                        ), //SizedBox
+                        child: new InkWell(
+                          onTap: () async => { await launchUrl(
+                              Uri.parse("https://flutter.dev")//  url 이동
+                          )
+                          },
+                          child: SizedBox(
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.green[500],
+                                  radius: 108,
+                                  backgroundImage: AssetImage('assets/mountain_icon.png'),
+                                ), //CircleAvatar
+                                const SizedBox(
+                                  width: 60,
+                                ), //SizedBox
+                                Text(
+                                  '등산용품 대여 정보',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.green[900],
+                                    fontWeight: FontWeight.w500,
+                                  ), //Textstyle
+                                ), //Text
+                                const SizedBox(
+                                  height: 10,
+                                ), //SizedBox
+                              ],
+                            ), //Column
+                          ), //SizedBox
+                        ),
                       ), //Card
 
                       SizedBox(
@@ -83,33 +88,37 @@ class TipScreen extends StatelessWidget{
                         elevation: 50,
                         shadowColor: Colors.black,
                         color: Colors.greenAccent[100],
-                        child: SizedBox(
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.green[500],
-                                radius: 108,
-                                backgroundImage: AssetImage('assets/hiker_icon.png'),
-                              ), //CircleAvatar
-                              const SizedBox(
-                                width: 60,
-                              ), //SizedBox
-                              Text(
-                                '등산 TIP',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.green[900],
-                                  fontWeight: FontWeight.w500,
-                                ), //Textstyle
-                              ), //Text
-                              const SizedBox(
-                                height: 10,
-                              ), //SizedBox
-                            ],
-                          ), //Column
-                        ), //SizedBox
-                      ), //Card
-
+                        child: new InkWell(
+                          onTap: () {
+                            print("tapped");
+                          },
+                          child: SizedBox(
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.green[500],
+                                  radius: 108,
+                                  backgroundImage: AssetImage('assets/hiker_icon.png'),
+                                ), //CircleAvatar
+                                const SizedBox(
+                                  width: 60,
+                                ), //SizedBox
+                                Text(
+                                  '등산 TIP',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.green[900],
+                                    fontWeight: FontWeight.w500,
+                                  ), //Textstyle
+                                ), //Text
+                                const SizedBox(
+                                  height: 10,
+                                ), //SizedBox
+                              ],
+                            ), //Column
+                          ), //SizedBox
+                        ), //Card
+                      ),
                       SizedBox(
                         height: 50,
                       ),
@@ -118,32 +127,37 @@ class TipScreen extends StatelessWidget{
                         elevation: 50,
                         shadowColor: Colors.black,
                         color: Colors.greenAccent[100],
-                        child: SizedBox(
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.green[500],
-                                radius: 108,
-                                backgroundImage: AssetImage('assets/bag_icon.png'),
-                              ), //CircleAvatar
-                              const SizedBox(
-                                width: 60,
-                              ), //SizedBox
-                              Text(
-                                '등산 준비물',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.green[900],
-                                  fontWeight: FontWeight.w500,
-                                ), //Textstyle
-                              ), //Text
-                              const SizedBox(
-                                height: 10,
-                              ), //SizedBox
-                            ],
-                          ), //Column
-                        ), //SizedBox
-                      ), //Card
+                        child: new InkWell(
+                          onTap: () {
+                            print("tapped");
+                          },
+                          child: SizedBox(
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.green[500],
+                                  radius: 108,
+                                  backgroundImage: AssetImage('assets/bag_icon.png'),
+                                ), //CircleAvatar
+                                const SizedBox(
+                                  width: 60,
+                                ), //SizedBox
+                                Text(
+                                  '등산 준비물',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.green[900],
+                                    fontWeight: FontWeight.w500,
+                                  ), //Textstyle
+                                ), //Text
+                                const SizedBox(
+                                  height: 10,
+                                ), //SizedBox
+                              ],
+                            ), //Column
+                          ), //SizedBox
+                        ), //Card
+                      ),
                     ],
                   )
               ),
