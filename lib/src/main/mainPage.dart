@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get.dart';
+
+import 'package:hiker/src/model/forestInformationJson.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
+import 'dart:convert' as convert;
+
 import 'package:hiker/src/controller/forestInformationController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
+
 
 void runMainPage() {
   runApp(const MainPage());
@@ -108,6 +115,30 @@ class MainPage extends GetView<ForestInformationController> {
     );
   }
 
+}
+
+// Xml to Json
+Future<List<ForestInformationJsonModel>> fetchForestJson() async {
+  final forestJsonInformation = <ForestInformationJsonModel>[];
+  final url = Uri.parse('http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?key=WRW8U5mI32TQ7scwZY7OauPpIOPTEz2o5RcdqnpvaCWeow/zFQ3xRp7uciHXufIHRPIDA+e9/JBjfYCyfy4bTg==&mntnNm&mntnHght&mntnAdd&mntnInfoAraCd&mntnInfoThmCd');
+  final response = await http.get(url);
+
+  if(response.statusCode == 200) {
+    final xml = response.body;
+    final xml2json = Xml2Json()..parse(xml);
+    final json = xml2json.toParker();
+    final jsonResult = convert.jsonDecode(json);
+    final jsonForestInformation = jsonResult['data'];
+
+    jsonForestInformation.forEach((e) {
+      final information= ForestInformationJsonModel.fromJson(e);
+      forestJsonInformation.add(information);
+    });
+    return forestJsonInformation.toList();
+  } else {
+    print(response.statusCode);
+    return [];
+  }
 }
 
 /////// 상단 검색바 ////////
