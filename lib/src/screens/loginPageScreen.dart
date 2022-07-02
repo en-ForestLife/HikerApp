@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../utils/inputDecoration.dart';
 import 'joinPageScreen.dart';
@@ -13,10 +16,34 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  final auth = FirebaseAuth.instance;
+  FirebaseFirestore fireStore=FirebaseFirestore.instance;
+
+  bool loddingSpinner = false;
+  User? loggedUser;
   String password = '';
   String email = '';
-
+  String id ='';
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser(){
+    final user = auth.currentUser;
+    try {
+      if (user != null) {
+        loggedUser = user;
+        print(loggedUser!.email);
+      }
+    }catch(error){
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +73,9 @@ class _loginPageState extends State<loginPage> {
         // 붕 떠 있는 효과를 줌
         backgroundColor: Colors.white, // 배경색상 흰색
       ),
-      body: SingleChildScrollView(
+      body: ModalProgressHUD( // 로그인 할 때 로딩스피너
+      inAsyncCall: loddingSpinner, // 로그인 할 때 로딩스피너
+      child : SingleChildScrollView(
         child: Stack(
           children: [
             Positioned(
@@ -75,9 +104,8 @@ class _loginPageState extends State<loginPage> {
                           padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
                         ),
 
-                        Email(), // 이메일 입력
+                        idInput(), // 이메일 입력
                         passwordInput(), // 비밀번호
-
                         Padding(
                           // 로그인 버튼이랑 텍스트 필드 사이 공간
                           padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
@@ -87,33 +115,27 @@ class _loginPageState extends State<loginPage> {
                             height: 50,
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
-                                  builder: (BuildContext context) {
-                                    // return object of type Dialog
-                                    return AlertDialog(
-                                      title: Text("안내메시지"),
-                                      content: Text('로그인 되었습니다.'),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("닫기"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                                return joinPage();
-                                              }),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                              onPressed: () async {
+                                setState((){
+                                  loddingSpinner = true;// 로그인 할 때 로딩스피너보이게함
+                                });
+                                checkId();
+                                try {
+                                  final newUser = await auth
+                                      .signInWithEmailAndPassword( // 로그인 메서드
+                                      email: email,
+                                      password: password
+                                  );
+                                  if (newUser.user != null) { // 로그인 되었을 때
+                                    movePage(); // 로그인 되었을 때 페이지 이동함
+                                  }
+                                } catch (error) {
+                                  print(error);
+                                  errorMessage(); // 로그인 안되면 회원정보 일치하지 않습니다. 라고 알림창 뜸
+                                }
+                                setState((){
+                                  loddingSpinner = false; // 로딩스피너 꺼짐
+                                });
                               },
                               child: Text("로그인"),
                               style: ElevatedButton.styleFrom(
@@ -137,6 +159,7 @@ class _loginPageState extends State<loginPage> {
           ],
         ),
       ),
+    ),
       bottomNavigationBar: BottomAppBar(),
     );
   }
@@ -152,7 +175,6 @@ class _loginPageState extends State<loginPage> {
             .textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
         onChanged: (dynamic val) {
           password = val;
-          print(password);
         },
         onSaved: (value) {
           password = value!;
@@ -162,23 +184,6 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
-  Widget Email() {
-    // 이메일 위젯
-    return SizedBox(
-      height: 80,
-      child: TextFormField(
-        key: ValueKey(4),
-        keyboardType: TextInputType.emailAddress,
-        decoration: decoration().textFormDecoration('이메일 형식에 맞게 입력', '이메일'),
-        onChanged: (dynamic val) {
-          email = val;
-        },
-        onSaved: (value) {
-          email = value!;
-        },
-      ),
-    );
-  }
 
   Widget searchMember() {
     // 계정찾기
@@ -224,6 +229,88 @@ class _loginPageState extends State<loginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void movePage(){ // 로그인 후 페이지 이동
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text('로그인 되었습니다.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) {
+                        return joinPage();
+                      }),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Widget idInput() {
+    // 아이디 위젯
+    return SizedBox(
+      height: 80,
+      child: TextFormField(
+        key : ValueKey(1),
+        keyboardType: TextInputType.text,
+        decoration: decoration().textFormDecoration('영문 + 숫자 조합 4~12자', '아이디'),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        onChanged: (dynamic val) {
+          id = val;
+        },
+        onSaved : (value){
+          id = value!;
+        },
+      ),
+    );
+  }
+  void checkId() { // 아이디 체크 후 있는 아이디이면 이메일 반환
+    FirebaseFirestore.instance
+        .collection('User')
+        .get()
+        .then((snapShot) {
+      snapShot.docs.forEach((element) {
+        if(element["id"] == id){
+          email = element["email"];
+          return;
+        }
+      });
+    });
+  }
+
+  void errorMessage(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text('회원정보가 일치하지 않습니다.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../utils/checkInformation.dart';
 import '../utils/inputDecoration.dart';
-import '../widgets/joinPageWidgets.dart';
 import 'loginPageScreen.dart';
 
 class joinPage extends StatefulWidget {
@@ -16,7 +15,7 @@ class joinPage extends StatefulWidget {
 }
 
 class _joinPage extends State<joinPage> {
-  final _authentication = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
 
   final passwordEditingController = TextEditingController();
@@ -31,10 +30,10 @@ class _joinPage extends State<joinPage> {
   String email = '';
   String name = '';
   String birth = '';
-  String sex = '';
+  //String sex = '';
 
   var message = '';
-  String check = "";
+  String check = '';
 
   @override
   Widget build(BuildContext context) {
@@ -110,79 +109,11 @@ class _joinPage extends State<joinPage> {
         child: Container(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
 
-                checkIdAndEmail();
+                auth.currentUser?.sendEmailVerification();
                 if(checkValidation()){ // 회원정보 다 채움
-                  if(checkIdAndEmail() == "idOverlap" || checkIdAndEmail() == "emailOverlap") { // 아이디, 비밀번호 중복 있을 때
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
-                      builder: (BuildContext context) {
-                        // return object of type Dialog
-                        return AlertDialog(
-                          title: Text("안내메시지"),
-                          content: Text(message),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text("닫기"),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                  else if(checkIdAndEmail() == "pass"){ // 아이디 비밀번호 중복 없을 때
-                    final newUser = _authentication.createUserWithEmailAndPassword( // 회원가입 메서드
-                        email: email,
-                        password: password
-                    );
-
-                    fireStore.collection('User').doc().set({ // 데베에 정보 저장
-                      "id" : id,
-                      "email" : email,
-                      "password" : password,
-                      "name" : name,
-                      "birth" : birth,
-                      //"sex" : sex,
-                    });
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
-                      builder: (BuildContext context) {
-                        // return object of type Dialog
-                        return AlertDialog(
-                          title: Text("안내메시지"),
-                          content: Text('회원가입이 완료되었습니다.'),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text("닫기"),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context){
-                                        return loginPage();
-                                      }),
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                  /*
-                  fireStore.collection('User').where("id", isEqualTo: email).get().then( // 이건 함 찾아봐야 할듯
-                        (res) => print('SUCCESS'),
-                    onError: (e) => print("Error completing: $e"),
-                  );
-                  _getSubCnt(); // 도큐먼트 수 알려줌
-                  */
+                  checkIdAndEmail(); // 아이디 이메일 중복 체크 후 회원가입
                 }
               },
               child: Text("회원가입"),
@@ -190,20 +121,33 @@ class _joinPage extends State<joinPage> {
                 primary: Colors.black, // 버튼색상
                 onPrimary: Colors.white, // 글자색상
               ),
-            )),
+            ),),
       ),
     );
   }
 
-  void _getSubCnt() { // 컬렉션 안의 도큐먼트 갯수 가져오기
-    FirebaseFirestore.instance
-        .collection('User')
-        .get()
-        .then((snapShot) {
-      var qTotal = snapShot.docs.length;
-      print(qTotal);
-    });
+  void overlap(){ // 아이디 또는 이메일 중복있을 시 메시지
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
   bool checkValidation(){
     final isValid = formKey.currentState!.validate();
     if(isValid){
@@ -212,25 +156,96 @@ class _joinPage extends State<joinPage> {
     return isValid;
   }
 
-  String checkIdAndEmail(){
-    fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
+
+  void checkId() { // 컬렉션 안의 도큐먼트 갯수 가져오기
+    FirebaseFirestore.instance
         .collection('User')
-        .snapshots()
-        .listen((data){
-      data.docs.forEach((element) {
-        if(element['id'] == id){
-          check = 'idOverlap';
-          message = '이미 존재하는 아이디입니다.';
+        .get()
+        .then((snapShot) {
+      snapShot.docs.forEach((element) {
+        if(element["email"] == email){
+          print(element["id"]);
+          return;
         }
-        else if(element['email'] == email){
-          check = 'emailOverlap';
-          message = '이미 존재하는 이메일입니다.';
-        }
-        else check = "pass";
       });
     });
-    return check;
   }
+
+  void sucessJoin() async{
+    try {
+      final newUser = await auth
+          .createUserWithEmailAndPassword( // 회원가입 메서드
+          email: email,
+          password: password
+      );
+    }catch(error){
+      print(error);
+    }
+
+    await fireStore.collection('User').doc().set(
+        { // 데베에 정보 저장
+          "id": id,
+          "email": email,
+          "password": password,
+          "name": name,
+          "birth": birth,
+        });
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text('회원가입이 완료되었습니다.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context){
+                        return loginPage();
+                      }),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void checkIdAndEmail() {
+        fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
+        .collection('User')
+        .get()
+        .then((snapShot){
+      snapShot.docs.forEach((element) {
+        if(element["id"] == id){
+          check = 'idOverlap';
+          message = '이미 존재하는 아이디입니다.';
+          overlap();
+          return;
+        }
+        else if(element["email"] == email){
+          check = 'emailOverlap';
+          message = '이미 존재하는 이메일입니다.';
+          overlap();
+          return;
+        }
+        else {
+          check = "pass";
+          message = '회원가입이 완료되었습니다.';
+          sucessJoin();
+          return;
+        }
+      });
+    });
+  }
+
 
   Widget idInput() {
     // 아이디 위젯
@@ -267,7 +282,6 @@ class _joinPage extends State<joinPage> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           password = val;
-          print(password);
         },
         validator: (value) =>
             CheckValidate().validatePassword(value.toString()),

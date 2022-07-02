@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +18,10 @@ class _searchAccountState extends State<searchAccount> {
   String password = '';
   String email = '';
   String id = '';
+  String message = '';
   bool isIdScreen = true;
+  final auth = FirebaseAuth.instance;
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +109,7 @@ class _searchAccountState extends State<searchAccount> {
             SizedBox(
               height: 30,
             ),
-            if(isIdScreen)
+            if(isIdScreen) // 아이디 찾기
               Container(
                 width: MediaQuery.of(context).size.width - 40,
                 child:Column(
@@ -126,18 +131,19 @@ class _searchAccountState extends State<searchAccount> {
                   ],
                 ),
               ),
-            if(!isIdScreen)
+            if(!isIdScreen) // 비밀번호 찾기
               Container(
                 width: MediaQuery.of(context).size.width - 40,
                 child:Column(
                   children:[
-                    Email(),
-                    passwordInput(),
+                    idInput(),
                     Container( // 비밀번호 찾기 버튼
                       height: 50,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          checkIdAndSSendEmail(); // 아이디 존재 체크 후 해당 아이디의 이메일로 비밀번호 보내기
+                        },
                         child: Text("비밀번호 찾기"),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black, // 버튼색상
@@ -152,6 +158,69 @@ class _searchAccountState extends State<searchAccount> {
       ),
       bottomNavigationBar: BottomAppBar(),
       );
+  }
+
+  void errorMessage(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text("일치하는 계정이 없습니다."),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void alertmessage(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("안내메시지"),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void checkIdAndSSendEmail() { // 아이디 체크 후 이메일 반환
+    FirebaseFirestore.instance
+        .collection('User')
+        .get()
+        .then((snapShot) {
+      snapShot.docs.forEach((element) {
+        if(element["id"] == id){
+          email = element["email"];
+          auth.sendPasswordResetEmail(email: email); // 비밀번호 재전송하기
+          message = "이메일로 비밀번호 재설정 링크를 보내드렸습니다.";
+          alertmessage();
+          return;
+        }
+        message = "일치하는 계정이 없습니다.";
+        alertmessage();
+      });
+    });
   }
 
   Widget idInput() {
@@ -201,7 +270,6 @@ class _searchAccountState extends State<searchAccount> {
             .textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
         onChanged: (dynamic val) {
           password = val;
-          print(password);
         },
         onSaved: (value) {
           password = value!;
