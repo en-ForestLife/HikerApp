@@ -16,13 +16,15 @@ void main() async{
   runApp(MyApp());
 }
 
-class HikerApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: homePage()
-      );
+
+        home: homePage()
+    );
   }
 }
 
