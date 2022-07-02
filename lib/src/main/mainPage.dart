@@ -13,11 +13,36 @@ import 'package:hiker/src/main/ForestListSquare.dart';
 
 
 void runMainPage() {
-  runApp(const MainPage());
+  runApp(MainPage());
 }
 
 class MainPage extends GetView<ForestInformationController> {
-  const MainPage({Key? key}) : super(key: key);
+  //const MainPage({Key? key}) : super(key: key);
+  final forestJsonInformation = <ForestInformationJsonModel>[];
+
+  // Xml to Json
+  Future<List<ForestInformationJsonModel>> fetchForestJson() async {
+    final forestJsonInformation = <ForestInformationJsonModel>[];
+    final url = Uri.parse('http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?key=WRW8U5mI32TQ7scwZY7OauPpIOPTEz2o5RcdqnpvaCWeow/zFQ3xRp7uciHXufIHRPIDA+e9/JBjfYCyfy4bTg==&mntnNm&mntnHght&mntnAdd&mntnInfoAraCd&mntnInfoThmCd');
+    final response = await http.get(url);
+
+    if(response.statusCode == 200) {
+      final xml = response.body;
+      final xml2json = Xml2Json()..parse(xml);
+      final json = xml2json.toParker();
+      final jsonResult = convert.jsonDecode(json);
+      final jsonForestInformation = jsonResult['data'];
+
+      jsonForestInformation.forEach((e) {
+        final information= ForestInformationJsonModel.fromJson(e);
+        forestJsonInformation.add(information);
+      });
+      return forestJsonInformation.toList();
+    } else {
+      print(response.statusCode);
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,23 +79,25 @@ class MainPage extends GetView<ForestInformationController> {
 //           }),
 //         ),
   Widget getList() {
-    List items = [];
+    List item = [];
     return ListView.builder(
         padding:const EdgeInsets.all(8),
+        itemCount: forestJsonInformation.length,
         itemBuilder: (context, index) {
-          return getCard(index);
+          return getCard(forestJsonInformation[index]);
         }
     );
   }
 
-  Widget getCard(int index) {
+  Widget getCard(item) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SizedBox(
         width: 500,
         height: 510,
         child: Obx(() {
-          var information = controller.forestInformation.value;
+          //var information = controller.forestInformation.value;
+
           return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget> [
@@ -87,10 +114,10 @@ class MainPage extends GetView<ForestInformationController> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children:<Widget> [
                       Text('\n', style:TextStyle(fontSize:5)),
-                      Text(information.mntnnm ?? '', style:TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2.0), textAlign: TextAlign.left,),
-                      Text(information.mntnsbttlinfo ?? '', style: TextStyle(fontSize: 14,)),
-                      Text(information.mntninfopoflc ?? '', style: TextStyle(fontSize: 14,)),
-                      Text(information.mntninfohght ?? '', style: TextStyle(fontSize: 14,)),
+                      Text(item['mntnnm'] ?? '', style:TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 2.0), textAlign: TextAlign.left,),
+                      Text(item['mntnsbttlinfo'] ?? '', style: TextStyle(fontSize: 14,)),
+                      Text(item['mntninfopoflc'] ?? '', style: TextStyle(fontSize: 14,)),
+                      Text(item['mntninfohght'] ?? '', style: TextStyle(fontSize: 14,)),
                     ]
                 )
               ]
@@ -117,32 +144,7 @@ class MainPage extends GetView<ForestInformationController> {
 
 }
 
-// Xml to Json
-Future<List<ForestInformationJsonModel>> fetchForestJson() async {
-  final forestJsonInformation = <ForestInformationJsonModel>[];
-  final url = Uri.parse('http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?key=WRW8U5mI32TQ7scwZY7OauPpIOPTEz2o5RcdqnpvaCWeow/zFQ3xRp7uciHXufIHRPIDA+e9/JBjfYCyfy4bTg==&mntnNm&mntnHght&mntnAdd&mntnInfoAraCd&mntnInfoThmCd');
-  final response = await http.get(url);
-
-  if(response.statusCode == 200) {
-    final xml = response.body;
-    final xml2json = Xml2Json()..parse(xml);
-    final json = xml2json.toParker();
-    final jsonResult = convert.jsonDecode(json);
-    final jsonForestInformation = jsonResult['data'];
-
-    jsonForestInformation.forEach((e) {
-      final information= ForestInformationJsonModel.fromJson(e);
-      forestJsonInformation.add(information);
-    });
-    return forestJsonInformation.toList();
-  } else {
-    print(response.statusCode);
-    return [];
-  }
-}
-
 /////// 상단 검색바 ////////
-
 TextEditingController textEditingController = TextEditingController(); // 검색 컨트롤러
 
 eraseTextField() { // 검색창에서 x 누르면 검색 취소
