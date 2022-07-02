@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
 import 'memberSearch.dart';
+import 'TipScreen.dart';
 
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
@@ -16,9 +17,9 @@ class _homePageState extends State<homePage> {
 
   List<Widget> Options = [
     searchAccount(),
-    loginPage(),
     joinPage(),
-    loginPage()
+    TipScreen(),
+    loginPage(),
   ];
 
 
