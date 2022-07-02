@@ -111,16 +111,9 @@ class _joinPage extends State<joinPage> {
             child: ElevatedButton(
               onPressed: () async{
 
+                auth.currentUser?.sendEmailVerification();
                 if(checkValidation()){ // 회원정보 다 채움
-
-                  checkIdAndEmail();
-                  /*
-                  fireStore.collection('User').where("id", isEqualTo: email).get().then( // 이건 함 찾아봐야 할듯
-                        (res) => print('SUCCESS'),
-                    onError: (e) => print("Error completing: $e"),
-                  );
-                  _getSubCnt(); // 도큐먼트 수 알려줌
-                  */
+                  checkIdAndEmail(); // 아이디 이메일 중복 체크 후 회원가입
                 }
               },
               child: Text("회원가입"),
