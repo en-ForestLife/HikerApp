@@ -25,5 +25,12 @@
   "blankBirth" : "생년월일을 입력해주세요",
   "login" : "로그인",
   "searchAccount" : "계정찾기",
-  "doneLogin" : "로그인 되었습니다"
+  "doneLogin" : "로그인 되었습니다",
+  "idpwSearch" : "아이디 찾기 / 비밀번호 찾기",
+  "idSearch" : "아이디 찾기",
+  "pwSearch" : "비밀번호 찾기",
+  "noAccount" : "일치하는 계정이 없습니다.",
+  "sendEmail" : "We sent you a password reset link by email.",
+  "idSearchInput" : "아이디 찾기",
+  "pwSearchInput" : "비밀번호 찾기"
 }

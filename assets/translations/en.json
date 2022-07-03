@@ -25,5 +25,12 @@
   "blankBirth" : "Please enter your birth",
   "login" : "Login",
   "searchAccount" : "Search account",
-  "doneLogin" : "You're logged in"
+  "doneLogin" : "You're logged in",
+  "idpwSearch" : "ID search / Password search",
+  "idSearch" : "     Id     ",
+  "pwSearch" : "Password",
+  "noAccount" : "No matching accounts found.",
+  "sendEmail" : "이메일로 비밀번호 재설정 링크를 보내드렸습니다.",
+  "idSearchInput" : "Id Search",
+  "pwSearchInput" : "Password Search"
 }

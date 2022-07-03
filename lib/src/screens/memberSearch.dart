@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +21,15 @@ class _searchAccountState extends State<searchAccount> {
   String id = '';
   String message = '';
   bool isIdScreen = true;
+  bool languageButton = false;
   final auth = FirebaseAuth.instance;
 
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '아이디 찾기 / 비밀번호 찾기',
+        title: Text(
+          'idpwSearch'.tr(),
           style: TextStyle(
               color: Colors.black, // 글자 색상 검정색
               fontSize: 22.0, // 폰트 사이즈
@@ -43,6 +45,26 @@ class _searchAccountState extends State<searchAccount> {
           color: Colors.black, // 버튼 색상
           icon: Icon(Icons.arrow_back), // 뒤로가기 이미지 아이콘
         ),
+        actions:[
+          OutlinedButton.icon( // 언어 바꿀 수 있는 버튼
+            onPressed: () {
+              // 영어로 언어 변경
+              // 이후 앱을 재시작하면 영어로 동작
+              if(!languageButton){ // 영어
+                EasyLocalization.of(context)!.setLocale(Locale('en'));
+                languageButton = true;
+              }
+              else{ // 한국어
+                EasyLocalization.of(context)!.setLocale(Locale('ko'));
+                languageButton = false;
+              }
+            },
+            icon: Icon(Icons.language_outlined),
+            label: Text(
+              "Language",
+            ),
+          ),
+        ],
         centerTitle: true,
         // 글자 중간으로 위치 지정
         elevation: 0.0,
@@ -76,7 +98,7 @@ class _searchAccountState extends State<searchAccount> {
                         },
                         child :Padding( // 아이디 찾기
                           padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text('아이디찾기',
+                          child: Text('idSearch'.tr(),
                             style:
                             TextStyle(
                                 color : !isIdScreen ? Colors.grey : Colors.white,
@@ -94,7 +116,7 @@ class _searchAccountState extends State<searchAccount> {
                         child : Padding( // 비밀번호 찾기
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           child: Text(
-                            '비밀번호찾기',
+                            'pwSearch'.tr(),
                             style: TextStyle(
                               color : isIdScreen ? Colors.grey : Colors.white,
                               fontSize: 18,
@@ -113,7 +135,18 @@ class _searchAccountState extends State<searchAccount> {
               Container(
                 width: MediaQuery.of(context).size.width - 40,
                 child:Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                   children:[
+                    Text('idSearchInput'.tr(),
+                    style:
+                      TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    SizedBox(
+                      height : 10,
+                    ),
                     Email(),
                     Container( // 아이디 찾기 버튼
                       height: 50,
@@ -122,7 +155,7 @@ class _searchAccountState extends State<searchAccount> {
                         onPressed: () {
                           checkEmail();
                         },
-                        child: Text("아이디 찾기"),
+                        child: Text('idSearchInput'.tr()),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black, // 버튼색상
                           onPrimary: Colors.white, // 글자색상
@@ -136,7 +169,18 @@ class _searchAccountState extends State<searchAccount> {
               Container(
                 width: MediaQuery.of(context).size.width - 40,
                 child:Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children:[
+                    Text('pwSearchInput'.tr(),
+                      style:
+                      TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    SizedBox(
+                      height : 10,
+                    ),
                     idInput(),
                     Container( // 비밀번호 찾기 버튼
                       height: 50,
@@ -145,7 +189,7 @@ class _searchAccountState extends State<searchAccount> {
                         onPressed: () {
                           checkIdAndSSendEmail(); // 아이디 존재 체크 후 해당 아이디의 이메일로 비밀번호 보내기
                         },
-                        child: Text("비밀번호 찾기"),
+                        child: Text('pwSearchInput'.tr()),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black, // 버튼색상
                           onPrimary: Colors.white, // 글자색상
@@ -168,11 +212,11 @@ class _searchAccountState extends State<searchAccount> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("안내메시지"),
-          content: Text("일치하는 계정이 없습니다."),
+          title: Text('Notification'.tr()),
+          content: Text('noAccount'.tr()),
           actions: <Widget>[
             FlatButton(
-              child: Text("닫기"),
+              child: Text('close'.tr()),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -190,11 +234,11 @@ class _searchAccountState extends State<searchAccount> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("안내메시지"),
+          title: Text('Notification'.tr()),
           content: Text(message),
           actions: <Widget>[
             FlatButton(
-              child: Text("닫기"),
+              child: Text('close'.tr()),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -215,12 +259,12 @@ class _searchAccountState extends State<searchAccount> {
         if(element["id"] == id){
           email = element["email"];
           auth.sendPasswordResetEmail(email: email); // 비밀번호 재전송하기
-          message = "이메일로 비밀번호 재설정 링크를 보내드렸습니다.";
+          message = 'sendEmail'.tr();
           checkUser = true;
         }
       });
     });
-    if(checkUser == false) message = "일치하는 계정이 없습니다.";
+    if(checkUser == false) message = 'noAccount'.tr();
     alertMessage();
   }
 
@@ -234,12 +278,12 @@ class _searchAccountState extends State<searchAccount> {
       snapShot.docs.forEach((element) {
         if(element["email"] == email){
           id = element["id"];
-          message = "해당 이메일의 아이디는 " + '"'+id+'"' + " 입니다.";
+          message = "Id : " + '"'+id+'"';
           checkUser = true;
         }
       });
     });
-    if(checkUser == false) message = "일치하는 계정이 없습니다.";
+    if(checkUser == false) message = 'noAccount'.tr();
     alertMessage();
   }
 
@@ -250,7 +294,7 @@ class _searchAccountState extends State<searchAccount> {
       child: TextFormField(
         key : ValueKey(1),
         keyboardType: TextInputType.text,
-        decoration: decoration().textFormDecoration('영문 + 숫자 조합 4~12자', '아이디'),
+        decoration: decoration().textFormDecoration('idInput'.tr(), 'id'.tr()),
         onChanged: (dynamic val) {
           id = val;
         },
@@ -268,33 +312,13 @@ class _searchAccountState extends State<searchAccount> {
       child: TextFormField(
         key: ValueKey(4),
         keyboardType: TextInputType.emailAddress,
-        decoration: decoration().textFormDecoration('이메일 형식에 맞게 입력', '이메일'),
+        decoration: decoration().textFormDecoration('ex) test123@naver.com', 'Email'),
         onChanged: (dynamic val) {
           email = val;
         },
         onSaved: (value) {
           email = value!;
         },
-      ),
-    );
-  }
-
-  Widget passwordInput() {
-    // 비밀번호 위젯
-    return SizedBox(
-      height: 80,
-      child: TextFormField(
-        key: ValueKey(2),
-        keyboardType: TextInputType.text,
-        decoration: decoration()
-            .textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
-        onChanged: (dynamic val) {
-          password = val;
-        },
-        onSaved: (value) {
-          password = value!;
-        },
-        obscureText: true,
       ),
     );
   }
