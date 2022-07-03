@@ -28,17 +28,29 @@ class ForestInformationScreen extends GetView<ForestInformationController>{
         title: Text('산 정보'),
         centerTitle: true,
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(15),
         child: Obx((){
           var info = controller.forestInformation.value;
           return Column(
             children: [
-              Image.network(info.mntnattchimageseq!),
-              infoWidget("산이름", info.mntnnm!),
-              infoWidget("높이", info.mntninfohght!),
-              infoWidget("산정보부제", info.mntnsbttlinfo!),
-              infoWidget("산정보소재지(소재지)", info.mntninfopoflc!),
+              Image.network(info[0].mntnattchimageseq!),
+              infoWidget("산이름", info[0].mntnnm!),
+              infoWidget("높이", info[0].mntninfohght!),
+              infoWidget("산정보부제", info[0].mntnsbttlinfo!),
+              infoWidget("산정보소재지(소재지)", info[0].mntninfopoflc!),
+
+              Image.network(info[1].mntnattchimageseq!),
+              infoWidget("산이름", info[1].mntnnm!),
+              infoWidget("높이", info[1].mntninfohght!),
+              infoWidget("산정보부제", info[1].mntnsbttlinfo!),
+              infoWidget("산정보소재지(소재지)", info[1].mntninfopoflc!),
+
+              Image.network(info[3].mntnattchimageseq!),
+              infoWidget("산이름", info[3].mntnnm!),
+              infoWidget("높이", info[3].mntninfohght!),
+              infoWidget("산정보부제", info[3].mntnsbttlinfo!),
+              infoWidget("산정보소재지(소재지)", info[3].mntninfopoflc!),
             ],
           );
         }),
