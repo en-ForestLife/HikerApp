@@ -55,7 +55,7 @@ class _loginPageState extends State<loginPage> {
               color: Colors.black, // 글자 색상 검정색
               fontSize: 22.0, // 폰트 사이즈
               fontWeight: FontWeight.bold // 폰트 굵기
-              ),
+          ),
         ),
         leading: IconButton(
           // 리딩 부분 (뒤로가기)
@@ -74,44 +74,44 @@ class _loginPageState extends State<loginPage> {
         backgroundColor: Colors.white, // 배경색상 흰색
       ),
       body: ModalProgressHUD( // 로그인 할 때 로딩스피너
-      inAsyncCall: loddingSpinner, // 로그인 할 때 로딩스피너
-      child : SingleChildScrollView(
-        child: Stack(
-          children: [
-            Positioned(
-              child: Container(
-                // 아이디 비밀번호 레이아웃 박스
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white), // 테두리
-                  borderRadius: BorderRadius.circular(5), //모서리 둥글게
-                ),
-                child: Form(
-                  key: formKey,
-                  child: Theme(
-                    // 왜 스타일 적용 안되냐
-                    data: ThemeData(
-                        primaryColor: Colors.teal,
-                        inputDecorationTheme: InputDecorationTheme(
-                            labelStyle: TextStyle(
-                          fontSize: 15,
-                        ))),
+        inAsyncCall: loddingSpinner, // 로그인 할 때 로딩스피너
+        child : SingleChildScrollView(
+          child: Stack(
+            children: [
+              Positioned(
+                child: Container(
+                  // 아이디 비밀번호 레이아웃 박스
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white), // 테두리
+                    borderRadius: BorderRadius.circular(5), //모서리 둥글게
+                  ),
+                  child: Form(
+                    key: formKey,
+                    child: Theme(
+                      // 왜 스타일 적용 안되냐
+                      data: ThemeData(
+                          primaryColor: Colors.teal,
+                          inputDecorationTheme: InputDecorationTheme(
+                              labelStyle: TextStyle(
+                                fontSize: 15,
+                              ))),
 
-                    child: Column(
-                      children: [
-                        Padding(
-                          // 로그인 버튼이랑 텍스트 필드 사이 공간
-                          padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                        ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            // 로그인 버튼이랑 텍스트 필드 사이 공간
+                            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                          ),
 
-                        idInput(), // 이메일 입력
-                        passwordInput(), // 비밀번호
-                        Padding(
-                          // 로그인 버튼이랑 텍스트 필드 사이 공간
-                          padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                        ),
+                          idInput(), // 이메일 입력
+                          passwordInput(), // 비밀번호
+                          Padding(
+                            // 로그인 버튼이랑 텍스트 필드 사이 공간
+                            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                          ),
 
-                        Container(
+                          Container(
                             height: 50,
                             width: double.infinity,
                             child: ElevatedButton(
@@ -119,7 +119,16 @@ class _loginPageState extends State<loginPage> {
                                 setState((){
                                   loddingSpinner = true;// 로그인 할 때 로딩스피너보이게함
                                 });
-                                checkId();
+                                await FirebaseFirestore.instance
+                                    .collection('User')
+                                    .get()
+                                    .then((snapShot) {
+                                  snapShot.docs.forEach((element) {
+                                    if(element["id"] == id){
+                                      email = element["email"];
+                                    }
+                                  });
+                                });
                                 try {
                                   final newUser = await auth
                                       .signInWithEmailAndPassword( // 로그인 메서드
@@ -127,6 +136,7 @@ class _loginPageState extends State<loginPage> {
                                       password: password
                                   );
                                   if (newUser.user != null) { // 로그인 되었을 때
+                                    email = "";
                                     movePage(); // 로그인 되었을 때 페이지 이동함
                                   }
                                 } catch (error) {
@@ -143,23 +153,23 @@ class _loginPageState extends State<loginPage> {
                                 onPrimary: Colors.white, // 글자색상
                               ),
                             ),
-                        ),
-                        Row(
-                          children: [
-                            searchMember(),
-                            joinMember(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ), //아이디 비밀번호 레이아웃
+                          ),
+                          Row(
+                            children: [
+                              searchMember(),
+                              joinMember(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ), //아이디 비밀번호 레이아웃
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
       bottomNavigationBar: BottomAppBar(),
     );
   }
@@ -277,19 +287,6 @@ class _loginPageState extends State<loginPage> {
         },
       ),
     );
-  }
-  void checkId() { // 아이디 체크 후 있는 아이디이면 이메일 반환
-    FirebaseFirestore.instance
-        .collection('User')
-        .get()
-        .then((snapShot) {
-      snapShot.docs.forEach((element) {
-        if(element["id"] == id){
-          email = element["email"];
-          return;
-        }
-      });
-    });
   }
 
   void errorMessage(){

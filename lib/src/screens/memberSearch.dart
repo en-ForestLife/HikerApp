@@ -74,15 +74,15 @@ class _searchAccountState extends State<searchAccount> {
                             isIdScreen = true;
                           });
                         },
-                            child :Padding( // 아이디 찾기
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text('아이디찾기',
-                                  style:
-                                  TextStyle(
-                                      color : !isIdScreen ? Colors.grey : Colors.white,
-                                      fontSize: 18),
-                              ),
-                            ),
+                        child :Padding( // 아이디 찾기
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Text('아이디찾기',
+                            style:
+                            TextStyle(
+                                color : !isIdScreen ? Colors.grey : Colors.white,
+                                fontSize: 18),
+                          ),
+                        ),
                       ),
 
                       GestureDetector(
@@ -90,16 +90,16 @@ class _searchAccountState extends State<searchAccount> {
                           setState(() {
                             isIdScreen = false;
                           });
-                      },
-                            child : Padding( // 비밀번호 찾기
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                '비밀번호찾기',
-                                style: TextStyle(
-                                  color : isIdScreen ? Colors.grey : Colors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
+                        },
+                        child : Padding( // 비밀번호 찾기
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            '비밀번호찾기',
+                            style: TextStyle(
+                              color : isIdScreen ? Colors.grey : Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -115,13 +115,14 @@ class _searchAccountState extends State<searchAccount> {
                 child:Column(
                   children:[
                     Email(),
-                    idInput(),
                     Container( // 아이디 찾기 버튼
                       height: 50,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
-                          child: Text("아이디 찾기"),
+                        onPressed: () {
+                          checkEmail();
+                        },
+                        child: Text("아이디 찾기"),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black, // 버튼색상
                           onPrimary: Colors.white, // 글자색상
@@ -157,7 +158,7 @@ class _searchAccountState extends State<searchAccount> {
           ],),
       ),
       bottomNavigationBar: BottomAppBar(),
-      );
+    );
   }
 
   void errorMessage(){
@@ -182,7 +183,7 @@ class _searchAccountState extends State<searchAccount> {
     );
   }
 
-  void alertmessage(){
+  void alertMessage(){
     showDialog(
       context: context,
       barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
@@ -204,8 +205,9 @@ class _searchAccountState extends State<searchAccount> {
     );
   }
 
-  void checkIdAndSSendEmail() { // 아이디 체크 후 이메일 반환
-    FirebaseFirestore.instance
+  void checkIdAndSSendEmail() async{ // 아이디 체크 후 이메일 반환
+    bool checkUser = false;
+    await FirebaseFirestore.instance
         .collection('User')
         .get()
         .then((snapShot) {
@@ -214,13 +216,31 @@ class _searchAccountState extends State<searchAccount> {
           email = element["email"];
           auth.sendPasswordResetEmail(email: email); // 비밀번호 재전송하기
           message = "이메일로 비밀번호 재설정 링크를 보내드렸습니다.";
-          alertmessage();
-          return;
+          checkUser = true;
         }
-        message = "일치하는 계정이 없습니다.";
-        alertmessage();
       });
     });
+    if(checkUser == false) message = "일치하는 계정이 없습니다.";
+    alertMessage();
+  }
+
+
+  void checkEmail() async{ // 이메일 체크 후 알림창으로 아이디 알려줌
+    bool checkUser = false;
+    await FirebaseFirestore.instance
+        .collection('User')
+        .get()
+        .then((snapShot) {
+      snapShot.docs.forEach((element) {
+        if(element["email"] == email){
+          id = element["id"];
+          message = "해당 이메일의 아이디는 " + '"'+id+'"' + " 입니다.";
+          checkUser = true;
+        }
+      });
+    });
+    if(checkUser == false) message = "일치하는 계정이 없습니다.";
+    alertMessage();
   }
 
   Widget idInput() {

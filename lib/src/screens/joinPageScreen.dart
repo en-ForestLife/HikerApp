@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../utils/checkInformation.dart';
 import '../utils/inputDecoration.dart';
@@ -34,6 +35,8 @@ class _joinPage extends State<joinPage> {
 
   var message = '';
   String check = '';
+
+  bool loddingSpinner = false;
 
   @override
   Widget build(BuildContext context) {
@@ -104,15 +107,20 @@ class _joinPage extends State<joinPage> {
         ),
       ),
 
-      bottomNavigationBar: BottomAppBar(
-        // 밑에 하단바(회원가입 버튼)
-        child: Container(
+      bottomNavigationBar: ModalProgressHUD(
+        inAsyncCall: loddingSpinner,
+        child : BottomAppBar(
+          // 밑에 하단바(회원가입 버튼)
+          child: Container(
             height: 50,
             child: ElevatedButton(
               onPressed: () async{
 
-                auth.currentUser?.sendEmailVerification();
+                //auth.currentUser?.sendEmailVerification();
                 if(checkValidation()){ // 회원정보 다 채움
+                  setState((){
+                    loddingSpinner = true;// 로그인 할 때 로딩스피너보이게함
+                  });
                   checkIdAndEmail(); // 아이디 이메일 중복 체크 후 회원가입
                 }
               },
@@ -122,11 +130,15 @@ class _joinPage extends State<joinPage> {
                 onPrimary: Colors.white, // 글자색상
               ),
             ),),
+        ),
       ),
     );
   }
 
   void overlap(){ // 아이디 또는 이메일 중복있을 시 메시지
+    setState((){
+      loddingSpinner = false;// 로그인 할 때 로딩스피너보이게함
+    });
     showDialog(
       context: context,
       barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
@@ -156,21 +168,6 @@ class _joinPage extends State<joinPage> {
     return isValid;
   }
 
-
-  void checkId() { // 컬렉션 안의 도큐먼트 갯수 가져오기
-    FirebaseFirestore.instance
-        .collection('User')
-        .get()
-        .then((snapShot) {
-      snapShot.docs.forEach((element) {
-        if(element["email"] == email){
-          print(element["id"]);
-          return;
-        }
-      });
-    });
-  }
-
   void sucessJoin() async{
     try {
       final newUser = await auth
@@ -190,6 +187,9 @@ class _joinPage extends State<joinPage> {
           "name": name,
           "birth": birth,
         });
+    setState((){
+      loddingSpinner = false;// 로그인 할 때 로딩스피너보이게함
+    });
     showDialog(
       context: context,
       barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
@@ -218,32 +218,33 @@ class _joinPage extends State<joinPage> {
     );
   }
 
-  void checkIdAndEmail() {
-        fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
+  void checkIdAndEmail() async{
+    int checkUser = 0;
+    await fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
         .collection('User')
         .get()
         .then((snapShot){
       snapShot.docs.forEach((element) {
         if(element["id"] == id){
+          checkUser = 1;
           check = 'idOverlap';
           message = '이미 존재하는 아이디입니다.';
-          overlap();
-          return;
         }
         else if(element["email"] == email){
+          checkUser = 2;
           check = 'emailOverlap';
-          message = '이미 존재하는 이메일입니다.';
-          overlap();
-          return;
-        }
-        else {
-          check = "pass";
-          message = '회원가입이 완료되었습니다.';
-          sucessJoin();
-          return;
+          message = '이미 가입된 이메일입니다.';
         }
       });
     });
+    if(checkUser == 0) {
+      check = "pass";
+      message = '회원가입이 완료되었습니다.';
+      sucessJoin();
+    }
+    else if(checkUser == 1 || checkUser == 2){
+      overlap();
+    }
   }
 
 
