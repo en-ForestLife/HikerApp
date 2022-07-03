@@ -17,13 +17,16 @@ class ForestInformationApi {
     );
   }
 
-  Future<ForestInformationModel> fetchForestInformation()async{
+  Future<List<ForestInformationModel>> fetchForestInformation()async{
 
     var response = await _dio.get('/openapi/service/trailInfoService/getforeststoryservice');
     final document = XmlDocument.parse(response.data);
     final results = document.findAllElements('item');
     if(results.isNotEmpty) {
-      return ForestInformationModel.fromXml(results.first);
+      return results
+          .map<ForestInformationModel>(
+            (element) => ForestInformationModel.fromXml(element))
+          .toList();
     }else {
       return Future.value(null);
     }

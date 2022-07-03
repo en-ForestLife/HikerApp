@@ -17,7 +17,7 @@ class ForestInformationController extends GetxController{
   void fetchForest() async{
     var result = await forestInformationApi.fetchForestInformation();
     if(result != null){
-      forestInformation(result);
+      forestInformation(result.first);
     }
   }
 }
