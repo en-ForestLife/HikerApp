@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../screens/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import '../controller/forestInformationController.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,8 +23,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-
+    return GetMaterialApp(
+        initialBinding: BindingsBuilder((){
+          Get.put(ForestInformationController());
+        }),
         home: homePage()
     );
   }

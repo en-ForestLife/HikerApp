@@ -5,6 +5,7 @@ import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
 import 'memberSearch.dart';
 import 'TipScreen.dart';
+import 'ForestInformationScreen.dart';
 
 class homePage extends StatefulWidget {
   const homePage({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _homePageState extends State<homePage> {
   List<Widget> Options = [
     searchAccount(),
     joinPage(),
-    TipScreen(),
+    ForestInformationScreen(),
     loginPage(),
   ];
 
