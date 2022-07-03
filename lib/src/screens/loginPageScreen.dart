@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,7 @@ class _loginPageState extends State<loginPage> {
   String password = '';
   String email = '';
   String id ='';
+  bool languageButton = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -49,8 +51,8 @@ class _loginPageState extends State<loginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '로그인',
+        title: Text(
+          'login'.tr(),
           style: TextStyle(
               color: Colors.black, // 글자 색상 검정색
               fontSize: 22.0, // 폰트 사이즈
@@ -66,6 +68,26 @@ class _loginPageState extends State<loginPage> {
           color: Colors.black, // 버튼 색상
           icon: Icon(Icons.arrow_back), // 뒤로가기 이미지 아이콘
         ),
+        actions:[
+          OutlinedButton.icon( // 언어 바꿀 수 있는 버튼
+            onPressed: () {
+              // 영어로 언어 변경
+              // 이후 앱을 재시작하면 영어로 동작
+              if(!languageButton){ // 영어
+                EasyLocalization.of(context)!.setLocale(Locale('en'));
+                languageButton = true;
+              }
+              else{ // 한국어
+                EasyLocalization.of(context)!.setLocale(Locale('ko'));
+                languageButton = false;
+              }
+            },
+            icon: Icon(Icons.language_outlined),
+            label: Text(
+              "Language",
+            ),
+          ),
+        ],
 
         centerTitle: true,
         // 글자 중간으로 위치 지정
@@ -147,7 +169,7 @@ class _loginPageState extends State<loginPage> {
                                   loddingSpinner = false; // 로딩스피너 꺼짐
                                 });
                               },
-                              child: Text("로그인"),
+                              child: Text('login'.tr()),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.black, // 버튼색상
                                 onPrimary: Colors.white, // 글자색상
@@ -182,7 +204,7 @@ class _loginPageState extends State<loginPage> {
         key: ValueKey(2),
         keyboardType: TextInputType.text,
         decoration: decoration()
-            .textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
+            .textFormDecoration('passwordInput'.tr(), 'password'.tr()),
         onChanged: (dynamic val) {
           password = val;
         },
@@ -208,7 +230,7 @@ class _loginPageState extends State<loginPage> {
                 }),
           );
         },
-        child: Text('계정찾기'),
+        child: Text('searchAccount'.tr()),
         style: TextButton.styleFrom(
           primary: Colors.black,
           alignment: Alignment.bottomLeft,
@@ -232,7 +254,7 @@ class _loginPageState extends State<loginPage> {
                   }),
             );
           },
-          child: Text('회원가입'),
+          child: Text('joinButton'.tr()),
           style: TextButton.styleFrom(
             primary: Colors.black,
             alignment: Alignment.bottomRight, //글자위치 변경
@@ -249,11 +271,11 @@ class _loginPageState extends State<loginPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("안내메시지"),
-          content: Text('로그인 되었습니다.'),
+          title: Text('Notification'.tr()),
+          content: Text('doneLogin'.tr()),
           actions: <Widget>[
             FlatButton(
-              child: Text("닫기"),
+              child: Text('close'.tr()),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -277,7 +299,7 @@ class _loginPageState extends State<loginPage> {
       child: TextFormField(
         key : ValueKey(1),
         keyboardType: TextInputType.text,
-        decoration: decoration().textFormDecoration('영문 + 숫자 조합 4~12자', '아이디'),
+        decoration: decoration().textFormDecoration('idInput'.tr(), 'id'.tr()),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           id = val;
@@ -296,11 +318,11 @@ class _loginPageState extends State<loginPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("안내메시지"),
-          content: Text('회원정보가 일치하지 않습니다.'),
+          title: Text('Notification'.tr()),
+          content: Text('wrongPassword'.tr()),
           actions: <Widget>[
             FlatButton(
-              child: Text("닫기"),
+              child: Text('close'.tr()),
               onPressed: () {
                 Navigator.pop(context);
               },

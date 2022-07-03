@@ -1,14 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 
 class CheckValidate {
   String? validateEmail(String value) {
     if (value.isEmpty) {
-      return '이메일을 입력하세요.';
+      return 'emailInput'.tr();
     } else {
       Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
       RegExp regExp = new RegExp(pattern.toString());
       if (!regExp.hasMatch(value)) {
-        return '잘못된 이메일 형식입니다.';
+        return 'ex) test123@naver.com';
       } else {
         return null;
       }
@@ -17,12 +18,12 @@ class CheckValidate {
 
   String? validatePassword(String value){
     if(value.isEmpty){
-      return '비밀번호를 입력하세요.';
+      return 'blankPassword'.tr();
     }else {
       Pattern pattern = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,15}$';
       RegExp regExp = new RegExp(pattern.toString());
       if(!regExp.hasMatch(value)){
-        return '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.';
+        return 'passwordInput'.tr();
       }else{
         return null;
       }
@@ -31,13 +32,13 @@ class CheckValidate {
 
   String? validateId(String value){
     if(value.isEmpty){
-      return '아이디를 입력하세요.';
+      return 'blankId'.tr();
     }else {
       Pattern pattern = r'^[a-z]{1}[a-z0-9]{4,12}$';
       RegExp regExp = new RegExp(pattern.toString());
       
       if(!regExp.hasMatch(value)){
-        return '영문 + 숫자 조합 4~12자';
+        return 'idInput'.tr();
       }else{
         return null;
       }
@@ -52,7 +53,7 @@ class CheckValidate {
       RegExp regExp = new RegExp(pattern.toString());
 
       if(!regExp.hasMatch(value)){
-        return '한글2~5자';
+        return 'blankName'.tr();
       }else{
         return null;
       }
@@ -61,7 +62,7 @@ class CheckValidate {
 
   String? validateBirth(String value){
     if(value.isEmpty){
-      return '생년월일을 입력하세요.';
+      return 'blankBirth'.tr();
     }else {
       Pattern pattern = r'^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$';
       RegExp regExp = new RegExp(pattern.toString());
