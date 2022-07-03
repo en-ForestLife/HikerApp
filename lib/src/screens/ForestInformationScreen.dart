@@ -34,15 +34,11 @@ class ForestInformationScreen extends GetView<ForestInformationController>{
           var info = controller.forestInformation.value;
           return Column(
             children: [
-              infoWidget("mntnnm", info.mntnnm!),
-              infoWidget("mntnid", info.mntnid!),
-              infoWidget("crcmrsghtngetcimageseq", info.crcmrsghtngetcimageseq!),
-              infoWidget("crcmrsghtnginfodscrt", info.crcmrsghtnginfodscrt!),
-              infoWidget("hkngpntdscrt", info.hkngpntdscrt!),
-              infoWidget("hndfmsmtnmapimageseq", info.hndfmsmtnmapimageseq!),
-              infoWidget("mntninfohght", info.mntninfohght!),
-              infoWidget("mntnsbttlinfo", info.mntnsbttlinfo!),
-
+              Image.network(info.mntnattchimageseq!),
+              infoWidget("산이름", info.mntnnm!),
+              infoWidget("높이", info.mntninfohght!),
+              infoWidget("산정보부제", info.mntnsbttlinfo!),
+              infoWidget("산정보소재지(소재지)", info.mntninfopoflc!),
             ],
           );
         }),
