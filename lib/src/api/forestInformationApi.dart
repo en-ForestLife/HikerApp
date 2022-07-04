@@ -6,13 +6,15 @@ import '../model/forestInformation.dart';
 class ForestInformationApi {
   late var dio;
 
-  ForestInformationApi() {
+  ForestInformationApi(mountainName) {
     dio = Dio(
       BaseOptions(
           baseUrl: "http://openapi.forest.go.kr",
           queryParameters: {
             'serviceKey':
-            'WRW8U5mI32TQ7scwZY7OauPpIOPTEz2o5RcdqnpvaCWeow/zFQ3xRp7uciHXufIHRPIDA+e9/JBjfYCyfy4bTg=='
+            'WRW8U5mI32TQ7scwZY7OauPpIOPTEz2o5RcdqnpvaCWeow/zFQ3xRp7uciHXufIHRPIDA+e9/JBjfYCyfy4bTg==',
+            'mntnNm':'$mountainName',
+            'pageNo':'',
           },
       ),
     );
@@ -31,5 +33,7 @@ class ForestInformationApi {
     }else {
       return Future.value(null);
     }
+
+
   }
 }

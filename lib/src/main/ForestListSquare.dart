@@ -70,10 +70,10 @@ class ForestListSquare extends GetView<ForestInformationController> {
     return format.format(int.parse(information[index].mntninfohght.toString())) + 'm';
   }
 
-  String addSubtitle(var information) {
+  String addSubtitle(var information) { // 부제 없는 산은 부제 따로 추가
     String subTitle = information[index].mntnsbttlinfo.toString();
-    if(subTitle.length == 1) {
-      return '공기가 맑은 산';
+    if(subTitle.length == 1) { // 주의 - 부제가 안나오지만 길이는 1로 계산됨
+      return '공기 맑은 산'; //
     }
     return subTitle;
   }

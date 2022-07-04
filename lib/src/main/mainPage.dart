@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get.dart';
+import 'package:hiker/src/model/forestInformation.dart';
 import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
@@ -9,12 +10,20 @@ void runMainPage() {
   runApp(MainPage());
 }
 
+String searchedName = '';
+
+String getMountainName() {
+  print("hello $searchedName hi");
+  return searchedName;
+}
+
 class MainPage extends GetView<ForestInformationController> {
   //const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var information = controller.forestInformation.value;
+
     return MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.white,
@@ -42,6 +51,11 @@ eraseTextField() { // 검색창에서 x 누르면 검색 취소
   textEditingController.clear();
 }
 
+forestSearchingDetail(mountainName) {
+  print(mountainName);
+  searchedName = mountainName.toString();
+}
+
 AppBar ForestSearchingHeader() { // 상단 검색창
   return AppBar(
       backgroundColor: Colors.white,
@@ -62,7 +76,8 @@ AppBar ForestSearchingHeader() { // 상단 검색창
         style: TextStyle(
           fontSize: 15,
           color: Colors.black,
-        )
+        ),
+        onFieldSubmitted: forestSearchingDetail,
       )
   );
 }

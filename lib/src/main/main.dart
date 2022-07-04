@@ -12,7 +12,7 @@ class HikerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: BindingsBuilder(() {
-        Get.put(ForestInformationController());
+        Get.put(ForestInformationController(getMountainName()));
       }),
       home:MainPage(),
     );

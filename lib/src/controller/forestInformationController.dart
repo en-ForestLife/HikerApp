@@ -6,11 +6,14 @@ import 'package:hiker/src/model/forestInformation.dart';
 class ForestInformationController extends GetxController{
   late ForestInformationApi forestInformationApi;
   RxList<ForestInformationModel> forestInformation = <ForestInformationModel>[].obs;
+  String mountainName;
+
+  ForestInformationController(this.mountainName);
 
   @override
   void onInit() {
     super.onInit();
-    forestInformationApi = ForestInformationApi();
+    forestInformationApi = ForestInformationApi(mountainName);
     fetchForest();
   }
 
