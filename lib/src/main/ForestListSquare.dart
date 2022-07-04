@@ -3,7 +3,6 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:intl/intl.dart';
 import '../controller/forestInformationController.dart';
-import '../model/forestInformation.dart';
 
 class ForestListSquare extends GetView<ForestInformationController> {
   int index;
@@ -41,7 +40,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 2.0), textAlign: TextAlign.left,),
-                      Text(information[index].mntnsbttlinfo ?? '',
+                      Text(addSubtitle(information),
                           style: TextStyle(fontSize: 14,)),
                       Text(information[index].mntninfopoflc ?? '',
                           style: TextStyle(fontSize: 14,)),
@@ -56,19 +55,26 @@ class ForestListSquare extends GetView<ForestInformationController> {
     );
   }
 
-  String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내기
+  String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
     String imageUrl = information[index].mntnattchimageseq.toString();
 
     if (imageUrl.contains("FILE")) {
       return imageUrl;
     }
-
     return 'https://ifh.cc/g/FapjP1.png';
   }
 
-  String getHeightFormat(var information) {
+  String getHeightFormat(var information) { // 산 높이 값 콤마 표시 및 단위 추가 함수
     var format = NumberFormat('###,###,###,###');
 
     return format.format(int.parse(information[index].mntninfohght.toString())) + 'm';
+  }
+
+  String addSubtitle(var information) {
+    String subTitle = information[index].mntnsbttlinfo.toString();
+    if(subTitle.length == 1) {
+      return '공기가 맑은 산';
+    }
+    return subTitle;
   }
 }
