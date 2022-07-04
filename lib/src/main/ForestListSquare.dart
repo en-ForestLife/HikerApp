@@ -18,15 +18,22 @@ class ForestListSquare extends GetView<ForestInformationController> {
         height: 510,
         child: Obx(() {
           var information = controller.forestInformation.value;
+          String imageUrl = information[index].mntnattchimageseq.toString();
+
+          if(!imageUrl.contains("FILE")) {
+            imageUrl = 'https://ifh.cc/g/FapjP1.png';
+          }
+
          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
-                child: Image.network(information[index].mntnattchimageseq ?? ''.toString(),
+                child:
+                Image.network(imageUrl,
                     width:450,
                     height:400,
-                    fit: BoxFit.fill
+                    fit: BoxFit.fill,
                 ),
               ),
               Column(
