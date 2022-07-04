@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../controller/translateLanguage.dart';
 
 class test extends StatefulWidget {
   const test({Key? key}) : super(key: key);
@@ -10,6 +11,8 @@ class test extends StatefulWidget {
 }
 
 class _testState extends State<test> {
+
+  translateLanguage lan = new translateLanguage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +44,10 @@ class _testState extends State<test> {
       body:Container(
         child : OutlinedButton.icon(
           onPressed: () {
+            lan.getTranslation_papago();
             // 영어로 언어 변경
             // 이후 앱을 재시작하면 영어로 동작
-            EasyLocalization.of(context)!.setLocale(Locale('en'));
+            //EasyLocalization.of(context)!.setLocale(Locale('en'));
           },
           icon: Icon(Icons.language_outlined),
           label: Text(

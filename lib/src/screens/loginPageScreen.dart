@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hiker/src/controller/translateLanguage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../utils/inputDecoration.dart';
@@ -19,6 +20,7 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final auth = FirebaseAuth.instance;
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
+  translateLanguage lan = new translateLanguage();
 
   bool loddingSpinner = false;
   User? loggedUser;

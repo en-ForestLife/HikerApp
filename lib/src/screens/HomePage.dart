@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'MyPage.dart';
 import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
 import 'memberSearch.dart';
@@ -19,7 +20,7 @@ class _homePageState extends State<homePage> {
     searchAccount(),
     joinPage(),
     TipScreen(),
-    loginPage(),
+    myPage(),
   ];
 
 

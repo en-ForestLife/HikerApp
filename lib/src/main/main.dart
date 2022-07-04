@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../screens/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import '../screens/test.dart';
-
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
