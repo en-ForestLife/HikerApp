@@ -19,7 +19,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
         height: 510,
         child: Obx(() {
           var information = controller.forestInformation.value;
-          String imageUrl = setUrl();
+          String imageUrl = getUrl(information);
 
           return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +45,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
                           style: TextStyle(fontSize: 14,)),
                       Text(information[index].mntninfopoflc ?? '',
                           style: TextStyle(fontSize: 14,)),
-                      Text(information[index].mntninfohght ?? '',
+                      Text(getHeightFormat(information),
                           style: TextStyle(fontSize: 14,)),
                     ]
                 )
@@ -56,8 +56,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
     );
   }
 
-  String setUrl() { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내기
-    var 기nformation = controller.forestInformation.value;
+  String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내기
     String imageUrl = information[index].mntnattchimageseq.toString();
 
     if (imageUrl.contains("FILE")) {
@@ -67,5 +66,9 @@ class ForestListSquare extends GetView<ForestInformationController> {
     return 'https://ifh.cc/g/FapjP1.png';
   }
 
+  String getHeightFormat(var information) {
+    var format = NumberFormat('###,###,###,###');
 
+    return format.format(int.parse(information[index].mntninfohght.toString())) + 'm';
+  }
 }
