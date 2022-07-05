@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../screens/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import '../controller/forestInformationController.dart';
 
 import '../screens/test.dart';
 
@@ -29,18 +31,15 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  const HikerApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // 로케일 delegate
-        localizationsDelegates: context.localizationDelegates,
-        // 지원하는 로케일
-        supportedLocales: context.supportedLocales,
-        // 설정된 로케일
-        locale: context.locale,
-        home: homePage()
+    return GetMaterialApp(
+      initialBinding: BindingsBuilder(() {
+        Get.put(ForestInformationController());
+      }),
+      home:HomePage(),
+
     );
   }
 }
