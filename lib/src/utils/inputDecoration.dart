@@ -11,7 +11,7 @@ class decoration {
         width: 1.0,
       )),
       focusedBorder: OutlineInputBorder(
-// 해당 포커스 밑줄 파란색에서 검은색으로 변경
+      // 해당 포커스 밑줄 파란색에서 검은색으로 변경
         borderSide: BorderSide(
           color: Colors.teal,
         ),

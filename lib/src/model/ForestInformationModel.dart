@@ -1,5 +1,5 @@
 import 'package:xml/xml.dart';
-import '../utility/xmlUtils.dart';
+import '../utils/xmlUtils.dart';
 
 class ForestInformationModel {
   String? mntnnm;
@@ -18,11 +18,11 @@ class ForestInformationModel {
 
   factory ForestInformationModel.fromXml(XmlElement xml) {
     return ForestInformationModel(
-      mntnnm : XmlUtils.searchResult(xml, 'mntnnm'),
-      mntnattchimageseq : XmlUtils.searchResult(xml, 'mntnattchimageseq'),
-      mntninfopoflc : XmlUtils.searchResult(xml, 'mntninfopoflc'),
-      mntnsbttlinfo : XmlUtils.searchResult(xml, 'mntnsbttlinfo'),
-      mntninfohght : XmlUtils.searchResult(xml, 'mntninfohght'),
+      mntnnm : XmlUtils.searchResultForString(xml, 'mntnnm'),
+      mntnattchimageseq : XmlUtils.searchResultForString(xml, 'mntnattchimageseq'),
+      mntninfopoflc : XmlUtils.searchResultForString(xml, 'mntninfopoflc'),
+      mntnsbttlinfo : XmlUtils.searchResultForString(xml, 'mntnsbttlinfo'),
+      mntninfohght : XmlUtils.searchResultForString(xml, 'mntninfohght'),
     );
   }
 }
