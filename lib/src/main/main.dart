@@ -17,13 +17,14 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  const HikerApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-
-        home: homePage()
+    return GetMaterialApp(
+      initialBinding: BindingsBuilder(() {
+        Get.put(ForestInformationController());
+      }),
+      home:HomePage(),
     );
   }
 }
