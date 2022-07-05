@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../utils/checkInformation.dart';
 import '../utils/inputDecoration.dart';
@@ -30,17 +32,19 @@ class _joinPage extends State<joinPage> {
   String email = '';
   String name = '';
   String birth = '';
-  //String sex = '';
 
   var message = '';
   String check = '';
+
+  bool loddingSpinner = false;
+  bool languageButton = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '회원정보 입력 및 동의',
+        title: Text(
+          'joinMember'.tr(),
           style: TextStyle(
               color: Colors.black, // 글자 색상 검정색
               fontSize: 22.0, // 폰트 사이즈
@@ -57,6 +61,26 @@ class _joinPage extends State<joinPage> {
           icon: Icon(Icons.arrow_back), // 뒤로가기 이미지 아이콘
         ),
 
+        actions:[
+          OutlinedButton.icon( // 언어 바꿀 수 있는 버튼
+            onPressed: () {
+              // 영어로 언어 변경
+              // 이후 앱을 재시작하면 영어로 동작
+              if(!languageButton){ // 영어
+                EasyLocalization.of(context)!.setLocale(Locale('en'));
+                languageButton = true;
+              }
+              else{ // 한국어
+                EasyLocalization.of(context)!.setLocale(Locale('ko'));
+                languageButton = false;
+              }
+            },
+            icon: Icon(Icons.language_outlined),
+            label: Text(
+              "Language",
+            ),
+          ),
+        ],
         centerTitle: true,
         // 글자 중간으로 위치 지정
         elevation: 0.0,
@@ -104,40 +128,49 @@ class _joinPage extends State<joinPage> {
         ),
       ),
 
-      bottomNavigationBar: BottomAppBar(
-        // 밑에 하단바(회원가입 버튼)
-        child: Container(
+      bottomNavigationBar: ModalProgressHUD(
+        inAsyncCall: loddingSpinner,
+        child : BottomAppBar(
+          // 밑에 하단바(회원가입 버튼)
+          child: Container(
             height: 50,
             child: ElevatedButton(
               onPressed: () async{
 
-                auth.currentUser?.sendEmailVerification();
+                //auth.currentUser?.sendEmailVerification();
                 if(checkValidation()){ // 회원정보 다 채움
+                  setState((){
+                    loddingSpinner = true;// 로그인 할 때 로딩스피너보이게함
+                  });
                   checkIdAndEmail(); // 아이디 이메일 중복 체크 후 회원가입
                 }
               },
-              child: Text("회원가입"),
+              child: Text('joinButton'.tr()),
               style: ElevatedButton.styleFrom(
                 primary: Colors.black, // 버튼색상
                 onPrimary: Colors.white, // 글자색상
               ),
             ),),
+        ),
       ),
     );
   }
 
   void overlap(){ // 아이디 또는 이메일 중복있을 시 메시지
+    setState((){
+      loddingSpinner = false;// 로그인 할 때 로딩스피너보이게함
+    });
     showDialog(
       context: context,
       barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("안내메시지"),
+          title: Text('Notification'.tr()),
           content: Text(message),
           actions: <Widget>[
             FlatButton(
-              child: Text("닫기"),
+              child: Text('close'.tr()),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -156,24 +189,10 @@ class _joinPage extends State<joinPage> {
     return isValid;
   }
 
-
-  void checkId() { // 컬렉션 안의 도큐먼트 갯수 가져오기
-    FirebaseFirestore.instance
-        .collection('User')
-        .get()
-        .then((snapShot) {
-      snapShot.docs.forEach((element) {
-        if(element["email"] == email){
-          print(element["id"]);
-          return;
-        }
-      });
-    });
-  }
-
   void sucessJoin() async{
     try {
-      final newUser = await auth
+      // final newUser =
+       await auth
           .createUserWithEmailAndPassword( // 회원가입 메서드
           email: email,
           password: password
@@ -190,17 +209,20 @@ class _joinPage extends State<joinPage> {
           "name": name,
           "birth": birth,
         });
+    setState((){
+      loddingSpinner = false;// 로그인 할 때 로딩스피너보이게함
+    });
     showDialog(
       context: context,
       barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("안내메시지"),
-          content: Text('회원가입이 완료되었습니다.'),
+          title: Text('Notification'.tr()),
+          content: Text('createAccount'.tr()),
           actions: <Widget>[
             FlatButton(
-              child: Text("닫기"),
+              child: Text('close'.tr()),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -218,32 +240,33 @@ class _joinPage extends State<joinPage> {
     );
   }
 
-  void checkIdAndEmail() {
-        fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
+  void checkIdAndEmail() async{
+    int checkUser = 0;
+    await fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
         .collection('User')
         .get()
         .then((snapShot){
       snapShot.docs.forEach((element) {
         if(element["id"] == id){
+          checkUser = 1;
           check = 'idOverlap';
-          message = '이미 존재하는 아이디입니다.';
-          overlap();
-          return;
+          message = 'idMessage'.tr();
         }
         else if(element["email"] == email){
+          checkUser = 2;
           check = 'emailOverlap';
-          message = '이미 존재하는 이메일입니다.';
-          overlap();
-          return;
-        }
-        else {
-          check = "pass";
-          message = '회원가입이 완료되었습니다.';
-          sucessJoin();
-          return;
+          message = 'emailMessage'.tr();
         }
       });
     });
+    if(checkUser == 0) {
+      check = "pass";
+      message = 'createAccount'.tr();
+      sucessJoin();
+    }
+    else if(checkUser == 1 || checkUser == 2){
+      overlap();
+    }
   }
 
 
@@ -254,7 +277,7 @@ class _joinPage extends State<joinPage> {
       child: TextFormField(
         key : ValueKey(1),
         keyboardType: TextInputType.text,
-        decoration: decoration().textFormDecoration('영문 + 숫자 조합 4~12자', '아이디'),
+        decoration: decoration().textFormDecoration('idInput'.tr(), 'id'.tr()),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           id = val;
@@ -278,7 +301,7 @@ class _joinPage extends State<joinPage> {
         keyboardType: TextInputType.text,
         controller: passwordEditingController,
         decoration:
-        decoration().textFormDecoration('영문 대.소문자 + 숫자 + 특수문자 조합 8~15자', '비밀번호'),
+        decoration().textFormDecoration('passwordInput'.tr(), 'password'.tr()),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           password = val;
@@ -302,15 +325,15 @@ class _joinPage extends State<joinPage> {
       child: TextFormField(
         key : ValueKey(3),
         keyboardType: TextInputType.text,
-        decoration: decoration().textFormDecoration('비밀번호를 다시 입력해주세요', '비밀번호 확인'),
+        decoration: decoration().textFormDecoration('repasswordInput'.tr(), 'passwordCheck'.tr()),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {},
         validator: (value) {
           if (value == '') {
-            return '비밀번호를 입력하세요';
+            return 'blankPassword'.tr();
           }
           else if (value.toString() != passwordEditingController.text.toString()) {
-            return '비밀번호가 일치하지 않습니다.';
+            return 'wrongPassword'.tr();
           } else {
             return null;
           }
@@ -329,7 +352,7 @@ class _joinPage extends State<joinPage> {
       child: TextFormField(
         key : ValueKey(4),
         keyboardType: TextInputType.emailAddress,
-        decoration: decoration().textFormDecoration('이메일 형식에 맞게 입력', '이메일'),
+        decoration: decoration().textFormDecoration('ex) test123@naver.com', 'Email'),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           email = val;
@@ -351,7 +374,7 @@ class _joinPage extends State<joinPage> {
         key : ValueKey(5),
         keyboardType: TextInputType.text,
         decoration:
-        decoration().textFormDecoration('실명입력', '이름'),
+        decoration().textFormDecoration('nameInput'.tr(), 'name'.tr()),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           name = val;
@@ -375,7 +398,7 @@ class _joinPage extends State<joinPage> {
         key : ValueKey(6),
         keyboardType: TextInputType.text,
         decoration:
-        decoration().textFormDecoration('ex) 1999-08-20', '생년월일'),
+        decoration().textFormDecoration('ex) 1999-08-20', 'birth'.tr()),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: (dynamic val) {
           birth = val;

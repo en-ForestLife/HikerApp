@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'LoginBeforeScreen.dart';
+import 'MyPage.dart';
 import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
 import 'memberSearch.dart';
@@ -16,12 +19,35 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
+  final authentification = FirebaseAuth.instance;
+  User? loggedUser;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser(){
+    final user = authentification.currentUser;
+    try {
+      if (user != null) {
+        loggedUser = user;
+        print(loggedUser!.email);
+      }
+    }catch(error){
+      print(error);
+    }
+  }
 
   List<Widget> Options = [
-    searchAccount(),
+    loginBeforeScreen(),
     joinPage(),
-    PreparationScreen(),
-    loginPage(),
+
+    TipScreen(),
+    myPage(),
+
   ];
 
 
@@ -47,7 +73,7 @@ class _homePageState extends State<homePage> {
             ),
             Tab(
               icon: Icon(Icons.favorite_outline),
-              text: 'favorite',
+              text: 'Wishlist',
             ),
             Tab(
               icon: Icon(Icons.tips_and_updates_outlined),
