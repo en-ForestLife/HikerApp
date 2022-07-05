@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'LoginBeforeScreen.dart';
 import 'MyPage.dart';
 import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
@@ -17,7 +18,7 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
 
   List<Widget> Options = [
-    searchAccount(),
+    loginBeforeScreen(),
     joinPage(),
     TipScreen(),
     myPage(),
