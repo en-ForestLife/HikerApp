@@ -46,7 +46,7 @@ class _homePageState extends State<homePage> {
             ),
             Tab(
               icon: Icon(Icons.favorite_outline),
-              text: 'favorite',
+              text: 'Wishlist',
             ),
             Tab(
               icon: Icon(Icons.tips_and_updates_outlined),
