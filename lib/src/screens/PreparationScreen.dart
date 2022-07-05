@@ -41,7 +41,7 @@ class _PreparationScreenState extends State<PreparationScreen> {
     return Card(
       elevation: 50,
       shadowColor: Colors.black,
-      color: Colors.amberAccent,
+      color: Colors.white,
       child: new InkWell(
         onTap: (showDetail),
         child: SizedBox(
@@ -51,34 +51,33 @@ class _PreparationScreenState extends State<PreparationScreen> {
                 //backgroundColor: Colors.green[500],
                 radius: 108,
                 backgroundImage: AssetImage(imagePath),
-
               ), //CircleAvatar
               const SizedBox(
                 width: 60,
               ), //SizedBox
 
               Column(
-                children:[
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.green[900],
-                      fontWeight: FontWeight.w500,
-                    ), //Textstyle
-                  ), //Text
-                  const SizedBox(
-                    height: 10,
-                  ), //SizedBox
-                  Text(
-                    semiInfo,
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.green[900],
-                      fontWeight: FontWeight.w500,
-                    ), //Textstyle
-                  )
-                ]
+                  children:[
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ), //Textstyle
+                    ), //Text
+                    const SizedBox(
+                      height: 10,
+                    ), //SizedBox
+                    Text(
+                      semiInfo,
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ), //Textstyle
+                    )
+                  ]
               ),
             ],
           ), //Column
@@ -120,26 +119,29 @@ class _PreparationScreenState extends State<PreparationScreen> {
           children: [
             Positioned(
               child: Container(
-                  padding: EdgeInsets.all(150.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white), // 테두리
-                    borderRadius: BorderRadius.circular(5), //모서리 둥글게
-                  ),
-                  child: Column(
-                    children: [
-                      materialCardWidget(PreparationItemModel().itemImagePath[0], PreparationItemModel().itemName[0], PreparationItemModel().itemSemiInfo[0]),
+                padding: EdgeInsets.all(30.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white), // 테두리
+                  borderRadius: BorderRadius.circular(5), //모서리 둥글게
+                ),
+                child: Container(
+                    width: double.infinity,
+                    child: Column(
+                      children: [
+                        materialCardWidget(PreparationItemModel().itemImagePath[0], PreparationItemModel().itemName[0], PreparationItemModel().itemSemiInfo[0]),
 
-                      SizedBox(
-                        height: 50,
-                      ),
-                      materialCardWidget(PreparationItemModel().itemImagePath[1], PreparationItemModel().itemName[1], PreparationItemModel().itemSemiInfo[1]),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        materialCardWidget(PreparationItemModel().itemImagePath[1], PreparationItemModel().itemName[1], PreparationItemModel().itemSemiInfo[1]),
 
-                      SizedBox(
-                        height: 50,
-                      ),
+                        SizedBox(
+                          height: 50,
+                        ),
 
-                    ],
-                  )
+                      ],
+                    )
+                ),
               ),
             ),
           ],
