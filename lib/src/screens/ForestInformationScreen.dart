@@ -32,6 +32,7 @@ class ForestInformationScreen extends GetView<ForestInformationController>{
         padding: const EdgeInsets.all(15),
         child: Obx((){
           var info = controller.forestInformation.value;
+          var len = info.length;
           return Column(
             children: [
               Image.network(info[0].mntnattchimageseq!),
