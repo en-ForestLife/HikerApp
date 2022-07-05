@@ -8,13 +8,14 @@ void main() {
 }
 
 class HikerApp extends StatelessWidget {
+  const HikerApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: BindingsBuilder(() {
-        Get.put(ForestInformationController(getMountainName()));
+        Get.put(ForestInformationController());
       }),
-      home:MainPage(),
+      home:HomePage(),
     );
   }
 }

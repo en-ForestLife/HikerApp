@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,6 @@ import '../controller/forestInformationController.dart';
 
 class ForestListSquare extends GetView<ForestInformationController> {
   int index;
-
   ForestListSquare(this.index);
 
   @override
@@ -17,7 +17,9 @@ class ForestListSquare extends GetView<ForestInformationController> {
         width: 450,
         height: 510,
         child: Obx(() {
-          var information = controller.forestInformation.value;
+          var information = controller.forestInformation.value.obs;
+          print(information);
+          print('산산');
           String imageUrl = getUrl(information);
 
           return Column(
@@ -58,7 +60,6 @@ class ForestListSquare extends GetView<ForestInformationController> {
 
   String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
     String imageUrl = information[index].mntnattchimageseq.toString();
-
     if (imageUrl.contains("FILE")) {
       return imageUrl;
     }

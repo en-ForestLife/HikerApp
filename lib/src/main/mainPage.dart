@@ -1,48 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get.dart';
+import 'package:hiker/src/main/main.dart';
 import 'package:hiker/src/model/forestInformation.dart';
+import '../api/forestInformationApi.dart';
 import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
 
-void runMainPage() {
-  runApp(MainPage());
+class HomePage extends StatefulWidget{
+  @override
+  MainPage createState()=> MainPage();
 }
 
-String searchedName = '';
-
-String getMountainName() {
-  print("hello $searchedName hi");
-  return searchedName;
-}
-
-class MainPage extends GetView<ForestInformationController> {
+class MainPage extends State<HomePage> {
   //const MainPage({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    print('init');
+    super.initState();
+  }
+
+
+  void forestSearchingDetails(String mountainName) {
+    //ForestInformationApi forestInformationApi;
+    RxList<ForestInformationModel> forestInformation = <ForestInformationModel>[].obs;
+    ForestInformationApi forestInformationApi;
+    forestInformationApi = ForestInformationApi(mountainName.obs);
+    ForestInformationController().fetchForest(forestInformationApi, forestInformation);
+    print('forest');
+
+    print('forrest');
+  }
 
   @override
   Widget build(BuildContext context) {
-    var information = controller.forestInformation.value;
-
-    return MaterialApp(
-        home: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: ForestSearchingHeader(),
-          body: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return ForestListSquare(index);
-                    }),
-              )
-            ],
-          ),
-        )
+    return ListPage(
     );
   }
 }
+
+class ListPage extends GetView<ForestInformationController> {
+  const ListPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: forestSearchingHeader(),
+
+        body: SizedBox(
+          child: Obx(() {
+            print(controller.forestInformation.value.length);
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: controller.forestInformation.value.length,
+                      itemBuilder: (context, index) {
+                        return ForestListSquare(index);
+                      }),
+                )
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
 
 /////// 상단 검색바 ////////
 TextEditingController textEditingController = TextEditingController(); // 검색 컨트롤러
@@ -51,20 +80,25 @@ eraseTextField() { // 검색창에서 x 누르면 검색 취소
   textEditingController.clear();
 }
 
+String searchedName = '';
 forestSearchingDetail(mountainName) {
   print(mountainName);
-  searchedName = mountainName.toString();
+  searchedName = mountainName;
+  //Get.put(ForestInformationController(searchedName));
+  //Get.put(ForestInformationController(str));
 }
 
-AppBar ForestSearchingHeader() { // 상단 검색창
+AppBar forestSearchingHeader() { // 상단 검색창
   return AppBar(
       backgroundColor: Colors.white,
       title: TextFormField(
+        cursorColor: Colors.red,
         controller: textEditingController,
         decoration: InputDecoration(
           hintText: '어디로 가볼까요?',
           hintStyle: TextStyle(
-            color:Colors.black,
+            color:Colors.grey,
+            fontSize: 14,
           ),
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black,)
@@ -77,10 +111,11 @@ AppBar ForestSearchingHeader() { // 상단 검색창
           fontSize: 15,
           color: Colors.black,
         ),
-        onFieldSubmitted: forestSearchingDetail,
+        onFieldSubmitted: MainPage().forestSearchingDetails,
       )
   );
 }
+
 
 
 
