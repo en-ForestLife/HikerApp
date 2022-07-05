@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 
 class CheckValidate {
+
   String? validateEmail(String value) {
     if (value.isEmpty) {
       return 'emailInput'.tr();

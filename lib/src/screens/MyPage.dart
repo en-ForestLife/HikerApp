@@ -16,11 +16,40 @@ class myPage extends StatefulWidget {
 }
 
 class _myPageState extends State<myPage> {
-  final passwordEditingController = TextEditingController();
+  final emailEditingController = TextEditingController();
+  FirebaseFirestore fireStore=FirebaseFirestore.instance;
+  GlobalKey<FormState> emailFormKey = GlobalKey<FormState>();
+
   bool languageButton = false;
-  String password = '';
+  bool checkEmail = false;
+  String email = '';
   String codeDialog = '';
-  final auth = FirebaseAuth.instance;
+  final authentification = FirebaseAuth.instance;
+  User? loggedUser;
+  String userEmail = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    final user = await authentification.currentUser;
+    try {
+      if (user != null) {
+        loggedUser = user;
+        print(loggedUser!.email);
+        userEmail = loggedUser!.email!;
+      }
+      else{
+        print(user);
+      }
+    }catch(error){
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +201,7 @@ class _myPageState extends State<myPage> {
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          subtitle: new Text("zzuni3423@naver.com"),
+                          subtitle: new Text(userEmail),
                           onTap: () {
                             print('Home pressed');
                           },
@@ -199,7 +228,7 @@ class _myPageState extends State<myPage> {
                             ),
                           ),
                           onTap: () {
-                            print('Home pressed');
+                            changePassword();
                           },
                           trailing: Icon(Icons.arrow_forward_ios),
                         ),
@@ -302,7 +331,6 @@ class _myPageState extends State<myPage> {
                           ),
                             onTap: () {
                               removeUser();
-                              print('Home pressed');
                             },
                           trailing: Icon(Icons.arrow_forward_ios),
                         ),
@@ -332,23 +360,24 @@ class _myPageState extends State<myPage> {
           content: Row(
             children: <Widget>[
                Expanded(
-                child: TextField(
-                  controller : passwordEditingController,
+                child: TextFormField(
+                  key : emailFormKey,
+                  controller : emailEditingController,
                   autofocus: true,
                   decoration: textDecoration(
                       '',
-                      '비밀번호를 입력하세요',
-                    IconButton(
-                      onPressed: (){
-                        passwordEditingController.clear();
-                      },
-                      icon: Icon(Icons.check),
-                    ),
+                      'Please type your Email to confirm.',
                   ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   onChanged: (dynamic val) {
-                    password = val;
+                    email = val;
+                    if(emailEditingController.text == userEmail){
+                      checkEmail = true;
+                    }
+                    else checkEmail = false;
                   },
-                  obscureText: true,
+                  validator: (value) =>
+                      emailCheck(value.toString()),
                 ),
               )
             ],
@@ -356,13 +385,109 @@ class _myPageState extends State<myPage> {
           actions: <Widget>[
             new FlatButton(
                 child: const Text('회원탈퇴'),
-                onPressed: () {
-                  Navigator.pop(context);
+
+                onPressed: () async {
+                  if(checkEmail){
+                    try {
+                      //await FirebaseAuth.instance.currentUser?.delete();
+                      /*
+                      await FirebaseFirestore.instance
+                          .collection('User')
+                          .get()
+                          .then((snapShot) {
+                        snapShot.docs.forEach((element) {
+                          if(element["email"] == userEmail){
+                            print(snapShot.docs);
+                            fireStore.collection('User').doc().delete();
+                            print(fireStore.collection('User').doc());
+                          }
+                        });
+                      });
+                      */
+                    } catch (e) {
+                      print(e);
+                    }
+                    Navigator.pop(context);
+                  }
                 }),
+
             new FlatButton(
                 child: const Text('닫기'),
                 onPressed: () {
-                  print(password);
+                  Navigator.pop(context);
+                })
+          ],
+        );
+      },
+    );
+  }
+
+
+
+  bool checkEmailValidate(){
+
+    final isValid = emailFormKey.currentState!.validate();
+    if(isValid){
+      emailFormKey.currentState!.save();
+    }
+    return isValid;
+  }
+
+
+    String? emailCheck(String value) {
+      if (value.isEmpty) {
+        return '이메일을 입력해주세요'.tr();
+      } else {
+        if (userEmail != value) {
+          return 'Check your email';
+        } else {
+          print(3);
+          return null;
+        }
+      }
+    }
+
+  void sendEmailMessage(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title : Text('안내메시지'),
+          content: Text('이메일로 비밀번호 변경링크를 보냈습니다.'),
+          actions: <Widget>[
+            new FlatButton(
+                child: const Text('확인'),
+                onPressed: () async {
+                  Navigator.pop(context);
+                }),
+          ],
+        );
+      },
+    );
+  }
+
+  void changePassword(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          content: Text('비밀번호를 변경하시겠습니까?'),
+          actions: <Widget>[
+            new FlatButton(
+                child: const Text('예'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  sendEmailMessage();
+                  authentification.sendPasswordResetEmail(email: userEmail); // 비밀번호 재전송하기
+                  //Navigator.pop(context);
+                }),
+            new FlatButton(
+                child: const Text('아니오'),
+                onPressed: () {
                   Navigator.pop(context);
                 })
           ],
@@ -384,7 +509,7 @@ class _myPageState extends State<myPage> {
                 child: const Text('예'),
                 onPressed: () {
                   Navigator.pop(context);
-                  auth.signOut();
+                  authentification.signOut();
                   Navigator.pop(context);
                   Navigator.push(
                     context,
@@ -405,7 +530,7 @@ class _myPageState extends State<myPage> {
     );
   }
 
-  InputDecoration textDecoration(hintText, labelText, suffixIcon) {
+  InputDecoration textDecoration(hintText, labelText) {
 // 텍스트 필드 꾸미기
     return new InputDecoration(
       enabledBorder: UnderlineInputBorder(
@@ -429,8 +554,6 @@ class _myPageState extends State<myPage> {
       labelStyle: TextStyle(
         color: Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
       ),
-
-      suffix : suffixIcon,
 
       filled: true,
       fillColor: Colors.white,

@@ -33,26 +33,6 @@ class _loginPageState extends State<loginPage> {
   bool languageButton = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  /*
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser(){
-    final user = auth.currentUser;
-    try {
-      if (user != null) {
-        loggedUser = user;
-        print(loggedUser!.email);
-      }
-    }catch(error){
-      print(error);
-    }
-  }
-*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,7 +147,7 @@ class _loginPageState extends State<loginPage> {
                                   final user = loggedUser;
                                   if (loggedUser.user != null) { // 로그인 되었을 때
                                     email = "";
-                                    print(user.user?.email);
+                                    print(user.user);
                                     movePage(); // 로그인 되었을 때 페이지 이동함
                                   }
                                 } catch (error) {
