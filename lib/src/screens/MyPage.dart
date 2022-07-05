@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'HomePage.dart';
+import 'LoginBeforeScreen.dart';
 
 class myPage extends StatefulWidget {
   const myPage({Key? key}) : super(key: key);
@@ -11,7 +16,11 @@ class myPage extends StatefulWidget {
 }
 
 class _myPageState extends State<myPage> {
+  final passwordEditingController = TextEditingController();
   bool languageButton = false;
+  String password = '';
+  String codeDialog = '';
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,14 @@ class _myPageState extends State<myPage> {
         // 붕 떠 있는 효과를 줌
         backgroundColor: Colors.white, // 배경색상 흰색
       ),
-      body: SingleChildScrollView(
+      body: StreamBuilder(
+        stream : FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData){
+          return loginBeforeScreen();
+        }
+        else{
+          return  SingleChildScrollView(
         child: Container(
           child: Column(
             children: [
@@ -258,7 +274,7 @@ class _myPageState extends State<myPage> {
                             ),
                           ),
                           onTap: () {
-                            print('Home pressed');
+                            logout();
                           },
                           trailing: Icon(Icons.arrow_forward_ios),
                         ),
@@ -284,9 +300,10 @@ class _myPageState extends State<myPage> {
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          onTap: () {
-                            print('Home pressed');
-                          },
+                            onTap: () {
+                              removeUser();
+                              print('Home pressed');
+                            },
                           trailing: Icon(Icons.arrow_forward_ios),
                         ),
                       ),
@@ -297,8 +314,126 @@ class _myPageState extends State<myPage> {
             ],
           ),
         ),
-      ),
+      );
+  }
+}
+    ),
       bottomNavigationBar: BottomAppBar(),
+    );
+  }
+
+  void removeUser()  {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          content: Row(
+            children: <Widget>[
+               Expanded(
+                child: TextField(
+                  controller : passwordEditingController,
+                  autofocus: true,
+                  decoration: textDecoration(
+                      '',
+                      '비밀번호를 입력하세요',
+                    IconButton(
+                      onPressed: (){
+                        passwordEditingController.clear();
+                      },
+                      icon: Icon(Icons.check),
+                    ),
+                  ),
+                  onChanged: (dynamic val) {
+                    password = val;
+                  },
+                  obscureText: true,
+                ),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            new FlatButton(
+                child: const Text('회원탈퇴'),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            new FlatButton(
+                child: const Text('닫기'),
+                onPressed: () {
+                  print(password);
+                  Navigator.pop(context);
+                })
+          ],
+        );
+      },
+    );
+  }
+
+  void logout(){
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          content: Text('로그아웃 하시겠습니까?'),
+          actions: <Widget>[
+            new FlatButton(
+                child: const Text('예'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  auth.signOut();
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) {
+                          return homePage();
+                        }),
+                  );
+                }),
+            new FlatButton(
+                child: const Text('아니오'),
+                onPressed: () {
+                  Navigator.pop(context);
+                })
+          ],
+        );
+      },
+    );
+  }
+
+  InputDecoration textDecoration(hintText, labelText, suffixIcon) {
+// 텍스트 필드 꾸미기
+    return new InputDecoration(
+      enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+            width: 1.0,
+          )),
+      focusedBorder: UnderlineInputBorder(
+        // 해당 포커스 밑줄 파란색에서 검은색으로 변경
+        borderSide: BorderSide(
+          color: Colors.black,
+        ),
+      ),
+      contentPadding: EdgeInsets.all(8),
+      hintText: hintText,
+      hintStyle: TextStyle(
+        fontSize: 14,
+        color: Colors.grey,
+      ),
+      labelText: labelText,
+      labelStyle: TextStyle(
+        color: Colors.black, // 포커스 갔을 때 텍스트 파란색에서 검정색으로 변경
+      ),
+
+      suffix : suffixIcon,
+
+      filled: true,
+      fillColor: Colors.white,
     );
   }
 

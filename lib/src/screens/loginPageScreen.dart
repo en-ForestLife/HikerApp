@@ -7,6 +7,8 @@ import 'package:hiker/src/controller/translateLanguage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../utils/inputDecoration.dart';
+import 'HomePage.dart';
+
 import 'joinPageScreen.dart';
 import 'memberSearch.dart';
 
@@ -18,18 +20,20 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
-  final auth = FirebaseAuth.instance;
+  final authentification = FirebaseAuth.instance;
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
   translateLanguage lan = new translateLanguage();
 
+
   bool loddingSpinner = false;
-  User? loggedUser;
+  //User? loggedUser;
   String password = '';
   String email = '';
   String id ='';
   bool languageButton = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  /*
   @override
   void initState() {
     // TODO: implement initState
@@ -48,7 +52,7 @@ class _loginPageState extends State<loginPage> {
       print(error);
     }
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,13 +158,16 @@ class _loginPageState extends State<loginPage> {
                                   });
                                 });
                                 try {
-                                  final newUser = await auth
+                                  final loggedUser = await authentification
                                       .signInWithEmailAndPassword( // 로그인 메서드
                                       email: email,
                                       password: password
                                   );
-                                  if (newUser.user != null) { // 로그인 되었을 때
+
+                                  final user = loggedUser;
+                                  if (loggedUser.user != null) { // 로그인 되었을 때
                                     email = "";
+                                    print(user.user?.email);
                                     movePage(); // 로그인 되었을 때 페이지 이동함
                                   }
                                 } catch (error) {
@@ -284,7 +291,7 @@ class _loginPageState extends State<loginPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) {
-                        return joinPage();
+                        return homePage();
                       }),
                 );
               },

@@ -114,7 +114,25 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     ),
                   ),
                   onTap: () {
-                    print('Home pressed');
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+                      builder: (BuildContext context) {
+                        // return object of type Dialog
+                        return AlertDialog(
+                          title: Text('Notification'.tr()),
+                          content: Text('하이커란 블라블라블라~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.tr()),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('close'.tr()),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   trailing: Icon(Icons.arrow_forward_ios),
                 ),

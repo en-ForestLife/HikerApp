@@ -191,7 +191,8 @@ class _joinPage extends State<joinPage> {
 
   void sucessJoin() async{
     try {
-      final newUser = await auth
+      // final newUser =
+       await auth
           .createUserWithEmailAndPassword( // 회원가입 메서드
           email: email,
           password: password
