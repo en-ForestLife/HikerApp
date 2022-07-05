@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hiker/src/controller/forestInformationController.dart';
-import './mainPage.dart';
+import '../screens/HomePage.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(HikerApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+    apiKey: 'AIzaSyCixnmrkfi9PHOKja6DKeIsj_K3yExnXlk',
+    appId: '1:974972266799:android:f1f8fbac8571a5438959da',
+    messagingSenderId: '974972266799',
+    projectId: 'enforestlife-d26ef',
+    storageBucket: 'enforestlife-d26ef.appspot.com',
+    ),
+  );
+  runApp(MyApp());
 }
 
-class HikerApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   const HikerApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -19,6 +28,4 @@ class HikerApp extends StatelessWidget {
     );
   }
 }
-
-
 
