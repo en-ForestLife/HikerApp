@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../main/mainPage.dart';
 import 'LoginBeforeScreen.dart';
 import 'MyPage.dart';
 import 'joinPageScreen.dart';
@@ -42,9 +43,8 @@ class _homePageState extends State<homePage> {
   }
 
   List<Widget> Options = [
-    loginBeforeScreen(),
+    ForestPage(),
     joinPage(),
-
     TipScreen(),
     myPage(),
 

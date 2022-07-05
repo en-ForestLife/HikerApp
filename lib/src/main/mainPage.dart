@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get.dart';
-import 'package:hiker/src/main/main.dart';
-import 'package:hiker/src/model/forestInformation.dart';
+import 'package:hiker/src/model/ForestInformationModel.dart';
 import '../api/forestInformationApi.dart';
 import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
 
-class HomePage extends StatefulWidget{
+import '../model/ForestInformationModel.dart';
+
+class ForestPage extends StatefulWidget{
   @override
   MainPage createState()=> MainPage();
 }
 
-class MainPage extends State<HomePage> {
+class MainPage extends State<ForestPage> {
   //const MainPage({Key? key}) : super(key: key);
   @override
   void initState() {

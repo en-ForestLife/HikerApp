@@ -31,14 +31,21 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const HikerApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      // 로케일 delegate
+      localizationsDelegates: context.localizationDelegates,
+      // 지원하는 로케일
+      supportedLocales: context.supportedLocales,
+      // 설정된 로케일
+      locale: context.locale,
+
       initialBinding: BindingsBuilder(() {
         Get.put(ForestInformationController());
       }),
-      home:HomePage(),
+      home:homePage(),
 
     );
   }
