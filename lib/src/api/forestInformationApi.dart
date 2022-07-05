@@ -2,7 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:xml/xml.dart';
-import '../model/forestInformation.dart';
+import '../model/ForestInformationModel.dart';
 
 class ForestInformationApi {
   late var dio;

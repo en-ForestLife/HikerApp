@@ -3,10 +3,10 @@ import 'package:hiker/src/api/forestInformationApi.dart';
 import 'package:hiker/src/main/mainPage.dart';
 import 'package:hiker/src/model/forestInformation.dart';
 
-
 class ForestInformationController extends GetxController{
   late ForestInformationApi forestInformationApi;
   RxList<ForestInformationModel> forestInformation = <ForestInformationModel>[].obs;
+
   String mountainName = '';
 
   @override
