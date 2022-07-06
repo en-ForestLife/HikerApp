@@ -47,13 +47,14 @@ class TipScreen extends StatelessWidget{
                         elevation: 50,
                         shadowColor: Colors.black,
                         color: Colors.greenAccent[100],
-                        child: new InkWell(
+                        child: InkWell(
                           onTap: () async => { await launchUrl(
                               Uri.parse("https://www.seoulhiking.or.kr/")//  url 이동
                           )
                           },
                           child: SizedBox(
                             child: Row(
+
                               children: [
                                 CircleAvatar(
                                   backgroundColor: Colors.green[500],
@@ -88,7 +89,7 @@ class TipScreen extends StatelessWidget{
                         elevation: 50,
                         shadowColor: Colors.black,
                         color: Colors.greenAccent[100],
-                        child: new InkWell(
+                        child: InkWell(
                           onTap: () {
                             print("tapped");
                           },
@@ -127,7 +128,7 @@ class TipScreen extends StatelessWidget{
                         elevation: 50,
                         shadowColor: Colors.black,
                         color: Colors.greenAccent[100],
-                        child: new InkWell(
+                        child: InkWell(
                           onTap: () {
                             print("tapped");
                           },

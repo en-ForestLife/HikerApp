@@ -7,7 +7,6 @@ import '../api/forestInformationApi.dart';
 import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
-
 import '../model/ForestInformationModel.dart';
 
 class ForestPage extends StatefulWidget{
@@ -17,27 +16,20 @@ class ForestPage extends StatefulWidget{
 
 class MainPage extends State<ForestPage> {
   //const MainPage({Key? key}) : super(key: key);
+  /*
   @override
   void initState() {
     print('init');
     super.initState();
-  }
-
-
-  void forestSearchingDetails(String mountainName) {
-    //ForestInformationApi forestInformationApi;
-    RxList<ForestInformationModel> forestInformation = <ForestInformationModel>[].obs;
-    ForestInformationApi forestInformationApi;
-    forestInformationApi = ForestInformationApi(mountainName.obs);
-    ForestInformationController().fetchForest(forestInformationApi, forestInformation);
-    print('forest');
-
-    print('forrest');
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    return ListPage(
+    return GetMaterialApp(
+      initialBinding: BindingsBuilder(() {
+        Get.put(ForestInformationController()).obs;
+      }),
+      home:ListPage(),
     );
   }
 }
@@ -45,13 +37,25 @@ class MainPage extends State<ForestPage> {
 class ListPage extends GetView<ForestInformationController> {
   const ListPage({Key? key}) : super(key: key);
 
+  forestSearchingDetails(String mountainName) {
+    if(mountainName.length == 0) {
+      mountainName = '';
+    }
+    //ForestInformationApi forestInformationApi;
+    RxList<ForestInformationModel> forestInformation = <ForestInformationModel>[].obs;
+    ForestInformationApi forestInformationApi;
+    forestInformationApi = ForestInformationApi(mountainName.obs);
+    Get.put(ForestInformationController().onInit());
+    print('forest');
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: forestSearchingHeader(),
-
         body: SizedBox(
           child: Obx(() {
             print(controller.forestInformation.value.length);
@@ -112,7 +116,7 @@ AppBar forestSearchingHeader() { // 상단 검색창
           fontSize: 15,
           color: Colors.black,
         ),
-        onFieldSubmitted: MainPage().forestSearchingDetails,
+        onFieldSubmitted: Get.put(ForestInformationController().forestSearchingDetail),
       )
   );
 }
