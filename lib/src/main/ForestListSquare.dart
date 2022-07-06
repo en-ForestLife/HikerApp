@@ -1,3 +1,9 @@
+import 'dart:html';
+import 'dart:js';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -7,7 +13,11 @@ import '../controller/forestInformationController.dart';
 
 class ForestListSquare extends GetView<ForestInformationController> {
   int index;
-  ForestListSquare(this.index);
+  ForestListSquare(this.index, {Key? key}) : super(key: key);
+
+  @override
+  GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
+  // NEW
 
   @override
   Widget build(BuildContext context) {
@@ -22,36 +32,57 @@ class ForestListSquare extends GetView<ForestInformationController> {
           print('산산');
           String imageUrl = getUrl(information);
 
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+          return  Container(
 
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child:
-                        Image.network(imageUrl,
-                          width: 450,
-                          height: 400,
-                          fit: BoxFit.fill,
+            child : Column(
+                children: <Widget>[
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child:
+                          Image.network(imageUrl,
+                            width: double.infinity,
+                            height: 400,
+                            fit: BoxFit.fill,
+                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
+                              if(loadingProgress == null){
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      Text('\n', style: TextStyle(fontSize: 5)),
-                      Text(information[index].mntnnm ?? '', style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2.0), textAlign: TextAlign.left,),
-                      Text(addSubtitle(information),
-                          style: TextStyle(fontSize: 14,)),
-                      Text(information[index].mntninfopoflc ?? '',
-                          style: TextStyle(fontSize: 14,)),
-                      Text(getHeightFormat(information),
-                          style: TextStyle(fontSize: 14,)),
-                    ]
-                )
-              ]
+                        Text('\n', style: TextStyle(fontSize: 5)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children:[
+                            Text(information[index].mntnnm ?? '', style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2.0),),
+
+                            ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
+                                subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
+                                height : getHeightFormat(information))
+                          ],
+                        ),
+                        Text(addSubtitle(information),
+                            style: TextStyle(fontSize: 14,)),
+                        Text(information[index].mntninfopoflc ?? '',
+                            style: TextStyle(fontSize: 14,)),
+                        Text(getHeightFormat(information),
+                            style: TextStyle(fontSize: 14,)),
+                      ]
+                  )
+                ]
+            ),
           );
         }),
       ),
@@ -78,5 +109,110 @@ class ForestListSquare extends GetView<ForestInformationController> {
       return '공기 맑은 산'; //
     }
     return subTitle;
+  }
+}
+
+
+class ForestList extends StatefulWidget{
+  const ForestList({
+    Key? key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.description,
+    required this.height,
+
+  }) : super(key: key);
+  final image;
+  final title;
+  final subtitle;
+  final description;
+  final height;
+
+
+
+  @override
+  State<ForestList> createState() => ForestListState();
+}
+
+class ForestListState extends State<ForestList> {
+  final authentification = FirebaseAuth.instance;
+  FirebaseFirestore fireStore=FirebaseFirestore.instance;
+  bool savedFavorite = true;
+  User? loggedUser;
+  String userEmail = '';
+  String? image;
+  String? title;
+  String? subtitle;
+  String? height;
+  String? description;
+
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    final user = await authentification.currentUser;
+    try {
+      if (user != null) {
+        loggedUser = user;
+        userEmail = loggedUser!.email!;
+      }
+      else{
+        print(user);
+      }
+    }catch(error){
+      print(error);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int count = 0;
+    return IconButton(
+        onPressed: () async {
+          setState((){
+            if(savedFavorite){
+              savedFavorite = false;
+            }
+            else {
+              savedFavorite = true;
+            }
+          });
+          await FirebaseFirestore.instance
+              .collection('User')
+              .get()
+              .then((snapShot) {
+            snapShot.docs.forEach((element) {
+              if(element["email"] == userEmail){
+                //print(snapShot.docs[count].reference.id);
+                fireStore.
+                collection("Users").
+                doc().set(
+                    {
+                      'email' : userEmail,
+                      'Image': widget.image,
+                      'title': widget.title,
+                      'subtitle' : widget.subtitle,
+                      'description' : widget.description,
+                      'height' : widget.height,
+                    }
+                    ).then(
+                        (value) => print("DocumentSnapshot successfully updated!"),
+                    onError: (e) => print("Error updating document $e"));
+              }
+              ++count;
+            });
+          });
+
+        }, icon: Icon(
+        savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
+        color : savedFavorite ? null : Colors.red
+    )
+      // 언어 바꿀 수 있는 버튼
+    );
   }
 }

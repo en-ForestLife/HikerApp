@@ -34,17 +34,17 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       // 로케일 delegate
       localizationsDelegates: context.localizationDelegates,
       // 지원하는 로케일
       supportedLocales: context.supportedLocales,
       // 설정된 로케일
       locale: context.locale,
-
+      /*
       initialBinding: BindingsBuilder(() {
         Get.put(ForestInformationController());
-      }),
+      }),*/
       home:homePage(),
 
     );

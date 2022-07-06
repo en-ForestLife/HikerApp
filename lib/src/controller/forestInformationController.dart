@@ -5,29 +5,23 @@ import 'package:hiker/src/model/ForestInformationModel.dart';
 class ForestInformationController extends GetxController{
   late ForestInformationApi forestInformationApi;
   RxList<ForestInformationModel> forestInformation = <ForestInformationModel>[].obs;
-
   String mountainName = '';
 
   @override
   void onInit() {
     super.onInit();
-    print('oninit');
     forestInformationApi = ForestInformationApi(mountainName.obs);
-    fetchForest(forestInformationApi, forestInformation);
+    fetchForest(forestInformationApi, forestInformation, mountainName.obs);
   }
 
+  @override
   void forestSearchingDetail(mountainName) {
     this.mountainName = mountainName;
-    forestInformationApi = ForestInformationApi(this.mountainName.obs);
-    fetchForest(forestInformationApi, forestInformation);
-    print(this.mountainName);
-
-    //Get.put(ForestInformationController(searchedName));
-    //Get.put(ForestInformationController(str));
+    onInit();
   }
 
-  void fetchForest(ForestInformationApi forestInformationApi, RxList<ForestInformationModel> forestInformation) async{
-    var result = await forestInformationApi.fetchForestInformation();
+  void fetchForest(ForestInformationApi forestInformationApi, RxList<ForestInformationModel> forestInformation, RxString mountainName) async{
+    var result = await forestInformationApi.fetchForestInformation(mountainName);
     if(result != null){
       forestInformation(result);
     }
