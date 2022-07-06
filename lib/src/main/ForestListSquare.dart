@@ -13,7 +13,11 @@ import '../controller/forestInformationController.dart';
 
 class ForestListSquare extends GetView<ForestInformationController> {
   int index;
-  ForestListSquare(this.index);
+  ForestListSquare(this.index, {Key? key}) : super(key: key);
+
+  @override
+  GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
+  // NEW
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +28,12 @@ class ForestListSquare extends GetView<ForestInformationController> {
         height: 510,
         child: Obx(() {
           var information = controller.forestInformation.value.obs;
+          print(information);
+          print('산산');
           String imageUrl = getUrl(information);
 
           return  Container(
+
             child : Column(
                 children: <Widget>[
                   Column(
@@ -34,11 +41,11 @@ class ForestListSquare extends GetView<ForestInformationController> {
                       children: <Widget>[
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
-                          child: Image.network(imageUrl,
+                          child:
+                          Image.network(imageUrl,
                             width: double.infinity,
                             height: 400,
                             fit: BoxFit.fill,
-                            // 밑에꺼가 이미지 로딩 표시 만드는건데 검색할 때 뜰 때가 있고 안 뜰 때가 있음.. 이유는 모름
                             loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
                               if(loadingProgress == null){
                                 return child;
@@ -59,7 +66,12 @@ class ForestListSquare extends GetView<ForestInformationController> {
                             Text(information[index].mntnnm ?? '', style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                letterSpacing: 2.0),),],
+                                letterSpacing: 2.0),),
+
+                            ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
+                                subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
+                                height : getHeightFormat(information))
+                          ],
                         ),
                         Text(addSubtitle(information),
                             style: TextStyle(fontSize: 14,)),
@@ -79,9 +91,6 @@ class ForestListSquare extends GetView<ForestInformationController> {
 
   String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
     String imageUrl = information[index].mntnattchimageseq.toString();
-    if(imageUrl.contains("FILE_000000000423986")) { // 특수 예외
-      return 'https://ifh.cc/g/FapjP1.png';
-    }
     if (imageUrl.contains("FILE")) {
       return imageUrl;
     }
@@ -104,3 +113,106 @@ class ForestListSquare extends GetView<ForestInformationController> {
 }
 
 
+class ForestList extends StatefulWidget{
+  const ForestList({
+    Key? key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.description,
+    required this.height,
+
+  }) : super(key: key);
+  final image;
+  final title;
+  final subtitle;
+  final description;
+  final height;
+
+
+
+  @override
+  State<ForestList> createState() => ForestListState();
+}
+
+class ForestListState extends State<ForestList> {
+  final authentification = FirebaseAuth.instance;
+  FirebaseFirestore fireStore=FirebaseFirestore.instance;
+  bool savedFavorite = true;
+  User? loggedUser;
+  String userEmail = '';
+  String? image;
+  String? title;
+  String? subtitle;
+  String? height;
+  String? description;
+
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    final user = await authentification.currentUser;
+    try {
+      if (user != null) {
+        loggedUser = user;
+        userEmail = loggedUser!.email!;
+      }
+      else{
+        print(user);
+      }
+    }catch(error){
+      print(error);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int count = 0;
+    return IconButton(
+        onPressed: () async {
+          setState((){
+            if(savedFavorite){
+              savedFavorite = false;
+            }
+            else {
+              savedFavorite = true;
+            }
+          });
+          await FirebaseFirestore.instance
+              .collection('User')
+              .get()
+              .then((snapShot) {
+            snapShot.docs.forEach((element) {
+              if(element["email"] == userEmail){
+                //print(snapShot.docs[count].reference.id);
+                fireStore.
+                collection("Users").
+                doc().set(
+                    {
+                      'email' : userEmail,
+                      'Image': widget.image,
+                      'title': widget.title,
+                      'subtitle' : widget.subtitle,
+                      'description' : widget.description,
+                      'height' : widget.height,
+                    }
+                    ).then(
+                        (value) => print("DocumentSnapshot successfully updated!"),
+                    onError: (e) => print("Error updating document $e"));
+              }
+              ++count;
+            });
+          });
+
+        }, icon: Icon(
+        savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
+        color : savedFavorite ? null : Colors.red
+    )
+      // 언어 바꿀 수 있는 버튼
+    );
+  }
+}

@@ -201,7 +201,7 @@ class _joinPage extends State<joinPage> {
       print(error);
     }
 
-    await fireStore.collection('User').doc().set(
+    await fireStore.collection('Users').doc().set(
         { // 데베에 정보 저장
           "id": id,
           "email": email,
