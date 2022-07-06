@@ -41,6 +41,8 @@ class TipScreen extends StatelessWidget{
                     border: Border.all(color: Colors.white), // 테두리
                     borderRadius: BorderRadius.circular(5), //모서리 둥글게
                   ),
+                  child: Container(
+                      width: double.infinity,
                   child: Column(
                     children: [
                       Card(
@@ -160,6 +162,7 @@ class TipScreen extends StatelessWidget{
                       ),
                     ],
                   )
+                  ),
               ),
             ),
           ],
