@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -7,7 +8,8 @@ import '../controller/forestInformationController.dart';
 
 class ForestListSquare extends GetView<ForestInformationController> {
   int index;
-  ForestListSquare(this.index);
+  ForestListSquare(this.index, {Key? key}) : super(key: key);
+  final key = new GlobalKey<_ForestListState>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,10 @@ class ForestListSquare extends GetView<ForestInformationController> {
           print('산산');
           String imageUrl = getUrl(information);
 
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          return  Container(
+            width: MediaQuery.of(context).size.width - 100,
+            child : Column(
               children: <Widget>[
-
                 Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -33,16 +35,23 @@ class ForestListSquare extends GetView<ForestInformationController> {
                         borderRadius: BorderRadius.circular(15.0),
                         child:
                         Image.network(imageUrl,
-                          width: 450,
+                          width: double.infinity,
                           height: 400,
                           fit: BoxFit.fill,
                         ),
                       ),
                       Text('\n', style: TextStyle(fontSize: 5)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:[
                       Text(information[index].mntnnm ?? '', style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          letterSpacing: 2.0), textAlign: TextAlign.left,),
+                          letterSpacing: 2.0),),
+
+                          ForestList(key: key),
+                        ],
+                      ),
                       Text(addSubtitle(information),
                           style: TextStyle(fontSize: 14,)),
                       Text(information[index].mntninfopoflc ?? '',
@@ -52,6 +61,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
                     ]
                 )
               ]
+          ),
           );
         }),
       ),
@@ -78,5 +88,35 @@ class ForestListSquare extends GetView<ForestInformationController> {
       return '공기 맑은 산'; //
     }
     return subTitle;
+  }
+}
+
+class ForestList extends StatefulWidget{
+  const ForestList({Key? key}) : super(key: key);
+
+  @override
+  State<ForestList> createState() => _ForestListState();
+}
+
+class _ForestListState extends State<ForestList> {
+  bool savedFavorite = true;
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          setState((){
+            if(savedFavorite){
+              savedFavorite = false;
+            }
+            else {
+              savedFavorite = true;
+            }
+          });
+        }, icon: Icon(
+        savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
+        color : savedFavorite ? null : Colors.red
+    )
+      // 언어 바꿀 수 있는 버튼
+    );
   }
 }

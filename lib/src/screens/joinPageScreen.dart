@@ -136,7 +136,6 @@ class _joinPage extends State<joinPage> {
             height: 50,
             child: ElevatedButton(
               onPressed: () async{
-
                 //auth.currentUser?.sendEmailVerification();
                 if(checkValidation()){ // 회원정보 다 채움
                   setState((){

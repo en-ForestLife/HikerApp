@@ -383,7 +383,7 @@ class _myPageState extends State<myPage> {
             ],
           ),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
                 child: const Text('회원탈퇴'),
 
                 onPressed: () async {
@@ -411,7 +411,7 @@ class _myPageState extends State<myPage> {
                   }
                 }),
 
-            new FlatButton(
+            FlatButton(
                 child: const Text('닫기'),
                 onPressed: () {
                   Navigator.pop(context);
@@ -457,7 +457,7 @@ class _myPageState extends State<myPage> {
           title : Text('안내메시지'),
           content: Text('이메일로 비밀번호 변경링크를 보냈습니다.'),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
                 child: const Text('확인'),
                 onPressed: () async {
                   Navigator.pop(context);
