@@ -1,3 +1,8 @@
+import 'dart:html';
+import 'dart:js';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -9,7 +14,12 @@ import '../controller/forestInformationController.dart';
 class ForestListSquare extends GetView<ForestInformationController> {
   int index;
   ForestListSquare(this.index, {Key? key}) : super(key: key);
-  final key = new GlobalKey<_ForestListState>();
+
+
+
+  @override
+  GlobalKey<_ForestListState> key = GlobalKey<_ForestListState>();
+    // NEW
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +35,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
           String imageUrl = getUrl(information);
 
           return  Container(
-            width: MediaQuery.of(context).size.width - 100,
+
             child : Column(
               children: <Widget>[
                 Column(
@@ -49,7 +59,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
                           fontWeight: FontWeight.bold,
                           letterSpacing: 2.0),),
 
-                          ForestList(key: key),
+                          ForestList(key: key), // 좋아요인데 음 무슨 오류지
                         ],
                       ),
                       Text(addSubtitle(information),
@@ -99,11 +109,37 @@ class ForestList extends StatefulWidget{
 }
 
 class _ForestListState extends State<ForestList> {
+  final authentification = FirebaseAuth.instance;
+  FirebaseFirestore fireStore=FirebaseFirestore.instance;
   bool savedFavorite = true;
+  User? loggedUser;
+  String userEmail = '';
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    final user = await authentification.currentUser;
+    try {
+      if (user != null) {
+        loggedUser = user;
+        userEmail = loggedUser!.email!;
+      }
+      else{
+        print(user);
+      }
+    }catch(error){
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: () {
+        onPressed: () async {
           setState((){
             if(savedFavorite){
               savedFavorite = false;
@@ -111,6 +147,16 @@ class _ForestListState extends State<ForestList> {
             else {
               savedFavorite = true;
             }
+          });
+          await FirebaseFirestore.instance
+              .collection('User')
+              .get()
+              .then((snapShot) {
+            snapShot.docs.forEach((element) {
+              if(element["email"] == userEmail){
+                print(snapShot.docs);
+              }
+            });
           });
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,

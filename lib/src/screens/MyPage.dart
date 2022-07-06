@@ -40,7 +40,6 @@ class _myPageState extends State<myPage> {
     try {
       if (user != null) {
         loggedUser = user;
-        print(loggedUser!.email);
         userEmail = loggedUser!.email!;
       }
       else{

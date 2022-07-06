@@ -109,7 +109,6 @@ class _joinPage extends State<joinPage> {
                             labelStyle: TextStyle(
                               fontSize: 15,
                             ))),
-
                     child: Column(
                       children: [
                         idInput(), // 아이디
