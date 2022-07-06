@@ -88,7 +88,7 @@ class _homePageState extends State<homePage> {
           padding: EdgeInsets.only(bottom: 1, top: 2),
           indicatorColor: Colors.transparent, // indicator 없애기(밑에 파란 밑줄)
           unselectedLabelColor: Colors.black, // 선택되지 않은 tab 색
-          labelColor: Colors.greenAccent, // 선택된 tab의 색
+          labelColor: Colors.red, // 선택된 tab의 색
         ),
         ),
       ),
