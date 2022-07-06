@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'PreparationScreen.dart';
+import 'HikingTipScreen.dart';
 
 class TipScreen extends StatelessWidget{
 
@@ -85,7 +86,13 @@ class TipScreen extends StatelessWidget{
                         color: Colors.greenAccent[100],
                         child: InkWell(
                           onTap: () {
-                            print("tapped");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) {
+                                    return HikingTipScreen();
+                                  }),
+                            );
                           },
                           child: SizedBox(
                             child: Row(
