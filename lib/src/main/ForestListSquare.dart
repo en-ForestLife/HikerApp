@@ -34,11 +34,22 @@ class ForestListSquare extends GetView<ForestInformationController> {
                       children: <Widget>[
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
-                          child:
-                          Image.network(imageUrl,
+                          child: Image.network(imageUrl,
                             width: double.infinity,
                             height: 400,
                             fit: BoxFit.fill,
+                            // 밑에꺼가 이미지 로딩 표시 만드는건데 검색할 때 뜰 때가 있고 안 뜰 때가 있음.. 이유는 모름
+                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
+                              if(loadingProgress == null){
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         Text('\n', style: TextStyle(fontSize: 5)),
@@ -68,6 +79,9 @@ class ForestListSquare extends GetView<ForestInformationController> {
 
   String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
     String imageUrl = information[index].mntnattchimageseq.toString();
+    if(imageUrl.contains("FILE_000000000423986")) { // 특수 예외
+      return 'https://ifh.cc/g/FapjP1.png';
+    }
     if (imageUrl.contains("FILE")) {
       return imageUrl;
     }
