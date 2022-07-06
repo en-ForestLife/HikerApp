@@ -37,46 +37,51 @@ class _PreparationScreenState extends State<PreparationScreen> {
     );
   }
 
-  Widget materialCardWidget(String imagePath, String name, String semiInfo){
+  Widget materialCardWidget(String imagePath, String name, String detailInfo){
     return Card(
       elevation: 50,
       shadowColor: Colors.black,
       color: Colors.white,
       child: InkWell(
-        onTap: (showDetail),
+        onTap: () {
+          showDetail(name, detailInfo);
+        },
         child: SizedBox(
+          height: 120,
           child: Row(
+            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(
+                width: 40,
+              ), //SizedBox
               CircleAvatar(
-                //backgroundColor: Colors.green[500],
-                radius: 108,
+                backgroundColor: Colors.orange,
+                radius: 40,
                 backgroundImage: AssetImage(imagePath),
               ), //CircleAvatar
               const SizedBox(
-                width: 60,
+                width: 40,
               ), //SizedBox
 
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                   children:[
                     Text(
                       name,
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 20,
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                       ), //Textstyle
                     ), //Text
-                    const SizedBox(
-                      height: 10,
-                    ), //SizedBox
-                    Text(
-                      semiInfo,
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ), //Textstyle
-                    )
+                    //Text(
+                    //  semiInfo,
+                    //  style: TextStyle(
+                    //    fontSize: 20,
+                    //    color: Colors.black,
+                    //    fontWeight: FontWeight.w500,
+                    //  ), //Textstyle
+                    //)
                   ]
               ),
             ],
@@ -119,26 +124,58 @@ class _PreparationScreenState extends State<PreparationScreen> {
           children: [
             Positioned(
               child: Container(
-                padding: EdgeInsets.all(30.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white), // 테두리
-                  borderRadius: BorderRadius.circular(5), //모서리 둥글게
-                ),
+                padding: EdgeInsets.all(50.0),
                 child: Container(
                     width: double.infinity,
                     child: Column(
                       children: [
-                        materialCardWidget(PreparationItemModel().itemImagePath[0], PreparationItemModel().itemName[0], PreparationItemModel().itemSemiInfo[0]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[0], PreparationItemModel().itemName[0], PreparationItemModel().itemDetailInfo[0]),
 
                         SizedBox(
-                          height: 50,
+                          height: 10,
                         ),
-                        materialCardWidget(PreparationItemModel().itemImagePath[1], PreparationItemModel().itemName[1], PreparationItemModel().itemSemiInfo[1]),
+
+                        materialCardWidget(PreparationItemModel().itemImagePath[1], PreparationItemModel().itemName[1], PreparationItemModel().itemDetailInfo[1]),
 
                         SizedBox(
-                          height: 50,
+                          height: 10,
                         ),
 
+                        materialCardWidget(PreparationItemModel().itemImagePath[2], PreparationItemModel().itemName[2], PreparationItemModel().itemDetailInfo[2]),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        materialCardWidget(PreparationItemModel().itemImagePath[3], PreparationItemModel().itemName[3], PreparationItemModel().itemDetailInfo[3]),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        materialCardWidget(PreparationItemModel().itemImagePath[4], PreparationItemModel().itemName[4], PreparationItemModel().itemDetailInfo[4]),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        materialCardWidget(PreparationItemModel().itemImagePath[5], PreparationItemModel().itemName[5], PreparationItemModel().itemDetailInfo[5]),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        materialCardWidget(PreparationItemModel().itemImagePath[6], PreparationItemModel().itemName[6], PreparationItemModel().itemDetailInfo[6]),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        materialCardWidget(PreparationItemModel().itemImagePath[7], PreparationItemModel().itemName[7], PreparationItemModel().itemDetailInfo[7]),
+
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     )
                 ),
@@ -151,15 +188,15 @@ class _PreparationScreenState extends State<PreparationScreen> {
   }
 
 
-  void showDetail() {
+  void showDetail(String name, String detailInfo) {
     showDialog(
       context: context,
       barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: Text("test"),
-          content: Text('test'),
+          title: Text(name),
+          content: Text(detailInfo),
           actions: <Widget>[
             FlatButton(
               child: Text("닫기"),
