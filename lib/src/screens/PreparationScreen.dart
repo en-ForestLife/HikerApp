@@ -42,7 +42,7 @@ class _PreparationScreenState extends State<PreparationScreen> {
       elevation: 50,
       shadowColor: Colors.black,
       color: Colors.white,
-      child: new InkWell(
+      child: InkWell(
         onTap: (showDetail),
         child: SizedBox(
           child: Row(

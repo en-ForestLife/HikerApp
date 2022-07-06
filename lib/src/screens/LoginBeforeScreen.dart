@@ -63,11 +63,11 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     MaterialPageRoute(builder: (context) => loginPage()),
                   );
                 },
-                child: Text('login'.tr()),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.black, // 버튼색상
                   onPrimary: Colors.white, // 글자색상
                 ),
+                child: Text('login'.tr()),
               ),
             ),
             Container(
