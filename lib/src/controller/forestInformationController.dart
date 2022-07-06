@@ -18,7 +18,7 @@ class ForestInformationController extends GetxController{
 
   @override
   void forestSearchingDetail(mountainName) {
-    this.mountainName = '한라산';
+    this.mountainName = mountainName;
     onInit();
   }
 
