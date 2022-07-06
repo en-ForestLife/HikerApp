@@ -47,7 +47,7 @@ class _PreparationScreenState extends State<PreparationScreen> {
           showDetail(name, detailInfo);
         },
         child: SizedBox(
-          height: 150,
+          height: 120,
           child: Row(
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
