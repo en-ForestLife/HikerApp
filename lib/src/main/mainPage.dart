@@ -32,19 +32,6 @@ class ForestPageState extends State<ForestPage> {
 class ListPage extends GetView<ForestInformationController> {
   //const ListPage({Key? key}) : super(key: key);
 
-  forestSearchingDetails(String mountainName) {
-    if(mountainName.length == 0) {
-      mountainName = '';
-    }
-    //ForestInformationApi forestInformationApi;
-    //RxList<ForestInformationModel> forestInformation = <ForestInformationModel>[].obs;
-    //ForestInformationApi forestInformationApi;
-    //forestInformationApi = ForestInformationApi(mountainName.obs);
-    Get.put(controller.onInit());
-    //print('forest');
-
-  }
-
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -53,7 +40,6 @@ class ListPage extends GetView<ForestInformationController> {
         appBar: forestSearchingHeader(),
         body: SizedBox(
           child: Obx(() {
-            print(controller.forestInformation.value.length);
             return Column(
               children: [
                 Expanded(

@@ -26,7 +26,7 @@ class _loginPageState extends State<loginPage> {
 
 
   bool loddingSpinner = false;
-  //User? loggedUser;
+  User? loggedUser;
   String password = '';
   String email = '';
   String id ='';
@@ -134,6 +134,7 @@ class _loginPageState extends State<loginPage> {
                                   snapShot.docs.forEach((element) {
                                     if(element["id"] == id){
                                       email = element["email"];
+                                      return;
                                     }
                                   });
                                 });
@@ -143,11 +144,8 @@ class _loginPageState extends State<loginPage> {
                                       email: email,
                                       password: password
                                   );
-
                                   final user = loggedUser;
                                   if (loggedUser.user != null) { // 로그인 되었을 때
-                                    email = "";
-                                    print(user.user);
                                     movePage(); // 로그인 되었을 때 페이지 이동함
                                   }
                                 } catch (error) {

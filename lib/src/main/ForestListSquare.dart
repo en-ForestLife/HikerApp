@@ -15,10 +15,8 @@ class ForestListSquare extends GetView<ForestInformationController> {
   int index;
   ForestListSquare(this.index, {Key? key}) : super(key: key);
 
-
-
   @override
-  GlobalKey<_ForestListState> key = GlobalKey<_ForestListState>();
+  GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
   // NEW
 
   @override
@@ -48,6 +46,17 @@ class ForestListSquare extends GetView<ForestInformationController> {
                             width: double.infinity,
                             height: 400,
                             fit: BoxFit.fill,
+                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
+                              if(loadingProgress == null){
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         Text('\n', style: TextStyle(fontSize: 5)),
@@ -59,7 +68,9 @@ class ForestListSquare extends GetView<ForestInformationController> {
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 2.0),),
 
-                            ForestList(key: key), // 좋아요인데 음 무슨 오류지
+                            ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
+                                subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
+                                height : getHeightFormat(information))
                           ],
                         ),
                         Text(addSubtitle(information),
@@ -101,19 +112,41 @@ class ForestListSquare extends GetView<ForestInformationController> {
   }
 }
 
+
 class ForestList extends StatefulWidget{
-  const ForestList({Key? key}) : super(key: key);
+  const ForestList({
+    Key? key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.description,
+    required this.height,
+
+  }) : super(key: key);
+  final image;
+  final title;
+  final subtitle;
+  final description;
+  final height;
+
+
 
   @override
-  State<ForestList> createState() => _ForestListState();
+  State<ForestList> createState() => ForestListState();
 }
 
-class _ForestListState extends State<ForestList> {
+class ForestListState extends State<ForestList> {
   final authentification = FirebaseAuth.instance;
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
   bool savedFavorite = true;
   User? loggedUser;
   String userEmail = '';
+  String? image;
+  String? title;
+  String? subtitle;
+  String? height;
+  String? description;
+
 
   void initState() {
     // TODO: implement initState
@@ -138,6 +171,7 @@ class _ForestListState extends State<ForestList> {
 
   @override
   Widget build(BuildContext context) {
+    int count = 0;
     return IconButton(
         onPressed: () async {
           setState((){
@@ -154,10 +188,26 @@ class _ForestListState extends State<ForestList> {
               .then((snapShot) {
             snapShot.docs.forEach((element) {
               if(element["email"] == userEmail){
-                print(snapShot.docs);
+                //print(snapShot.docs[count].reference.id);
+                fireStore.
+                collection("Users").
+                doc().set(
+                    {
+                      'email' : userEmail,
+                      'Image': widget.image,
+                      'title': widget.title,
+                      'subtitle' : widget.subtitle,
+                      'description' : widget.description,
+                      'height' : widget.height,
+                    }
+                    ).then(
+                        (value) => print("DocumentSnapshot successfully updated!"),
+                    onError: (e) => print("Error updating document $e"));
               }
+              ++count;
             });
           });
+
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red

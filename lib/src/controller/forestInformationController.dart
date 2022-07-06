@@ -10,10 +10,8 @@ class ForestInformationController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    print('oninit');
     forestInformationApi = ForestInformationApi(mountainName.obs);
     fetchForest(forestInformationApi, forestInformation, mountainName.obs);
-    print('hello');
   }
 
   @override
