@@ -40,17 +40,50 @@ class ListPage extends GetView<ForestInformationController> {
         appBar: forestSearchingHeader(),
         body: SizedBox(
           child: Obx(() {
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: controller.forestInformation.value.length,
-                      itemBuilder: (context, index) {
-                        return ForestListSquare(index);
-                      }),
-                )
-              ],
-            );
+            int length = controller.forestInformation.value.obs.length;
+            try {
+              if (length == 0) {
+                return Image.network('https://ifh.cc/g/kmlSb3.png',
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress)
+                    {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes !=
+                              null ? loadingProgress
+                              .cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes! : null,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.blue),
+                        ),
+                      );
+                    }
+                );
+              }
+              else {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: length,
+                          itemBuilder: (context, index) {
+                            return ForestListSquare(index);
+                          }),
+                    )
+                  ],
+                );
+              }
+            } catch(e) {
+
+            }
+            throw {
+
+            };
           }),
         ),
       ),

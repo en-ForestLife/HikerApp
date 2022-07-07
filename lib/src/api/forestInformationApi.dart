@@ -34,7 +34,7 @@ class ForestInformationApi {
               (element) => ForestInformationModel.fromXml(element))
           .toList();
     }else {
-      return Future.value(null);
+      return Future.value([]);
     }
 
 

@@ -1,6 +1,3 @@
-import 'dart:html';
-import 'dart:js';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,11 +24,8 @@ class ForestListSquare extends GetView<ForestInformationController> {
         width: 450,
         height: 510,
         child: Obx(() {
-          var information = controller.forestInformation.value.obs;
-          print(information);
-          print('산산');
+          var information = controller.forestInformation.value;
           String imageUrl = getUrl(information);
-
           return  Container(
 
             child : Column(
@@ -91,6 +85,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
 
   String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
     String imageUrl = information[index].mntnattchimageseq.toString();
+
     if (imageUrl.contains("FILE")) {
       return imageUrl;
     }
