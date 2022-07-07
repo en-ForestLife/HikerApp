@@ -114,7 +114,7 @@ class ListPage extends GetView<ForestInformationController> {
             cursorColor: Colors.red,
             controller: textEditingController,
             decoration: InputDecoration(
-              hintText: '어디로 가볼까요?',
+              hintText: '어디로 가볼까요? Where do you want to go?',
               hintStyle: TextStyle(
                 color:Colors.grey,
                 fontSize: 14,
