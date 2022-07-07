@@ -6,6 +6,7 @@ import 'package:hiker/src/model/ForestInformationModel.dart';
 import '../api/forestInformationApi.dart';
 import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
+import '../controller/DictionarySearchController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
 import '../model/ForestInformationModel.dart';
 
@@ -23,6 +24,7 @@ class ForestPageState extends State<ForestPage> {
     return GetMaterialApp(
       initialBinding: BindingsBuilder(() {
         Get.put(ForestInformationController()).obs;
+        Get.put(DictionarySearchController());
       }),
       home: ListPage(),
     );

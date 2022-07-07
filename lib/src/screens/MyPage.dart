@@ -27,6 +27,7 @@ class _myPageState extends State<myPage> {
   final authentification = FirebaseAuth.instance;
   User? loggedUser;
   String userEmail = '';
+  String name = '';
 
   @override
   void initState() {
@@ -40,13 +41,13 @@ class _myPageState extends State<myPage> {
     try {
       if (user != null) {
         loggedUser = user;
-        print(loggedUser!.email);
         userEmail = loggedUser!.email!;
       }
       else{
         print(user);
       }
-    }catch(error){
+    }
+    catch(error){
       print(error);
     }
   }
@@ -56,7 +57,7 @@ class _myPageState extends State<myPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'myPage'.tr(),
+          'MyPage'.tr(),
           style: TextStyle(
               color: Colors.black, // 글자 색상 검정색
               fontSize: 22.0, // 폰트 사이즈
@@ -109,22 +110,21 @@ class _myPageState extends State<myPage> {
                     Container(
                       height: 100,
                       child: Card(
-                        color: Colors.red,
                         child: ListTile(
                           //contentPadding: EdgeInsets.symmetric(vertical: 18.0),
-                          contentPadding: EdgeInsets.all(25.0),
+                          contentPadding: EdgeInsets.fromLTRB(25.0, 13.0, 25.0, 0.0),
                           leading: Icon(
-                            Icons.person,
+                            Icons.email_outlined,
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '조준희',
+                            'Email',
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          //subtitle: new Text("설명"),
+                          subtitle: Text(userEmail),
                           onTap: () {
                             print('Home pressed');
                           },
@@ -170,38 +170,12 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '위시리스트',
+                            'wishList'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          onTap: () {
-                            print('Home pressed');
-                          },
-                          trailing: Icon(Icons.arrow_forward_ios),
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      height: 100,
-                      child: Card(
-                        child: ListTile(
-                          //contentPadding: EdgeInsets.symmetric(vertical: 18.0),
-                          contentPadding: EdgeInsets.fromLTRB(25.0, 13.0, 25.0, 0.0),
-                          leading: Icon(
-                            Icons.email_outlined,
-                            color: Colors.grey[850],
-                          ),
-                          title: Text(
-                            'Email',
-                            style: TextStyle(
-                              color: Colors.black, // 글자 색상 검정색
-                              fontSize: 20.0, // 폰트 사이즈
-                            ),
-                          ),
-                          subtitle: new Text(userEmail),
                           onTap: () {
                             print('Home pressed');
                           },
@@ -221,7 +195,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '비밀번호 변경',
+                            'changePassword'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -246,7 +220,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '도움말',
+                            'help'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -271,7 +245,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '정보',
+                            'infor'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -296,7 +270,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '로그아웃',
+                            'Logout'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -323,7 +297,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '회원탈퇴',
+                            'getOut'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -366,7 +340,7 @@ class _myPageState extends State<myPage> {
                   autofocus: true,
                   decoration: textDecoration(
                       '',
-                      'Please type your Email to confirm.',
+                      'enterEmail'.tr(),
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   onChanged: (dynamic val) {
@@ -383,27 +357,26 @@ class _myPageState extends State<myPage> {
             ],
           ),
           actions: <Widget>[
-            new FlatButton(
-                child: const Text('회원탈퇴'),
+            FlatButton(
+                child: Text('getOut'.tr()),
 
                 onPressed: () async {
+                  int count=0;
                   if(checkEmail){
                     try {
                       //await FirebaseAuth.instance.currentUser?.delete();
-                      /*
                       await FirebaseFirestore.instance
                           .collection('User')
                           .get()
                           .then((snapShot) {
                         snapShot.docs.forEach((element) {
                           if(element["email"] == userEmail){
-                            print(snapShot.docs);
-                            fireStore.collection('User').doc().delete();
-                            print(fireStore.collection('User').doc());
+                            fireStore.collection('User').doc(snapShot.docs[count].reference.id).delete(); // 파이어스토어 계정삭제
+                            FirebaseAuth.instance.currentUser?.delete(); // 파이어베이스 계정삭제
                           }
+                          count++;
                         });
                       });
-                      */
                     } catch (e) {
                       print(e);
                     }
@@ -411,8 +384,8 @@ class _myPageState extends State<myPage> {
                   }
                 }),
 
-            new FlatButton(
-                child: const Text('닫기'),
+            FlatButton(
+                child: Text('close'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                 })
@@ -436,10 +409,10 @@ class _myPageState extends State<myPage> {
 
     String? emailCheck(String value) {
       if (value.isEmpty) {
-        return '이메일을 입력해주세요'.tr();
+        return 'EnterEmail'.tr();
       } else {
         if (userEmail != value) {
-          return 'Check your email';
+          return 'checkEmail'.tr();
         } else {
           print(3);
           return null;
@@ -454,11 +427,11 @@ class _myPageState extends State<myPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title : Text('안내메시지'),
-          content: Text('이메일로 비밀번호 변경링크를 보냈습니다.'),
+          title : Text('checkEmail'.tr()),
+          content: Text('sendEmail'.tr()),
           actions: <Widget>[
-            new FlatButton(
-                child: const Text('확인'),
+            FlatButton(
+                child: Text('OK'.tr()),
                 onPressed: () async {
                   Navigator.pop(context);
                 }),
@@ -475,18 +448,18 @@ class _myPageState extends State<myPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: Text('비밀번호를 변경하시겠습니까?'),
+          content: Text('changePw'.tr()),
           actions: <Widget>[
-            new FlatButton(
-                child: const Text('예'),
+            FlatButton(
+                child: Text('yes'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                   sendEmailMessage();
                   authentification.sendPasswordResetEmail(email: userEmail); // 비밀번호 재전송하기
                   //Navigator.pop(context);
                 }),
-            new FlatButton(
-                child: const Text('아니오'),
+            FlatButton(
+                child: Text('no'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                 })
@@ -503,10 +476,10 @@ class _myPageState extends State<myPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: Text('로그아웃 하시겠습니까?'),
+          content: Text('logout'.tr()),
           actions: <Widget>[
-            new FlatButton(
-                child: const Text('예'),
+            FlatButton(
+                child: Text('yes'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                   authentification.signOut();
@@ -519,8 +492,8 @@ class _myPageState extends State<myPage> {
                         }),
                   );
                 }),
-            new FlatButton(
-                child: const Text('아니오'),
+            FlatButton(
+                child: Text('no'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                 })
@@ -532,7 +505,7 @@ class _myPageState extends State<myPage> {
 
   InputDecoration textDecoration(hintText, labelText) {
 // 텍스트 필드 꾸미기
-    return new InputDecoration(
+    return InputDecoration(
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,

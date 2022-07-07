@@ -38,7 +38,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                   SizedBox(height: 5),
                   Container(
                     width: double.infinity,
-                    child : Text('goLogin'.tr(),
+                    child : Text('nextHiking'.tr(),
                         style: TextStyle(
                           fontSize: 15,
                         ),
@@ -63,18 +63,18 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     MaterialPageRoute(builder: (context) => loginPage()),
                   );
                 },
-                child: Text('login'.tr()),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.black, // 버튼색상
                   onPrimary: Colors.white, // 글자색상
                 ),
+                child: Text('login'.tr()),
               ),
             ),
             Container(
                 child: Row(
               children: [
                 SizedBox(height: 50),
-                Text('isHikerAccount'.tr()),
+                Text('HikerAccount'.tr()),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -108,7 +108,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     color: Colors.grey[850],
                   ),
                   title: Text(
-                    'whatIsHiker'.tr(),
+                    'Hiker'.tr(),
                     style: TextStyle(
                       color: Colors.black, // 글자 색상 검정색// 폰트 사이즈
                     ),
