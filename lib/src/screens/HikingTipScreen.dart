@@ -39,7 +39,7 @@ class _HikingTipScreen extends State<HikingTipScreen>{
               if(!isEnglish){ // 영어
                 isEnglish = true;
                 setState(() {
-                  imageUrl = 'https://ifh.cc/g/7W38QH.jpg';
+                  imageUrl = 'https://ifh.cc/g/gPakDN.jpg';
                 });
               }
               else{ // 한국어
