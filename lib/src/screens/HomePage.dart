@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../main/mainPage.dart';
 import 'LoginBeforeScreen.dart';
 import 'MyPage.dart';
+import 'WishlistScreen.dart';
 import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
 import 'memberSearch.dart';
@@ -44,7 +45,7 @@ class _homePageState extends State<homePage> {
 
   List<Widget> Options = [
     ForestPage(),
-    joinPage(),
+    WishlistScreen(),
     TipScreen(),
     myPage(),
 
