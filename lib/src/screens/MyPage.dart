@@ -27,12 +27,14 @@ class _myPageState extends State<myPage> {
   final authentification = FirebaseAuth.instance;
   User? loggedUser;
   String userEmail = '';
+  String name = '';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
+    findName();
   }
 
   void getCurrentUser() async {
@@ -40,15 +42,28 @@ class _myPageState extends State<myPage> {
     try {
       if (user != null) {
         loggedUser = user;
-        print(loggedUser!.email);
         userEmail = loggedUser!.email!;
       }
       else{
         print(user);
       }
-    }catch(error){
+    }
+    catch(error){
       print(error);
     }
+  }
+  findName() async {
+    final id = await fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
+        .collection('User')
+        .get()
+        .then((snapShot){
+      snapShot.docs.forEach((element) {
+        if(element["email"] == userEmail){
+          name = element["name"];
+          print(name);
+        }
+      });
+    });
   }
 
   @override
@@ -118,14 +133,14 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '조준희',
+                            name,
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          //subtitle: new Text("설명"),
-                          onTap: () {
+                          subtitle: Text(name),
+                          onTap: (){
                             print('Home pressed');
                           },
                           trailing: Icon(Icons.arrow_forward_ios),
@@ -201,7 +216,7 @@ class _myPageState extends State<myPage> {
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          subtitle: new Text(userEmail),
+                          subtitle: Text(userEmail),
                           onTap: () {
                             print('Home pressed');
                           },
@@ -383,16 +398,16 @@ class _myPageState extends State<myPage> {
             ],
           ),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
                 child: const Text('회원탈퇴'),
 
                 onPressed: () async {
                   if(checkEmail){
                     try {
                       //await FirebaseAuth.instance.currentUser?.delete();
-                      /*
                       await FirebaseFirestore.instance
                           .collection('User')
+                          .where('email', isEqualTo: userEmail)
                           .get()
                           .then((snapShot) {
                         snapShot.docs.forEach((element) {
@@ -403,7 +418,6 @@ class _myPageState extends State<myPage> {
                           }
                         });
                       });
-                      */
                     } catch (e) {
                       print(e);
                     }
@@ -411,7 +425,7 @@ class _myPageState extends State<myPage> {
                   }
                 }),
 
-            new FlatButton(
+            FlatButton(
                 child: const Text('닫기'),
                 onPressed: () {
                   Navigator.pop(context);
@@ -457,7 +471,7 @@ class _myPageState extends State<myPage> {
           title : Text('안내메시지'),
           content: Text('이메일로 비밀번호 변경링크를 보냈습니다.'),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
                 child: const Text('확인'),
                 onPressed: () async {
                   Navigator.pop(context);
@@ -477,7 +491,7 @@ class _myPageState extends State<myPage> {
         return AlertDialog(
           content: Text('비밀번호를 변경하시겠습니까?'),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
                 child: const Text('예'),
                 onPressed: () {
                   Navigator.pop(context);
@@ -485,7 +499,7 @@ class _myPageState extends State<myPage> {
                   authentification.sendPasswordResetEmail(email: userEmail); // 비밀번호 재전송하기
                   //Navigator.pop(context);
                 }),
-            new FlatButton(
+            FlatButton(
                 child: const Text('아니오'),
                 onPressed: () {
                   Navigator.pop(context);
@@ -505,7 +519,7 @@ class _myPageState extends State<myPage> {
         return AlertDialog(
           content: Text('로그아웃 하시겠습니까?'),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
                 child: const Text('예'),
                 onPressed: () {
                   Navigator.pop(context);
@@ -519,7 +533,7 @@ class _myPageState extends State<myPage> {
                         }),
                   );
                 }),
-            new FlatButton(
+            FlatButton(
                 child: const Text('아니오'),
                 onPressed: () {
                   Navigator.pop(context);
@@ -532,7 +546,7 @@ class _myPageState extends State<myPage> {
 
   InputDecoration textDecoration(hintText, labelText) {
 // 텍스트 필드 꾸미기
-    return new InputDecoration(
+    return InputDecoration(
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,
