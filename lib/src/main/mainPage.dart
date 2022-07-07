@@ -101,7 +101,6 @@ class ListPage extends GetView<ForestInformationController> {
 
   String searchedName = '';
   forestSearchingDetail(mountainName) {
-    print(mountainName);
     searchedName = mountainName;
     //Get.put(ForestInformationController(searchedName));
     //Get.put(ForestInformationController(str));

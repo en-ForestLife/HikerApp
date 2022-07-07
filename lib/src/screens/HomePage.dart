@@ -45,7 +45,7 @@ class _homePageState extends State<homePage> {
 
   List<Widget> Options = [
     ForestPage(),
-    WishlistScreen(),
+    WishlistScreen(), 
     TipScreen(),
     myPage(),
 
@@ -55,7 +55,7 @@ class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1, // 초기값 1 (홈)
+      initialIndex: 0, // 초기값 1 (홈)
       length: 4, // 갯수 4개
       child: Scaffold(
 

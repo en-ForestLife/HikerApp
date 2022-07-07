@@ -12,4 +12,8 @@ class XmlUtils {
         ? 0
         : double.parse(xml.findAllElements(key).map((e) => e.text).first);
   }
+
+  static String deleteTag(String targetString){
+    return targetString.replaceAll('<BR>', '').replaceAll('&gt', '').replaceAll('&amp;nbsp;', '').replaceAll('&lt;br /;', '');
+  }
 }
