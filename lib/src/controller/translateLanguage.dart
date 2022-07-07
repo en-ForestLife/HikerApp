@@ -14,7 +14,7 @@ class translateLanguage {
     http.Response lan = await http.post(Uri.parse(_url),
         headers: {
 // 'query': text,
-    'Content-Type': _content_type,
+      'Content-Type': _content_type,
       'X-Naver-Client-Id': _client_id,
       'X-Naver-Client-Secret': _client_secret
     },

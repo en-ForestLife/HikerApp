@@ -2,6 +2,7 @@ import 'dart:html';
 import 'dart:js';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -148,6 +149,7 @@ class ForestListState extends State<ForestList> {
   String? description;
 
 
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -174,6 +176,7 @@ class ForestListState extends State<ForestList> {
     int count = 0;
     return IconButton(
         onPressed: () async {
+          count = 0;
           setState((){
             if(savedFavorite){
               savedFavorite = false;
@@ -203,11 +206,30 @@ class ForestListState extends State<ForestList> {
                     ).then(
                         (value) => print("DocumentSnapshot successfully updated!"),
                     onError: (e) => print("Error updating document $e"));
+                ++count;
               }
-              ++count;
             });
           });
-
+          if(count == 0) {
+            showDialog(
+              context: context,
+              barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                return AlertDialog(
+                  title : Text('Notification'.tr()),
+                  content: Text('로그인 후 이용가능합니다.'.tr()),
+                  actions: <Widget>[
+                    FlatButton(
+                          child: Text('yes'.tr()),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ],
+                );
+              },
+            );
+          };
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red
