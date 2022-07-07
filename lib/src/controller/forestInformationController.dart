@@ -22,6 +22,7 @@ class ForestInformationController extends GetxController{
 
   void fetchForest(ForestInformationApi forestInformationApi, RxList<ForestInformationModel> forestInformation, RxString mountainName) async{
     var result = await forestInformationApi.fetchForestInformation(mountainName);
+
     if(result != null){
       forestInformation(result);
     }

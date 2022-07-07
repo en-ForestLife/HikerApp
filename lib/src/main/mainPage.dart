@@ -6,6 +6,7 @@ import 'package:hiker/src/model/ForestInformationModel.dart';
 import '../api/forestInformationApi.dart';
 import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
+import '../controller/DictionarySearchController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
 import '../model/ForestInformationModel.dart';
 
@@ -23,6 +24,7 @@ class ForestPageState extends State<ForestPage> {
     return GetMaterialApp(
       initialBinding: BindingsBuilder(() {
         Get.put(ForestInformationController()).obs;
+        Get.put(DictionarySearchController());
       }),
       home: ListPage(),
     );
@@ -40,17 +42,50 @@ class ListPage extends GetView<ForestInformationController> {
         appBar: forestSearchingHeader(),
         body: SizedBox(
           child: Obx(() {
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: controller.forestInformation.value.length,
-                      itemBuilder: (context, index) {
-                        return ForestListSquare(index);
-                      }),
-                )
-              ],
-            );
+            int length = controller.forestInformation.value.length;
+            try {
+              if (length == 0) {
+                return Image.network('https://ifh.cc/g/kmlSb3.png',
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress)
+                    {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes !=
+                              null ? loadingProgress
+                              .cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes! : null,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.blue),
+                        ),
+                      );
+                    }
+                );
+              }
+              else {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: length,
+                          itemBuilder: (context, index) {
+                            return ForestListSquare(index);
+                          }),
+                    )
+                  ],
+                );
+              }
+            } catch(e) {
+
+            }
+            throw {
+
+            };
           }),
         ),
       ),
@@ -79,7 +114,7 @@ class ListPage extends GetView<ForestInformationController> {
             cursorColor: Colors.red,
             controller: textEditingController,
             decoration: InputDecoration(
-              hintText: '어디로 가볼까요?',
+              hintText: '어디로 가볼까요? Where do you want to go?',
               hintStyle: TextStyle(
                 color:Colors.grey,
                 fontSize: 14,

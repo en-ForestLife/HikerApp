@@ -4,7 +4,7 @@ import '../screens/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import '../controller/forestInformationController.dart';
-
+import '../api/NaverDictionayApi.dart';
 import '../screens/test.dart';
 
 void main() async{
