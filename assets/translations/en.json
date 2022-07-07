@@ -37,5 +37,6 @@
   "goLogin" : "Please log in if you want to plan your next climb.",
   "isHikerAccount" : "Do you have no account?",
   "whatIsHiker" : "What is Hiker?",
-  "myPage" : "MyPage"
+  "myPage" : "MyPage",
+  "mountainYouWant" : "Where do you want to go?"
 }
