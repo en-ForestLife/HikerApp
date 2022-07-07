@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import '../controller/DictionarySearchController.dart';
 
-class ForestDetailSquare extends StatelessWidget {
-  //const ForestDetailSquare({Key? key}) : super(key: key);
+class ForestDetailSquare extends GetView<DictionarySearchController> {
+
   var information;
   ForestDetailSquare(this.information);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +32,20 @@ class ForestDetailSquare extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
         ),
+
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(15),
+          child: Obx((){
+            var info = controller.thumnailList.value;
+            var len = info.length;
+            print(info[0].thumbnail);
+            return Column(
+              children: [
+                Image.network(info[0].thumbnail!),
+              ],
+            );
+          }),
+        )
     );
   }
 }

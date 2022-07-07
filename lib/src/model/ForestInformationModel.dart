@@ -7,7 +7,6 @@ class ForestInformationModel {
   String? mntninfopoflc;
   String? mntnsbttlinfo;
   String? mntninfohght;
-  String? mntimage;
 
   ForestInformationModel({
     this.mntnnm,
@@ -15,7 +14,6 @@ class ForestInformationModel {
     this.mntninfopoflc,
     this.mntnsbttlinfo,
     this.mntninfohght,
-    this.mntimage,
   });
 
   factory ForestInformationModel.fromXml(XmlElement xml) {
@@ -25,7 +23,6 @@ class ForestInformationModel {
       mntninfopoflc : XmlUtils.searchResultForString(xml, 'mntninfopoflc'),
       mntnsbttlinfo : XmlUtils.searchResultForString(xml, 'mntnsbttlinfo'),
       mntninfohght : XmlUtils.searchResultForString(xml, 'mntninfohght'),
-      mntimage : XmlUtils.searchResultForString(xml, 'thumbnail'),
     );
   }
 }

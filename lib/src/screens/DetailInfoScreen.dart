@@ -53,7 +53,7 @@ class DetaleWidget extends GetView<DictionarySearchController> {
         backgroundColor: Colors.white,
         body: SizedBox(
           child: Obx((){
-            var info = controller.naverDictionaryApi.fetchSearchResult();
+            var info = controller.naverDictionaryApi.fetchSearchResult('가라산');
             return Column(
               children: [
                 //Image.network(info[0].mntnattchimageseq!),
