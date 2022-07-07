@@ -56,7 +56,7 @@ class _myPageState extends State<myPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '마이 페이지',
+          'myPage'.tr(),
           style: TextStyle(
               color: Colors.black, // 글자 색상 검정색
               fontSize: 22.0, // 폰트 사이즈

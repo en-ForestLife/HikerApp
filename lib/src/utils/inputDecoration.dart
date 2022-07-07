@@ -4,7 +4,7 @@ class decoration {
 
   InputDecoration textFormDecoration(hintText, labelText) {
 // 텍스트 필드 꾸미기
-    return new InputDecoration(
+    return InputDecoration(
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
         color: Colors.black,
