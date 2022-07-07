@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../controller/DictionarySearchController.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+
+import '../model/ForestInformationModel.dart';
 
 class ForestDetailSquare extends GetView<DictionarySearchController> {
-
-  var information;
-  ForestDetailSquare(this.information);
+  List<String?> imgList = [];
+  ForestInformationModel mountainInformation;
+  ForestDetailSquare(this.mountainInformation);
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +37,40 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
         ),
 
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15), 
           child: Obx((){
+            controller.fetchSearchResult(mountainInformation.mntnnm);
             var info = controller.thumnailList.value;
-            var len = info.length;
-            print(info[0].thumbnail);
-            return Column(
-              children: [
-                Image.network(info[0].thumbnail!),
-              ],
+
+            imgList.clear();
+            for (int i = 0; i<10; i++){
+              if (info[i].thumbnail != ""){
+                imgList.add(info[i].thumbnail);
+              }
+            }
+
+            return Container(
+              height: 200,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Swiper(
+                  autoplay: true,
+                  scale: 1,
+                  control: SwiperControl(),
+                  pagination: SwiperPagination(),
+                  itemWidth: 300.0,
+                  itemCount: imgList.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return Image.network(imgList[index]!);
+                  },
+                )
+              )
             );
+            //return Column(
+            //  children: [
+            //    Image.network(info[0].thumbnail!),
+            //  ],
+            //);
           }),
         )
     );

@@ -17,7 +17,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
   ForestListSquare(this.index, {Key? key}) : super(key: key);
 
   @override
-  GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
+  //GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
   // NEW
 
   @override
@@ -37,7 +37,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
                   context,
                   MaterialPageRoute(
                       builder: (context) {
-                        return ForestDetailSquare(information);
+                        return ForestDetailSquare(information[index]);
                       }),
                 );
               },
