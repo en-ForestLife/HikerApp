@@ -27,7 +27,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                 children:[
                   Container(
                     width: double.infinity,
-                    child: Text('프로필'.tr(),
+                    child: Text('profile'.tr(),
                       style: TextStyle(
                         //decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold,
@@ -38,7 +38,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                   SizedBox(height: 5),
                   Container(
                     width: double.infinity,
-                    child : Text('다음번 등산을 계획하려면 로그인하세요.',
+                    child : Text('nextHiking'.tr(),
                         style: TextStyle(
                           fontSize: 15,
                         ),
@@ -63,18 +63,18 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     MaterialPageRoute(builder: (context) => loginPage()),
                   );
                 },
-                child: Text('login'.tr()),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.black, // 버튼색상
                   onPrimary: Colors.white, // 글자색상
                 ),
+                child: Text('login'.tr()),
               ),
             ),
             Container(
                 child: Row(
               children: [
                 SizedBox(height: 50),
-                Text('하이커 계정이 없으신가요? '),
+                Text('HikerAccount'.tr()),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -83,7 +83,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     );
                   },
                   child: Text(
-                    '회원가입',
+                    'joinButton'.tr(),
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold), // 글씨 밑줄
@@ -108,7 +108,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     color: Colors.grey[850],
                   ),
                   title: Text(
-                    '하이커란?',
+                    'Hiker'.tr(),
                     style: TextStyle(
                       color: Colors.black, // 글자 색상 검정색// 폰트 사이즈
                     ),

@@ -57,7 +57,7 @@ class _myPageState extends State<myPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '마이 페이지',
+          'MyPage'.tr(),
           style: TextStyle(
               color: Colors.black, // 글자 색상 검정색
               fontSize: 22.0, // 폰트 사이즈
@@ -170,7 +170,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '위시리스트',
+                            'wishList'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -195,7 +195,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '비밀번호 변경',
+                            'changePassword'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -220,7 +220,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '도움말',
+                            'help'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -245,7 +245,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '정보',
+                            'infor'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -270,7 +270,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '로그아웃',
+                            'Logout'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -297,7 +297,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '회원탈퇴',
+                            'getOut'.tr(),
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -340,7 +340,7 @@ class _myPageState extends State<myPage> {
                   autofocus: true,
                   decoration: textDecoration(
                       '',
-                      'Please type your Email to confirm.',
+                      'enterEmail'.tr(),
                   ),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   onChanged: (dynamic val) {
@@ -358,7 +358,7 @@ class _myPageState extends State<myPage> {
           ),
           actions: <Widget>[
             FlatButton(
-                child: const Text('회원탈퇴'),
+                child: Text('getOut'.tr()),
 
                 onPressed: () async {
                   int count=0;
@@ -385,7 +385,7 @@ class _myPageState extends State<myPage> {
                 }),
 
             FlatButton(
-                child: const Text('닫기'),
+                child: Text('close'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                 })
@@ -409,10 +409,10 @@ class _myPageState extends State<myPage> {
 
     String? emailCheck(String value) {
       if (value.isEmpty) {
-        return '이메일을 입력해주세요'.tr();
+        return 'EnterEmail'.tr();
       } else {
         if (userEmail != value) {
-          return 'Check your email';
+          return 'checkEmail'.tr();
         } else {
           print(3);
           return null;
@@ -427,11 +427,11 @@ class _myPageState extends State<myPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title : Text('안내메시지'),
-          content: Text('이메일로 비밀번호 변경링크를 보냈습니다.'),
+          title : Text('checkEmail'.tr()),
+          content: Text('sendEmail'.tr()),
           actions: <Widget>[
             FlatButton(
-                child: const Text('확인'),
+                child: Text('OK'.tr()),
                 onPressed: () async {
                   Navigator.pop(context);
                 }),
@@ -448,10 +448,10 @@ class _myPageState extends State<myPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: Text('비밀번호를 변경하시겠습니까?'),
+          content: Text('changePw'.tr()),
           actions: <Widget>[
             FlatButton(
-                child: const Text('예'),
+                child: Text('yes'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                   sendEmailMessage();
@@ -459,7 +459,7 @@ class _myPageState extends State<myPage> {
                   //Navigator.pop(context);
                 }),
             FlatButton(
-                child: const Text('아니오'),
+                child: Text('no'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                 })
@@ -476,10 +476,10 @@ class _myPageState extends State<myPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: Text('로그아웃 하시겠습니까?'),
+          content: Text('logout'.tr()),
           actions: <Widget>[
             FlatButton(
-                child: const Text('예'),
+                child: Text('yes'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                   authentification.signOut();
@@ -493,7 +493,7 @@ class _myPageState extends State<myPage> {
                   );
                 }),
             FlatButton(
-                child: const Text('아니오'),
+                child: Text('no'.tr()),
                 onPressed: () {
                   Navigator.pop(context);
                 })
