@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'src/screens/HomePage.dart';
+import '../screens/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'src/controller/forestInformationController.dart';
-import './src/api/NaverDictionayApi.dart';
+import '../controller/forestInformationController.dart';
+import '../api/NaverDictionayApi.dart';
 
-import 'src/screens/test.dart';
+import '../screens/test.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
