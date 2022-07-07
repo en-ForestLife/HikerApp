@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class translateLanguage {
-
+class TranslateLanguage {
   var language='ko';
+  String languageString;
+
+  TranslateLanguage(this.languageString);
 
   Future<void> getLanguage_papago() async {
     String _client_id = "6mZvws_z90LcqP_ZRmTS";

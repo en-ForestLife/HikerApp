@@ -32,5 +32,11 @@
   "noAccount" : "일치하는 계정이 없습니다.",
   "sendEmail" : "We sent you a password reset link by email.",
   "idSearchInput" : "아이디 찾기",
-  "pwSearchInput" : "비밀번호 찾기"
+  "pwSearchInput" : "비밀번호 찾기",
+  "profile" : "프로필",
+  "goLogin" : "다음번 등산을 계획하려면 로그인하세요.",
+  "isHikerAccount" : "하이커 계정이 없으신가요?",
+  "whatIsHiker" : "하이커란?",
+  "myPage" : "마이페이지"
+
 }
