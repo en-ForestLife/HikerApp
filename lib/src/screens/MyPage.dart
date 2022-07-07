@@ -34,7 +34,6 @@ class _myPageState extends State<myPage> {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
-    findName();
   }
 
   void getCurrentUser() async {
@@ -51,19 +50,6 @@ class _myPageState extends State<myPage> {
     catch(error){
       print(error);
     }
-  }
-  findName() async {
-    final id = await fireStore // 아이디, 이메일 중복체크인데 for문으로 찾아서 where로 찾을 수 있나 찾아봐야함
-        .collection('User')
-        .get()
-        .then((snapShot){
-      snapShot.docs.forEach((element) {
-        if(element["email"] == userEmail){
-          name = element["name"];
-          print(name);
-        }
-      });
-    });
   }
 
   @override
@@ -124,23 +110,22 @@ class _myPageState extends State<myPage> {
                     Container(
                       height: 100,
                       child: Card(
-                        color: Colors.red,
                         child: ListTile(
                           //contentPadding: EdgeInsets.symmetric(vertical: 18.0),
-                          contentPadding: EdgeInsets.all(25.0),
+                          contentPadding: EdgeInsets.fromLTRB(25.0, 13.0, 25.0, 0.0),
                           leading: Icon(
-                            Icons.person,
+                            Icons.email_outlined,
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            name,
+                            'Email',
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          subtitle: Text(name),
-                          onTap: (){
+                          subtitle: Text(userEmail),
+                          onTap: () {
                             print('Home pressed');
                           },
                           trailing: Icon(Icons.arrow_forward_ios),
@@ -191,32 +176,6 @@ class _myPageState extends State<myPage> {
                               fontSize: 20.0, // 폰트 사이즈
                             ),
                           ),
-                          onTap: () {
-                            print('Home pressed');
-                          },
-                          trailing: Icon(Icons.arrow_forward_ios),
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      height: 100,
-                      child: Card(
-                        child: ListTile(
-                          //contentPadding: EdgeInsets.symmetric(vertical: 18.0),
-                          contentPadding: EdgeInsets.fromLTRB(25.0, 13.0, 25.0, 0.0),
-                          leading: Icon(
-                            Icons.email_outlined,
-                            color: Colors.grey[850],
-                          ),
-                          title: Text(
-                            'Email',
-                            style: TextStyle(
-                              color: Colors.black, // 글자 색상 검정색
-                              fontSize: 20.0, // 폰트 사이즈
-                            ),
-                          ),
-                          subtitle: Text(userEmail),
                           onTap: () {
                             print('Home pressed');
                           },
@@ -402,20 +361,20 @@ class _myPageState extends State<myPage> {
                 child: const Text('회원탈퇴'),
 
                 onPressed: () async {
+                  int count=0;
                   if(checkEmail){
                     try {
                       //await FirebaseAuth.instance.currentUser?.delete();
                       await FirebaseFirestore.instance
                           .collection('User')
-                          .where('email', isEqualTo: userEmail)
                           .get()
                           .then((snapShot) {
                         snapShot.docs.forEach((element) {
                           if(element["email"] == userEmail){
-                            print(snapShot.docs);
-                            fireStore.collection('User').doc().delete();
-                            print(fireStore.collection('User').doc());
+                            fireStore.collection('User').doc(snapShot.docs[count].reference.id).delete(); // 파이어스토어 계정삭제
+                            FirebaseAuth.instance.currentUser?.delete(); // 파이어베이스 계정삭제
                           }
+                          count++;
                         });
                       });
                     } catch (e) {

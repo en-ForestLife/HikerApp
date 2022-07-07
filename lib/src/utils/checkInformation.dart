@@ -8,7 +8,7 @@ class CheckValidate {
       return 'emailInput'.tr();
     } else {
       Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-      RegExp regExp = new RegExp(pattern.toString());
+      RegExp regExp = RegExp(pattern.toString());
       if (!regExp.hasMatch(value)) {
         return 'ex) test123@naver.com';
       } else {
@@ -22,7 +22,7 @@ class CheckValidate {
       return 'blankPassword'.tr();
     }else {
       Pattern pattern = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,15}$';
-      RegExp regExp = new RegExp(pattern.toString());
+      RegExp regExp = RegExp(pattern.toString());
       if(!regExp.hasMatch(value)){
         return 'passwordInput'.tr();
       }else{
@@ -36,7 +36,7 @@ class CheckValidate {
       return 'blankId'.tr();
     }else {
       Pattern pattern = r'^[a-z]{1}[a-z0-9]{4,12}$';
-      RegExp regExp = new RegExp(pattern.toString());
+      RegExp regExp = RegExp(pattern.toString());
       
       if(!regExp.hasMatch(value)){
         return 'idInput'.tr();
@@ -51,7 +51,7 @@ class CheckValidate {
       return '이름을 입력하세요.';
     }else {
       Pattern pattern = r'^[가-힣]{2,4}$';
-      RegExp regExp = new RegExp(pattern.toString());
+      RegExp regExp = RegExp(pattern.toString());
 
       if(!regExp.hasMatch(value)){
         return 'blankName'.tr();
