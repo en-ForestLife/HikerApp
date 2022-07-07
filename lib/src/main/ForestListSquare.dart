@@ -86,6 +86,10 @@ class ForestListSquare extends GetView<ForestInformationController> {
   String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
     String imageUrl = information[index].mntnattchimageseq.toString();
 
+    if(imageUrl.contains("FILE_000000000423986")) { // 특수 예외
+      return 'https://ifh.cc/g/FapjP1.png';
+    }
+
     if (imageUrl.contains("FILE")) {
       return imageUrl;
     }
