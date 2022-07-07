@@ -40,7 +40,7 @@ class ListPage extends GetView<ForestInformationController> {
         appBar: forestSearchingHeader(),
         body: SizedBox(
           child: Obx(() {
-            int length = controller.forestInformation.value.obs.length;
+            int length = controller.forestInformation.value.length;
             try {
               if (length == 0) {
                 return Image.network('https://ifh.cc/g/kmlSb3.png',

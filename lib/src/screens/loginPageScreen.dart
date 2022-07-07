@@ -22,7 +22,7 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final authentification = FirebaseAuth.instance;
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
-  translateLanguage lan = new translateLanguage();
+  translateLanguage lan = translateLanguage();
 
 
   bool loddingSpinner = false;

@@ -74,7 +74,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                 child: Row(
               children: [
                 SizedBox(height: 50),
-                Text('하이커 계정이 없으신가요? '),
+                Text('하이커 계정이 없으신가요? '.tr()),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -83,7 +83,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     );
                   },
                   child: Text(
-                    '회원가입',
+                    '회원가입'.tr(),
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold), // 글씨 밑줄
@@ -108,7 +108,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                     color: Colors.grey[850],
                   ),
                   title: Text(
-                    '하이커란?',
+                    '하이커란?'.tr(),
                     style: TextStyle(
                       color: Colors.black, // 글자 색상 검정색// 폰트 사이즈
                     ),
