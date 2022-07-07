@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:hiker/src/main/ForestDetailSquare.dart';
 import 'package:intl/intl.dart';
 import '../controller/forestInformationController.dart';
+import '../controller/translateLanguage.dart';
 
 class ForestListSquare extends GetView<ForestInformationController> {
   int index;
+  String languageString = '';
   ForestListSquare(this.index, {Key? key}) : super(key: key);
+  //TranslateLanguage translateLanguage;
 
   @override
   GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
@@ -27,7 +31,16 @@ class ForestListSquare extends GetView<ForestInformationController> {
           var information = controller.forestInformation.value;
           String imageUrl = getUrl(information);
           return  Container(
-
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) {
+                        return ForestDetailSquare(information);
+                      }),
+                );
+              },
             child : Column(
                 children: <Widget>[
                   Column(
@@ -77,6 +90,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
                   )
                 ]
             ),
+            ),
           );
         }),
       ),
@@ -86,7 +100,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
   String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
     String imageUrl = information[index].mntnattchimageseq.toString();
 
-    if(imageUrl.contains("FILE_000000000423986")) { // 특수 예외
+    if(imageUrl.contains("FILE_000000000423986") || imageUrl.contains("FILE_000000000424249")) { // 특수 예외
       return 'https://ifh.cc/g/FapjP1.png';
     }
 

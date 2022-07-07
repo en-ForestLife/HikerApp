@@ -12,7 +12,7 @@ class test extends StatefulWidget {
 
 class _testState extends State<test> {
 
-  translateLanguage lan = new translateLanguage();
+  //translateLanguage lan = new translateLanguage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +44,7 @@ class _testState extends State<test> {
       body:Container(
         child : OutlinedButton.icon(
           onPressed: () {
-            lan.getTranslation_papago();
+            //lan.getTranslation_papago();
             // 영어로 언어 변경
             // 이후 앱을 재시작하면 영어로 동작
             //EasyLocalization.of(context)!.setLocale(Locale('en'));
