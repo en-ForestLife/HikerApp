@@ -44,7 +44,7 @@ class TipScreen extends StatelessWidget{
                         color: Colors.greenAccent[100],
                         child: InkWell(
                           onTap: () async => { await launchUrl(
-                              Uri.parse("https://www.seoulhiking.or.kr/")//  url 이동
+                              Uri.parse("https://www.millim.in/en/goods/view/WQZEK-6892")//  url 이동
                           )
                           },
                           child: SizedBox(

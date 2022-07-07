@@ -34,6 +34,10 @@
   "idSearchInput" : "Id Search",
   "pwSearchInput" : "Password Search",
   "profile" : "Profile",
+  "goLogin" : "Please log in if you want to plan your next climb.",
+  "isHikerAccount" : "Do you have no account?",
+  "whatIsHiker" : "What is Hiker?",
+  "myPage" : "MyPage"
   "nextHiking" : "Log in to plan your next hike.",
   "HikerAccount" : "Don't have a hiker account?  ",
   "Hiker" : "What is a hiker?",
