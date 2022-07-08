@@ -16,6 +16,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
   int index;
   int i=0;
   String languageString = '';
+  static bool savedLanguage = true;
   ForestInformationController forestInformationController;
   translateLanguage change = Get.put(translateLanguage());
   var information;
@@ -192,6 +193,10 @@ void Print(int index){
   print(index);
 }
 
+void Print(int index){
+  print(index);
+}
+
 
 class ForestList extends StatefulWidget{
   const ForestList({
@@ -266,7 +271,6 @@ class ForestListState extends State<ForestList> {
             }
           });
 
-          /*
           await FirebaseFirestore.instance
               .collection('User')
               .get()
@@ -299,11 +303,11 @@ class ForestListState extends State<ForestList> {
               builder: (BuildContext context) {
                 // return object of type Dialog
                 return AlertDialog(
-                  title : Text('Notification'.tr()),
-                  content: Text('로그인 후 이용가능합니다.'.tr()),
+                  title : Text('Notification'),
+                  content: Text('로그인 후 이용가능합니다.'),
                   actions: <Widget>[
                     FlatButton(
-                          child: Text('yes'.tr()),
+                          child: Text('yes'),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
@@ -312,7 +316,6 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
-           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red

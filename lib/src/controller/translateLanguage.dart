@@ -69,7 +69,6 @@ class translateLanguage extends GetxController{
       var dataJson = jsonDecode(trans.body);
       result_papago[index] = dataJson['message']['result']['translatedText'];
       update();
-      print(information.mntnnm);
     } else {
       print(trans.statusCode);
     }

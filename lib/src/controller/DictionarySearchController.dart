@@ -3,6 +3,7 @@ import 'package:hiker/src/api/NaverDictionayApi.dart';
 import '../model/ThumnailModel.dart';
 
 class DictionarySearchController extends GetxController{
+  var result;
   late NaverDictionaryApi naverDictionaryApi;
   RxList<ThumnailModel> thumnailList = <ThumnailModel>[].obs;
   String mountainName = '가라산';
@@ -15,7 +16,7 @@ class DictionarySearchController extends GetxController{
   }
 
   void fetchSearchResult(String mountainName) async{
-    var result = await naverDictionaryApi.fetchSearchResult(mountainName);
+    result = await naverDictionaryApi.fetchSearchResult(mountainName);
 
     if(result != null){
       thumnailList(result);
