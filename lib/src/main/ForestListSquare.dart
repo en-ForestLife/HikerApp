@@ -16,6 +16,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
   int index;
   int i=0;
   String languageString = '';
+  static bool savedLanguage = true;
   ForestInformationController forestInformationController;
   translateLanguage change = Get.put(translateLanguage());
   var information;
@@ -28,7 +29,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(50.0),
       child: SizedBox(
         width: 450,
         height: 510,
@@ -79,7 +80,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children:[
                               GetBuilder<translateLanguage>(
-                                builder:(_) => Text('${change.result_papago[index] }'),
+                                builder:(_) => Text(getTitle('${change.result_papago[index]}')),
                               ),
                               //savedLanguage ? Text('${change.result_papago[index] }') : Text(information[index].mntnnm ?? '')),
                               Text(information[index].mntnnm ?? '', style: TextStyle(
@@ -92,10 +93,24 @@ class ForestListSquare extends GetView<ForestInformationController>{
                                   height : getHeightFormat(information))
                             ],
                           ),
-                          Text(addSubtitle(information),
-                              style: TextStyle(fontSize: 14,)),
-                          Text(information[index].mntninfopoflc ?? '',
-                              style: TextStyle(fontSize: 14,)),
+                          Row(
+                            children:[
+                              GetBuilder<translateLanguage>(
+                                builder:(_) => Text(getSubtitle('${change.result_papago[index]}')),
+                              ),
+                              Text(addSubtitle(information),
+                                  style: TextStyle(fontSize: 14,)),
+                            ],
+                          ),
+                          Row(
+                              children:[
+                                GetBuilder<translateLanguage>(
+                                  builder:(_) => Text(getAddress('${change.result_papago[index]}'), style:TextStyle(fontSize:7)),
+                                ),
+                                Text(information[index].mntninfopoflc ?? '',
+                                    style: TextStyle(fontSize: 14,)),
+                              ],
+                          ),
                           Text(getHeightFormat(information),
                               style: TextStyle(fontSize: 14,)),
                         ]
@@ -136,6 +151,50 @@ class ForestListSquare extends GetView<ForestInformationController>{
     }
     return subTitle;
   }
+
+
+  String getTitle(String allString) {
+    List<String> strings = allString.split('♡');
+
+    if (strings[0].contains('For example')) {
+      return 'Garyeongsan';
+    }
+    if (strings[0].contains('Gamabong Peak')) {
+      return 'Gamabong';
+    }
+    if (strings[0].contains('Gariwangsan')) {
+      return 'Gariwangsan';
+    }
+
+    return strings[0];
+  }
+
+  String getSubtitle(String allString) {
+    int index = allString.indexOf('♡');
+    String middleString = allString.substring(index + 1);
+    int secondIndex = middleString.lastIndexOf('♡');
+    String realMiddleString = middleString.substring(0, secondIndex + 1).trimLeft();
+
+    if(realMiddleString.trim() == '♡') {
+      return 'An Airy Mountain';
+    }
+
+    return realMiddleString.replaceAll('♡', '');
+  }
+
+  String getAddress(String allString) {
+    int index = allString.lastIndexOf('♡');
+
+    return allString.substring(index + 1).trimLeft().replaceAll(', ', ',\n');
+  }
+}
+
+void Print(int index){
+  print(index);
+}
+
+void Print(int index){
+  print(index);
 }
 
 void Print(int index){
@@ -216,7 +275,6 @@ class ForestListState extends State<ForestList> {
             }
           });
 
-          /*
           await FirebaseFirestore.instance
               .collection('User')
               .get()
@@ -249,11 +307,11 @@ class ForestListState extends State<ForestList> {
               builder: (BuildContext context) {
                 // return object of type Dialog
                 return AlertDialog(
-                  title : Text('Notification'.tr()),
-                  content: Text('로그인 후 이용가능합니다.'.tr()),
+                  title : Text('Notification'),
+                  content: Text('로그인 후 이용가능합니다.'),
                   actions: <Widget>[
                     FlatButton(
-                          child: Text('yes'.tr()),
+                          child: Text('yes'),
                         onPressed: () {
                           Navigator.pop(context);
                         }),

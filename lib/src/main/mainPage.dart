@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -34,6 +36,20 @@ class ForestPageState extends State<ForestPage> {
 
 class ListPage extends GetView<ForestInformationController> {
   //const ListPage({Key? key}) : super(key: key);
+  translateLanguage change = Get.put(translateLanguage());
+  static bool savedLanguage = true;
+  GlobalKey<FormState> languageKey = GlobalKey<FormState>();
+
+  translateLanguage change = Get.put(translateLanguage());
+
+  String getImageUrl(String name) {
+    if (name == '') {
+      return 'https://ifh.cc/g/j91LL1.png';
+    }
+    else {
+    return 'https://ifh.cc/g/kmlSb3.png';
+    }
+  }
 
   translateLanguage change = Get.put(translateLanguage());
 
@@ -50,7 +66,7 @@ class ListPage extends GetView<ForestInformationController> {
             int length = controller.forestInformation.value.length;
             try {
               if (length == 0) {
-                return Image.network('https://ifh.cc/g/kmlSb3.png',
+                return Image.network(getImageUrl(controller.mountainName),
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.fill,
@@ -75,21 +91,14 @@ class ListPage extends GetView<ForestInformationController> {
               else {
                 return Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: (){
-                        for (int i=0;i<controller.forestInformation.value.length;i++) {
-                          Get.put(change.getTranslation_papago(information[i], i));
-                          print(i);
-                        }
-                      },
-                      child: Text('change'),
-                    ),
+
+                    changeButton(key: languageKey, information: information,),
+
                     Expanded(
                       child: ListView.builder(
                           itemCount: length,
                           itemBuilder: (context, index) {
                             //ForestListSquare(information.obs, controller, index);
-                            Print(index);
                             return ForestListSquare(information.obs, controller, index);
                           }),
                     )
@@ -106,6 +115,7 @@ class ListPage extends GetView<ForestInformationController> {
         ),
       ),
     );
+
   }
 
   /////// 상단 검색바 ////////
@@ -148,6 +158,55 @@ class ListPage extends GetView<ForestInformationController> {
             ),
             onFieldSubmitted: controller.forestSearchingDetail
         )
+    );
+  }
+}
+
+
+class changeButton extends StatefulWidget {
+  const changeButton({
+    Key? key,
+    required this.information,
+  }) : super(key: key);
+  final information;
+
+  @override
+  State<changeButton> createState() => _changeButtonState();
+}
+
+class _changeButtonState extends State<changeButton> {
+  translateLanguage change = Get.put(translateLanguage());
+  var information;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      width : double.infinity,
+      child : ElevatedButton(
+      onPressed: (){
+        for (int i=0;i<widget.information.length;i++) {
+          Get.put(change.getTranslation_papago(widget.information[i], i));
+        }
+        setState((){
+          if(ForestListSquare.savedLanguage) {
+            ForestListSquare.savedLanguage = false;
+          } else {
+            ForestListSquare.savedLanguage = true;
+          }
+        });
+      },
+      //ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
+
+      child: Text('language'),
+        style: ElevatedButton.styleFrom(
+          // background 속성이 없다.
+            primary: Colors.black,
+            shape: RoundedRectangleBorder(
+              // 테두리를 라운드하게 만들기
+            borderRadius: BorderRadius.circular(5.0)),
+            elevation: 0.0),
+    ),
     );
   }
 }

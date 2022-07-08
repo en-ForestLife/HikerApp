@@ -1,5 +1,9 @@
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:xml/xml.dart';
 import '../utils/xmlUtils.dart';
+import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class ForestInformationModel{
   String? crcmrsghtngetcimageseq;
@@ -23,6 +27,7 @@ class ForestInformationModel{
   String? pbtrninfodscrt;
   String? ptmntrcmmncoursdscrt;
   String? rcmmncoursimageseq;
+
 
   ForestInformationModel({
     this.crcmrsghtngetcimageseq,
@@ -73,4 +78,5 @@ class ForestInformationModel{
       rcmmncoursimageseq : XmlUtils.searchResultForString(xml, 'rcmmncoursimageseq'),
     );
   }
+
 }

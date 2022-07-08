@@ -48,7 +48,6 @@ class _homePageState extends State<homePage> {
     WishlistScreen(),
     TipScreen(),
     myPage(),
-
   ];
 
 

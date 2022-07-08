@@ -3,6 +3,7 @@ import 'package:hiker/src/api/NaverDictionayApi.dart';
 import '../model/ThumnailModel.dart';
 
 class DictionarySearchController extends GetxController{
+  var result;
   late NaverDictionaryApi naverDictionaryApi;
   RxList<ThumnailModel> thumnailList = <ThumnailModel>[].obs;
 
