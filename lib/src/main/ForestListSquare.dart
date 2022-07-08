@@ -16,6 +16,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
   int index;
   int i=0;
   String languageString = '';
+  static bool savedLanguage = true;
   ForestInformationController forestInformationController;
   translateLanguage change = Get.put(translateLanguage());
   var information;
@@ -79,14 +80,18 @@ class ForestListSquare extends GetView<ForestInformationController>{
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children:[
                               GetBuilder<translateLanguage>(
-                                builder:(_) => Text('${change.result_papago[index]}'),
+                                builder:(_) =>savedLanguage ? Text((information[index].mntnnm ?? ''),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2.0),
+                                ) : Text('${change.result_papago[index] }',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0),
+                                )
                               ),
-                              //savedLanguage ? Text('${change.result_papago[index] }') : Text(information[index].mntnnm ?? '')),
-                              Text(information[index].mntnnm ?? '', style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2.0),),
-
                               ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
                                   subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
                                   height : getHeightFormat(information))
@@ -216,7 +221,6 @@ class ForestListState extends State<ForestList> {
             }
           });
 
-          /*
           await FirebaseFirestore.instance
               .collection('User')
               .get()
@@ -249,11 +253,11 @@ class ForestListState extends State<ForestList> {
               builder: (BuildContext context) {
                 // return object of type Dialog
                 return AlertDialog(
-                  title : Text('Notification'.tr()),
-                  content: Text('로그인 후 이용가능합니다.'.tr()),
+                  title : Text('Notification'),
+                  content: Text('로그인 후 이용가능합니다.'),
                   actions: <Widget>[
                     FlatButton(
-                          child: Text('yes'.tr()),
+                          child: Text('yes'),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
@@ -262,7 +266,6 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
-           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red

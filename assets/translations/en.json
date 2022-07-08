@@ -52,5 +52,9 @@
   "no" : "No",
   "changePw" : "Are you sure you want to change your password?",
   "logout" : "Are you sure you want to log out?",
-  "removeWishlist" : "Are you sure you want to remove it from your wish list?"
+  "removeWishlist" : "Are you sure you want to remove it from your wish list?",
+  "whatHiker" : "Hiker is an app that provides mountain information, hiking trails, and public transportation information for foreign hikers living in Korea. In particular, you can make your own hiker app using the wish list function.",
+  "appVersion" : "Version",
+  "version" : "The latest version",
+  "helpinfor" : "Save your favorite mountain on your wishlist and use it easily! Check out the TIP page for more information about mountain climbing!"
 }

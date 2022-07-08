@@ -34,8 +34,9 @@ class ForestPageState extends State<ForestPage> {
 
 class ListPage extends GetView<ForestInformationController> {
   //const ListPage({Key? key}) : super(key: key);
-
   translateLanguage change = Get.put(translateLanguage());
+  static bool savedLanguage = true;
+  GlobalKey<FormState> languageKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context){
@@ -75,21 +76,12 @@ class ListPage extends GetView<ForestInformationController> {
               else {
                 return Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: (){
-                        for (int i=0;i<controller.forestInformation.value.length;i++) {
-                          Get.put(change.getTranslation_papago(information[i], i));
-                          print(i);
-                        }
-                      },
-                      child: Text('change'),
-                    ),
+                    changeButton(key: languageKey, information: information,),
                     Expanded(
                       child: ListView.builder(
                           itemCount: length,
                           itemBuilder: (context, index) {
                             //ForestListSquare(information.obs, controller, index);
-                            Print(index);
                             return ForestListSquare(information.obs, controller, index);
                           }),
                     )
@@ -148,6 +140,55 @@ class ListPage extends GetView<ForestInformationController> {
             ),
             onFieldSubmitted: controller.forestSearchingDetail
         )
+    );
+  }
+}
+
+
+class changeButton extends StatefulWidget {
+  const changeButton({
+    Key? key,
+    required this.information,
+  }) : super(key: key);
+  final information;
+
+  @override
+  State<changeButton> createState() => _changeButtonState();
+}
+
+class _changeButtonState extends State<changeButton> {
+  translateLanguage change = Get.put(translateLanguage());
+  var information;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      width : double.infinity,
+      child : ElevatedButton(
+      onPressed: (){
+        for (int i=0;i<widget.information.length;i++) {
+          Get.put(change.getTranslation_papago(widget.information[i], i));
+        }
+        setState((){
+          if(ForestListSquare.savedLanguage) {
+            ForestListSquare.savedLanguage = false;
+          } else {
+            ForestListSquare.savedLanguage = true;
+          }
+        });
+      },
+      //ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
+
+      child: Text('language'),
+        style: ElevatedButton.styleFrom(
+          // background 속성이 없다.
+            primary: Colors.black,
+            shape: RoundedRectangleBorder(
+              // 테두리를 라운드하게 만들기
+            borderRadius: BorderRadius.circular(5.0)),
+            elevation: 0.0),
+    ),
     );
   }
 }

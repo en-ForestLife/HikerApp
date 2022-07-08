@@ -121,7 +121,10 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
                         // return object of type Dialog
                         return AlertDialog(
                           title: Text('Notification'.tr()),
-                          content: Text('하이커란 블라블라블라~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'.tr()),
+                          content: Text('whatHiker'.tr(),
+                            style : TextStyle(
+                            fontSize : 15,
+                          ),),
                           actions: <Widget>[
                             FlatButton(
                               child: Text('close'.tr()),

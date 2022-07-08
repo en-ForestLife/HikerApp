@@ -48,14 +48,13 @@ class _homePageState extends State<homePage> {
     WishlistScreen(),
     TipScreen(),
     myPage(),
-
   ];
 
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1, // 초기값 1 (홈)
+      initialIndex: 0, // 초기값 1 (홈)
       length: 4, // 갯수 4개
       child: Scaffold(
 
