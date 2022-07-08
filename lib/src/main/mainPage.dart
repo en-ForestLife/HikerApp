@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -38,6 +40,17 @@ class ListPage extends GetView<ForestInformationController> {
   static bool savedLanguage = true;
   GlobalKey<FormState> languageKey = GlobalKey<FormState>();
 
+  translateLanguage change = Get.put(translateLanguage());
+
+  String getImageUrl(String name) {
+    if (name == '') {
+      return 'https://ifh.cc/g/j91LL1.png';
+    }
+    else {
+    return 'https://ifh.cc/g/kmlSb3.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -51,7 +64,7 @@ class ListPage extends GetView<ForestInformationController> {
             int length = controller.forestInformation.value.length;
             try {
               if (length == 0) {
-                return Image.network('https://ifh.cc/g/kmlSb3.png',
+                return Image.network(getImageUrl(controller.mountainName),
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.fill,
@@ -98,6 +111,7 @@ class ListPage extends GetView<ForestInformationController> {
         ),
       ),
     );
+
   }
 
   /////// 상단 검색바 ////////

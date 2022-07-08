@@ -29,7 +29,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(50.0),
       child: SizedBox(
         width: 450,
         height: 510,
@@ -80,27 +80,37 @@ class ForestListSquare extends GetView<ForestInformationController>{
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children:[
                               GetBuilder<translateLanguage>(
-                                builder:(_) =>savedLanguage ? Text((information[index].mntnnm ?? ''),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 2.0),
-                                ) : Text('${change.result_papago[index] }',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 2.0),
-                                )
+                                builder:(_) => Text(getTitle('${change.result_papago[index]}')),
                               ),
+                              //savedLanguage ? Text('${change.result_papago[index] }') : Text(information[index].mntnnm ?? '')),
+                              Text(information[index].mntnnm ?? '', style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2.0),),
+
                               ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
                                   subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
                                   height : getHeightFormat(information))
                             ],
                           ),
-                          Text(addSubtitle(information),
-                              style: TextStyle(fontSize: 14,)),
-                          Text(information[index].mntninfopoflc ?? '',
-                              style: TextStyle(fontSize: 14,)),
+                          Row(
+                            children:[
+                              GetBuilder<translateLanguage>(
+                                builder:(_) => Text(getSubtitle('${change.result_papago[index]}')),
+                              ),
+                              Text(addSubtitle(information),
+                                  style: TextStyle(fontSize: 14,)),
+                            ],
+                          ),
+                          Row(
+                              children:[
+                                GetBuilder<translateLanguage>(
+                                  builder:(_) => Text(getAddress('${change.result_papago[index]}'), style:TextStyle(fontSize:7)),
+                                ),
+                                Text(information[index].mntninfopoflc ?? '',
+                                    style: TextStyle(fontSize: 14,)),
+                              ],
+                          ),
                           Text(getHeightFormat(information),
                               style: TextStyle(fontSize: 14,)),
                         ]
@@ -141,6 +151,46 @@ class ForestListSquare extends GetView<ForestInformationController>{
     }
     return subTitle;
   }
+
+
+  String getTitle(String allString) {
+    List<String> strings = allString.split('♡');
+
+    if (strings[0].contains('For example')) {
+      return 'Garyeongsan';
+    }
+    if (strings[0].contains('Gamabong Peak')) {
+      return 'Gamabong';
+    }
+    if (strings[0].contains('Gariwangsan')) {
+      return 'Gariwangsan';
+    }
+
+    return strings[0];
+  }
+
+  String getSubtitle(String allString) {
+    int index = allString.indexOf('♡');
+    String middleString = allString.substring(index + 1);
+    int secondIndex = middleString.lastIndexOf('♡');
+    String realMiddleString = middleString.substring(0, secondIndex + 1).trimLeft();
+
+    if(realMiddleString.trim() == '♡') {
+      return 'An Airy Mountain';
+    }
+
+    return realMiddleString.replaceAll('♡', '');
+  }
+
+  String getAddress(String allString) {
+    int index = allString.lastIndexOf('♡');
+
+    return allString.substring(index + 1).trimLeft().replaceAll(', ', ',\n');
+  }
+}
+
+void Print(int index){
+  print(index);
 }
 
 void Print(int index){
