@@ -78,7 +78,7 @@ class ListPage extends GetView<ForestInformationController> {
                     ElevatedButton(
                       onPressed: (){
                         for (int i=0;i<controller.forestInformation.value.length;i++) {
-                          Get.put(change.getTranslation_papago(information[i]));
+                          Get.put(change.getTranslation_papago(information[i], i));
                           print(i);
                         }
                       },

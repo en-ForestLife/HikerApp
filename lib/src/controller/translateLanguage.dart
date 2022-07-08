@@ -6,7 +6,7 @@ class translateLanguage extends GetxController{
 
   var language = 'ko';
   var result_papago = List<String>.filled(10, '');
-  int index = 0;
+
 
   Future<void> getLanguage_papago() async {
     String _client_id = "6mZvws_z90LcqP_ZRmTS";
@@ -35,7 +35,7 @@ class translateLanguage extends GetxController{
     }
   }
 
-  Future<void> getTranslation_papago(var information) async {
+  Future<void> getTranslation_papago(var information, int index) async {
     String _client_id = "13NvCtbwbe2r3LvXEGsT";
     String _client_secret = "ctHCmMPAJT";
     String _content_type = "application/x-www-form-urlencoded; charset=UTF-8";
@@ -62,14 +62,11 @@ class translateLanguage extends GetxController{
     //print(information[0].mntnnm.length);
     if (trans.statusCode == 200) {
       print(index);
-      print(result_papago[0]);
-      print(result_papago[1]);
-      print(result_papago[2]);
-      print(result_papago[3]);
       print('---------------------------------------');
       var dataJson = jsonDecode(trans.body);
-      result_papago[index++] = dataJson['message']['result']['translatedText'];
+      result_papago[index] = dataJson['message']['result']['translatedText'];
       update();
+      print(information.mntnnm);
     } else {
       print(trans.statusCode);
     }

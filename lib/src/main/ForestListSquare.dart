@@ -79,7 +79,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children:[
                               GetBuilder<translateLanguage>(
-                                builder:(_) => Text('${change.result_papago[index] }'),
+                                builder:(_) => Text('${change.result_papago[index]}'),
                               ),
                               //savedLanguage ? Text('${change.result_papago[index] }') : Text(information[index].mntnnm ?? '')),
                               Text(information[index].mntnnm ?? '', style: TextStyle(
