@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -34,6 +36,18 @@ class ForestPageState extends State<ForestPage> {
 
 class ListPage extends GetView<ForestInformationController> {
   //const ListPage({Key? key}) : super(key: key);
+
+  translateLanguage change = Get.put(translateLanguage());
+
+  String getImageUrl(String name) {
+    if (name == '') {
+      return 'https://ifh.cc/g/j91LL1.png';
+    }
+    else {
+    return 'https://ifh.cc/g/kmlSb3.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -47,7 +61,7 @@ class ListPage extends GetView<ForestInformationController> {
             int length = controller.forestInformation.value.length;
             try {
               if (length == 0) {
-                return Image.network('https://ifh.cc/g/kmlSb3.png',
+                return Image.network(getImageUrl(controller.mountainName),
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.fill,
@@ -72,19 +86,24 @@ class ListPage extends GetView<ForestInformationController> {
               else {
                 return Column(
                   children: [
-                    ElevatedButton(
+                    TextButton(
                       onPressed: (){
                         for (int i=0;i<controller.forestInformation.value.length;i++) {
-                          Get.put(translateLanguage()).getTranslation_papago(information[i]);
-
+                          Get.put(change.getTranslation_papago(information[i], i));
+                          print(i);
                         }
-                        },
-                      child: Text('change'),
+                      },
+                      //icon: Icon(Icons.language_outlined),
+                      child: Text('Language', style:TextStyle(color:Colors.red)),
+
+
+
                     ),
                     Expanded(
                       child: ListView.builder(
                           itemCount: length,
                           itemBuilder: (context, index) {
+                            //ForestListSquare(information.obs, controller, index);
                             return ForestListSquare(information.obs, controller, index);
                           }),
                     )
@@ -101,6 +120,7 @@ class ListPage extends GetView<ForestInformationController> {
         ),
       ),
     );
+
   }
 
   /////// 상단 검색바 ////////
@@ -145,5 +165,4 @@ class ListPage extends GetView<ForestInformationController> {
         )
     );
   }
-
 }
