@@ -5,9 +5,8 @@ import '../model/ThumnailModel.dart';
 
 class NaverDictionaryApi {
   late var dio;
-  RxString mountainName;
 
-  NaverDictionaryApi(this.mountainName) {
+  Future<List<ThumnailModel>> fetchSearchApi(String mountainName) async{
     dio = Dio(
       BaseOptions(
         headers: {
@@ -16,19 +15,14 @@ class NaverDictionaryApi {
         },
         baseUrl: "https://openapi.naver.com",
         queryParameters: {
-          'query':'$mountainName',
+          'query': mountainName,
         },
       ),
     );
-  }
 
-  Future<List<ThumnailModel>> fetchSearchResult(String mountainName) async{
     var response = await dio.get('/v1/search/encyc.xml');
     final document = XmlDocument.parse(response.data);
     final results = document.findAllElements('item');
-    print('--------------------------------Naver api --------------------------------');
-    print(results);
-    print('--------------------------------Naver api --------------------------------');
     if(results.isNotEmpty) {
       return results
           .map<ThumnailModel>(

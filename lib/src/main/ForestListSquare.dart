@@ -10,11 +10,17 @@ import 'package:hiker/src/main/ForestDetailSquare.dart';
 import 'package:intl/intl.dart';
 import '../controller/forestInformationController.dart';
 import '../controller/translateLanguage.dart';
+import 'package:get/get.dart';
 
-class ForestListSquare extends GetView<ForestInformationController> {
+class ForestListSquare extends GetView<ForestInformationController>{
   int index;
+  int i=0;
   String languageString = '';
-  ForestListSquare(this.index, {Key? key}) : super(key: key);
+  static bool savedLanguage = true;
+  ForestInformationController forestInformationController;
+  translateLanguage change = Get.put(translateLanguage());
+  var information;
+  ForestListSquare(this.information, this.forestInformationController, this.index, {Key? key}) : super(key: key);
 
   @override
   GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
@@ -23,73 +29,114 @@ class ForestListSquare extends GetView<ForestInformationController> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(50.0),
       child: SizedBox(
         width: 450,
         height: 510,
         child: Obx(() {
-          var information = controller.forestInformation.value;
+          //translateLanguage change = Get.put(translateLanguage());
+          //var information = forestInformationController.forestInformation.value;
           String imageUrl = getUrl(information);
           return  Container(
+
             child: InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) {
-                        return ForestDetailSquare(information);
+                        return ForestDetailSquare(controller.forestInformation[index]);
                       }),
                 );
               },
-            child : Column(
-                children: <Widget>[
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child:
-                          Image.network(imageUrl,
-                            width: double.infinity,
-                            height: 400,
-                            fit: BoxFit.fill,
-                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
-                              if(loadingProgress == null){
-                                return child;
-                              }
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        Text('\n', style: TextStyle(fontSize: 5)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:[
-                            Text(information[index].mntnnm ?? '', style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2.0),),
 
-                            ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
-                                subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
-                                height : getHeightFormat(information))
-                          ],
-                        ),
-                        Text(addSubtitle(information),
-                            style: TextStyle(fontSize: 14,)),
-                        Text(information[index].mntninfopoflc ?? '',
-                            style: TextStyle(fontSize: 14,)),
-                        Text(getHeightFormat(information),
-                            style: TextStyle(fontSize: 14,)),
-                      ]
-                  )
-                ]
-            ),
+              child : Column(
+                  children: <Widget>[
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child:
+                            Image.network(imageUrl,
+                              width: double.infinity,
+                              height: 400,
+                              fit: BoxFit.fill,
+                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
+                                if(loadingProgress == null){
+                                  return child;
+                                }
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Text('\n', style: TextStyle(fontSize: 5)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:[
+                              GetBuilder<translateLanguage>(
+                                  builder:(_) =>savedLanguage ?
+                                  Text((information[index].mntnnm ?? ''),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0),
+                                  ) : Text(getTitle('${change.result_papago[index]}'),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0),
+                                  )
+                              ),
+
+                              ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
+                                  subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
+                                  height : getHeightFormat(information))
+                            ],
+                          ),
+
+                          GetBuilder<translateLanguage>(
+                              builder:(_) =>savedLanguage ?
+                              Text((addSubtitle(information)),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              ) : Text(getSubtitle('${change.result_papago[index]}'),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              )
+                          ),
+
+
+                          GetBuilder<translateLanguage>(
+                              builder:(_) =>savedLanguage ?
+                              Text((information[index].mntninfopoflc ?? ''),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              ) : Text(getAddress('${change.result_papago[index]}'),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              )
+                          ),
+
+                          Text(getHeightFormat(information),
+                              style: TextStyle(fontSize: 14,)),
+                        ]
+                    )
+                  ]
+              ),
             ),
           );
         }),
@@ -119,14 +166,48 @@ class ForestListSquare extends GetView<ForestInformationController> {
   String addSubtitle(var information) { // 부제 없는 산은 부제 따로 추가
     String subTitle = information[index].mntnsbttlinfo.toString();
     if(subTitle.length == 1) { // 주의 - 부제가 안나오지만 길이는 1로 계산됨
-      print('hi');
-      print(TranslateLanguage('공기 맑은 산'). getOtherLanguage());
-      return TranslateLanguage('공기 맑은 산').getOtherLanguage(); //
+
+      return '공기 맑은 산';
     }
     return subTitle;
   }
-}
 
+
+  String getTitle(String allString) {
+    List<String> strings = allString.split('♡');
+
+    if (strings[0].contains('For example')) {
+      return 'Garyeongsan';
+    }
+    if (strings[0].contains('Gamabong Peak')) {
+      return 'Gamabong';
+    }
+    if (strings[0].contains('Gariwangsan')) {
+      return 'Gariwangsan';
+    }
+
+    return strings[0];
+  }
+
+  String getSubtitle(String allString) {
+    int index = allString.indexOf('♡');
+    String middleString = allString.substring(index + 1);
+    int secondIndex = middleString.lastIndexOf('♡');
+    String realMiddleString = middleString.substring(0, secondIndex + 1).trimLeft();
+
+    if(realMiddleString.trim() == '♡') {
+      return 'An Airy Mountain';
+    }
+
+    return realMiddleString.replaceAll('♡', '');
+  }
+
+  String getAddress(String allString) {
+    int index = allString.lastIndexOf('♡');
+
+    return allString.substring(index + 1).trimLeft();
+  }
+}
 
 class ForestList extends StatefulWidget{
   const ForestList({
@@ -152,6 +233,7 @@ class ForestList extends StatefulWidget{
 
 class ForestListState extends State<ForestList> {
   final authentification = FirebaseAuth.instance;
+
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
   bool savedFavorite = true;
   User? loggedUser;
@@ -199,6 +281,7 @@ class ForestListState extends State<ForestList> {
               savedFavorite = true;
             }
           });
+
           await FirebaseFirestore.instance
               .collection('User')
               .get()
@@ -217,7 +300,7 @@ class ForestListState extends State<ForestList> {
                       'description' : widget.description,
                       'height' : widget.height,
                     }
-                    ).then(
+                ).then(
                         (value) => print("DocumentSnapshot successfully updated!"),
                     onError: (e) => print("Error updating document $e"));
                 ++count;
@@ -231,11 +314,11 @@ class ForestListState extends State<ForestList> {
               builder: (BuildContext context) {
                 // return object of type Dialog
                 return AlertDialog(
-                  title : Text('Notification'.tr()),
-                  content: Text('로그인 후 이용가능합니다.'.tr()),
+                  title : Text('Notification'),
+                  content: Text('로그인 후 이용가능합니다.'),
                   actions: <Widget>[
                     FlatButton(
-                          child: Text('yes'.tr()),
+                        child: Text('yes'),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
@@ -251,4 +334,5 @@ class ForestListState extends State<ForestList> {
       // 언어 바꿀 수 있는 버튼
     );
   }
+
 }
