@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:xml/xml.dart';
+import '../controller/translateLanguage.dart';
 import '../main/mainPage.dart';
 import '../model/ForestInformationModel.dart';
 
@@ -26,7 +27,8 @@ class ForestInformationApi {
   Future<List<ForestInformationModel>> fetchForestInformation(RxString mountainName) async{
     var response = await dio.get('/openapi/service/trailInfoService/getforeststoryservice');
     final document = XmlDocument.parse(response.data);
-    final results = document.findAllElements('item');
+    var results = document.findAllElements('item');
+    String changed = '';
     print('--------------------------------forest api --------------------------------');
     print(results
         .map<ForestInformationModel>(

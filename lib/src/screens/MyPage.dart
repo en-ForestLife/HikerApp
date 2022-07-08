@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hiker/src/screens/WishList.dart';
 
 import 'HomePage.dart';
 import 'LoginBeforeScreen.dart';
@@ -128,7 +129,6 @@ class _myPageState extends State<myPage> {
                           onTap: () {
                             print('Home pressed');
                           },
-                          trailing: Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
@@ -145,7 +145,7 @@ class _myPageState extends State<myPage> {
                             color: Colors.grey[850],
                           ),
                           title: Text(
-                            '이벤트 배너',
+                            'EVENT',
                             style: TextStyle(
                               color: Colors.black, // 글자 색상 검정색
                               fontSize: 20.0, // 폰트 사이즈
@@ -154,32 +154,6 @@ class _myPageState extends State<myPage> {
                           onTap: () {
                             print('Home pressed');
                           },
-                          trailing: Icon(Icons.arrow_forward_ios),
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      height: 100,
-                      child: Card(
-                        child: ListTile(
-                          //contentPadding: EdgeInsets.symmetric(vertical: 18.0),
-                          contentPadding: EdgeInsets.all(25.0),
-                          leading: Icon(
-                            Icons.favorite_border_outlined,
-                            color: Colors.grey[850],
-                          ),
-                          title: Text(
-                            'wishList'.tr(),
-                            style: TextStyle(
-                              color: Colors.black, // 글자 색상 검정색
-                              fontSize: 20.0, // 폰트 사이즈
-                            ),
-                          ),
-                          onTap: () {
-                            print('Home pressed');
-                          },
-                          trailing: Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
@@ -227,7 +201,28 @@ class _myPageState extends State<myPage> {
                             ),
                           ),
                           onTap: () {
-                            print('Home pressed');
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+                              builder: (BuildContext context) {
+                                // return object of type Dialog
+                                return AlertDialog(
+                                  title: Text('infor'.tr()),
+                                  content: Text('helpinfor'.tr(),
+                                    style : TextStyle(
+                                      fontSize : 15,
+                                    ),),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('close'.tr()),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           trailing: Icon(Icons.arrow_forward_ios),
                         ),
@@ -252,9 +247,54 @@ class _myPageState extends State<myPage> {
                             ),
                           ),
                           onTap: () {
-                            print('Home pressed');
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
+                              builder: (BuildContext context) {
+                                // return object of type Dialog
+                                return AlertDialog(
+                                  title: Text('infor'.tr()),
+                                  content: Text('whatHiker'.tr(),
+                                    style : TextStyle(
+                                      fontSize : 15,
+                                    ),),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('close'.tr()),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           trailing: Icon(Icons.arrow_forward_ios),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      child: Card(
+                        child: ListTile(
+                          //contentPadding: EdgeInsets.symmetric(vertical: 18.0),
+                          contentPadding: EdgeInsets.all(25.0),
+                          leading: Icon(
+                            Icons.help_outline,
+                            color: Colors.grey[850],
+                          ),
+                          title: Text(
+                            'appVersion'.tr(),
+                            style: TextStyle(
+                              color: Colors.black, // 글자 색상 검정색
+                              fontSize: 20.0, // 폰트 사이즈
+                            ),
+                          ),
+                          onTap: () {
+                            print('Home pressed');
+                          },
+                          trailing: Text('version'.tr()),
                         ),
                       ),
                     ),
