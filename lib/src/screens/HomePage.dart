@@ -45,7 +45,7 @@ class _homePageState extends State<homePage> {
 
   List<Widget> Options = [
     ForestPage(),
-    WishlistScreen(), 
+    WishlistScreen(),
     TipScreen(),
     myPage(),
 

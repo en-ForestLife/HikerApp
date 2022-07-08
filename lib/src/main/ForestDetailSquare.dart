@@ -15,6 +15,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.fetchSearchResult(mountainInformation.mntnnm);
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -42,9 +43,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
           child: Column(
             children: [
               Obx((){
-                controller.fetchSearchResult(mountainInformation.mntnnm);
                 var info = controller.thumnailList.value;
-
                 imgList.clear();
                 for (int i = 0; i<info.length; i++){
                   if (info[i].thumbnail != ""){
