@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 class translateLanguage extends GetxController{
 
   var language = 'ko';
-  var result_papago = 'hi';
+  var result_papago = List<String>.filled(10, '');
+  int index = 0;
 
   Future<void> getLanguage_papago() async {
     String _client_id = "6mZvws_z90LcqP_ZRmTS";
@@ -34,9 +35,9 @@ class translateLanguage extends GetxController{
     }
   }
 
-  Future<void> getTranslation_papago(String changeLanguage) async {
-    String _client_id = "6mZvws_z90LcqP_ZRmTS";
-    String _client_secret = "dA465UlQrv";
+  Future<void> getTranslation_papago(var information) async {
+    String _client_id = "13NvCtbwbe2r3LvXEGsT";
+    String _client_secret = "ctHCmMPAJT";
     String _content_type = "application/x-www-form-urlencoded; charset=UTF-8";
     String _url = "https://openapi.naver.com/v1/papago/n2mt";
     //await getLanguage_papago();
@@ -52,18 +53,23 @@ class translateLanguage extends GetxController{
       body: {
         'source': language, //위에서 언어 판별 함수에서 사용한 language 변수
         'target': "en", //원하는 언어를 선택할 수 있다.
-        'text': changeLanguage,
-       // '''경기 제 1봉인 화악산(1,468m)에서 동남쪽으로 뻗어 내린 능선상에 솟아 있는 가덕산은 몽덕산과 북배산의 능선 중간에 자리잡고 있다. 억새산이라고 할만큼 가을철에 억새가 볼만하다.&amp;lt;br /&amp;gt;&#xD;
-    //수백평의 억새밭인 가덕산 정상에 오르면 서북방향으로 화악산이 보이고, 남쪽으로는 목동평야와 북배산, 계관산 너머로 삼악산으로 이어지는 능선이 한눈에 들어 온다. 동쪽으로는 의암호와 춘천호, 그리고 호반의 도시, 춘천시가 보인다.&amp;lt;br /&amp;gt;&#xD;
-   // 가덕산은 계관산, 북배산, 몽덕산과 더불어 네 개의 산을 연결하여 등산하는 유명한 종주코스이다. 이 능선에 구축된 등산길은 넓게 길이 잘 뚫려 있고 굴곡이 심하지 않아 겨울철 능선 종주산행지로 적격이다.''',
+        'text': information.mntnnm,
+        // '''경기 제 1봉인 화악산(1,468m)에서 동남쪽으로 뻗어 내린 능선상에 솟아 있는 가덕산은 몽덕산과 북배산의 능선 중간에 자리잡고 있다. 억새산이라고 할만큼 가을철에 억새가 볼만하다.&amp;lt;br /&amp;gt;&#xD;
+        //수백평의 억새밭인 가덕산 정상에 오르면 서북방향으로 화악산이 보이고, 남쪽으로는 목동평야와 북배산, 계관산 너머로 삼악산으로 이어지는 능선이 한눈에 들어 온다. 동쪽으로는 의암호와 춘천호, 그리고 호반의 도시, 춘천시가 보인다.&amp;lt;br /&amp;gt;&#xD;
+        // 가덕산은 계관산, 북배산, 몽덕산과 더불어 네 개의 산을 연결하여 등산하는 유명한 종주코스이다. 이 능선에 구축된 등산길은 넓게 길이 잘 뚫려 있고 굴곡이 심하지 않아 겨울철 능선 종주산행지로 적격이다.''',
       },
     );
-
+    //print(information[0].mntnnm.length);
     if (trans.statusCode == 200) {
+      print(index);
+      print(result_papago[0]);
+      print(result_papago[1]);
+      print(result_papago[2]);
+      print(result_papago[3]);
+      print('---------------------------------------');
       var dataJson = jsonDecode(trans.body);
-      result_papago = dataJson['message']['result']['translatedText'];
+      result_papago[index++] = dataJson['message']['result']['translatedText'];
       update();
-      print(result_papago);
     } else {
       print(trans.statusCode);
     }

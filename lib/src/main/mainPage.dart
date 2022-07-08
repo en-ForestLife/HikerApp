@@ -8,6 +8,7 @@ import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
 import '../controller/DictionarySearchController.dart';
 import 'package:hiker/src/main/ForestListSquare.dart';
+import '../controller/translateLanguage.dart';
 import '../model/ForestInformationModel.dart';
 
 class ForestPage extends StatefulWidget{
@@ -34,6 +35,8 @@ class ForestPageState extends State<ForestPage> {
 class ListPage extends GetView<ForestInformationController> {
   //const ListPage({Key? key}) : super(key: key);
 
+  translateLanguage change = Get.put(translateLanguage());
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -42,6 +45,8 @@ class ListPage extends GetView<ForestInformationController> {
         appBar: forestSearchingHeader(),
         body: SizedBox(
           child: Obx(() {
+            var information = controller.forestInformation.value;
+            var informationMini;
             int length = controller.forestInformation.value.length;
             try {
               if (length == 0) {
@@ -70,11 +75,22 @@ class ListPage extends GetView<ForestInformationController> {
               else {
                 return Column(
                   children: [
+                    ElevatedButton(
+                      onPressed: (){
+                        for (int i=0;i<controller.forestInformation.value.length;i++) {
+                          Get.put(change.getTranslation_papago(information[i]));
+                          print(i);
+                        }
+                      },
+                      child: Text('change'),
+                    ),
                     Expanded(
                       child: ListView.builder(
                           itemCount: length,
                           itemBuilder: (context, index) {
-                            return ForestListSquare(index);
+                            //ForestListSquare(information.obs, controller, index);
+                            Print(index);
+                            return ForestListSquare(information.obs, controller, index);
                           }),
                     )
                   ],
@@ -130,9 +146,8 @@ class ListPage extends GetView<ForestInformationController> {
               fontSize: 15,
               color: Colors.black,
             ),
-            onFieldSubmitted: Get.put(controller.forestSearchingDetail)
+            onFieldSubmitted: controller.forestSearchingDetail
         )
     );
   }
-
 }
