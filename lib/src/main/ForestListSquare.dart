@@ -10,11 +10,13 @@ import 'package:hiker/src/main/ForestDetailSquare.dart';
 import 'package:intl/intl.dart';
 import '../controller/forestInformationController.dart';
 import '../controller/translateLanguage.dart';
+import 'package:get/get.dart';
 
-class ForestListSquare extends GetView<ForestInformationController> {
+class ForestListSquare extends GetView<ForestInformationController>{
   int index;
   String languageString = '';
   ForestListSquare(this.index, {Key? key}) : super(key: key);
+  translateLanguage change = Get.put(translateLanguage());
 
   @override
   GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
@@ -70,6 +72,15 @@ class ForestListSquare extends GetView<ForestInformationController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children:[
+                            GetBuilder<translateLanguage>(
+                                builder:(_) => Text('change language : ${change.result_papago}'),
+                            ),
+                            ElevatedButton(
+                                onPressed: (){
+                                  change.getTranslation_papago(information[index].mntnnm ?? '');
+                                },
+                                child: Text('change'),
+                            ),
                             Text(information[index].mntnnm ?? '', style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -120,8 +131,6 @@ class ForestListSquare extends GetView<ForestInformationController> {
     String subTitle = information[index].mntnsbttlinfo.toString();
     if(subTitle.length == 1) { // 주의 - 부제가 안나오지만 길이는 1로 계산됨
       print('hi');
-      print(TranslateLanguage('공기 맑은 산'). getOtherLanguage());
-      return TranslateLanguage('공기 맑은 산').getOtherLanguage(); //
     }
     return subTitle;
   }
@@ -152,6 +161,7 @@ class ForestList extends StatefulWidget{
 
 class ForestListState extends State<ForestList> {
   final authentification = FirebaseAuth.instance;
+
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
   bool savedFavorite = true;
   User? loggedUser;
@@ -198,7 +208,10 @@ class ForestListState extends State<ForestList> {
             else {
               savedFavorite = true;
             }
+            title='ddd';
           });
+
+          /*
           await FirebaseFirestore.instance
               .collection('User')
               .get()
@@ -224,6 +237,7 @@ class ForestListState extends State<ForestList> {
               }
             });
           });
+
           if(count == 0) {
             showDialog(
               context: context,
@@ -244,6 +258,8 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
+
+           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red
@@ -251,4 +267,5 @@ class ForestListState extends State<ForestList> {
       // 언어 바꿀 수 있는 버튼
     );
   }
+
 }
