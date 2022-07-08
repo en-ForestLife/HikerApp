@@ -44,7 +44,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
                   context,
                   MaterialPageRoute(
                       builder: (context) {
-                        return ForestDetailSquare(information);
+                        return ForestDetailSquare(controller.forestInformation[index]);
                       }),
                 );
               },
