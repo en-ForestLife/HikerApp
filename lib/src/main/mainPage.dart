@@ -40,8 +40,6 @@ class ListPage extends GetView<ForestInformationController> {
   static bool savedLanguage = true;
   GlobalKey<FormState> languageKey = GlobalKey<FormState>();
 
-  translateLanguage change = Get.put(translateLanguage());
-
   String getImageUrl(String name) {
     if (name == '') {
       return 'https://ifh.cc/g/j91LL1.png';
@@ -51,12 +49,11 @@ class ListPage extends GetView<ForestInformationController> {
     }
   }
 
-  translateLanguage change = Get.put(translateLanguage());
-
   @override
   Widget build(BuildContext context){
     return MaterialApp(
       home: Scaffold(
+
         backgroundColor: Colors.white,
         appBar: forestSearchingHeader(),
         body: SizedBox(

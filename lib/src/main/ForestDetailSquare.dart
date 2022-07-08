@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../controller/DictionarySearchController.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -15,6 +19,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
 
   @override
   Widget build(BuildContext context) {
+    bool languageButton = false;
     controller.fetchSearchResult(mountainInformation.mntnnm);
     return Scaffold(
         appBar: AppBar(
@@ -26,6 +31,28 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                 fontWeight: FontWeight.bold // 폰트 굵기
             ),
           ),
+          actions: [
+            OutlinedButton.icon(
+              // 언어 바꿀 수 있는 버튼
+              onPressed: () {
+                // 영어로 언어 변경
+                // 이후 앱을 재시작하면 영어로 동작
+                if (!languageButton) {
+                  // 영어
+                  //EasyLocalization.of(context)!.setLocale(Locale('en'));
+                  languageButton = true;
+                } else {
+                  // 한국어
+                  EasyLocalization.of(context)!.setLocale(Locale('ko'));
+                  languageButton = false;
+                }
+              },
+              icon: Icon(Icons.language_outlined),
+              label: Text(
+                "Language",
+              ),
+            ),
+          ],
           leading: IconButton(
             // 리딩 부분 (뒤로가기)
             onPressed: () {
@@ -37,6 +64,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
           ),
           backgroundColor: Colors.white,
         ),
+
 
         body: SingleChildScrollView(
             padding: const EdgeInsets.all(50),
@@ -84,20 +112,27 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                   ), //SizedBox
 
                   //Text(TranslateLanguage(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)).getOtherLanguage()), // 상세정보내용
+                  Text('<상세정보>'),
                   Text(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)), // 상세정보내용
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
+
+                  Text('<대중교통정보>'),
                   Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
 
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
+
+                  Text('<산행포인트>'),
                   Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
 
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
+
+                  Text('<주변관광정보>'),
                   Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
                 ]
             )

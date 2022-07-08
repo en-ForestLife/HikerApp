@@ -193,15 +193,6 @@ void Print(int index){
   print(index);
 }
 
-void Print(int index){
-  print(index);
-}
-
-void Print(int index){
-  print(index);
-}
-
-
 class ForestList extends StatefulWidget{
   const ForestList({
     Key? key,
@@ -320,7 +311,6 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
-           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red
