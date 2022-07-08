@@ -45,7 +45,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
                   context,
                   MaterialPageRoute(
                       builder: (context) {
-                        return ForestDetailSquare(information);
+                        return ForestDetailSquare(controller.forestInformation[index]);
                       }),
                 );
               },
@@ -197,6 +197,10 @@ void Print(int index){
   print(index);
 }
 
+void Print(int index){
+  print(index);
+}
+
 
 class ForestList extends StatefulWidget{
   const ForestList({
@@ -316,6 +320,7 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
+           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red

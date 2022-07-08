@@ -27,6 +27,7 @@ class ForestInformationApi {
   Future<List<ForestInformationModel>> fetchForestInformation(RxString mountainName) async{
     var response = await dio.get('/openapi/service/trailInfoService/getforeststoryservice');
     final document = XmlDocument.parse(response.data);
+
     var results = document.findAllElements('item');
     String changed = '';
     print('--------------------------------forest api --------------------------------');
@@ -35,6 +36,7 @@ class ForestInformationApi {
             (element) => ForestInformationModel.fromXml(element))
         .toList());
     print('--------------------------------forest api --------------------------------');
+    
     if(results.isNotEmpty) {
       return results
           .map<ForestInformationModel>(

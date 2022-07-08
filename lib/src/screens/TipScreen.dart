@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'PreparationScreen.dart';
 import 'HikingTipScreen.dart';
 
 class TipScreen extends StatelessWidget{
+
+  bool languageButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +20,28 @@ class TipScreen extends StatelessWidget{
               fontWeight: FontWeight.bold // 폰트 굵기
           ),
         ),
+        actions: [
+          OutlinedButton.icon(
+            // 언어 바꿀 수 있는 버튼
+            onPressed: () {
+              // 영어로 언어 변경
+              // 이후 앱을 재시작하면 영어로 동작
+              if (!languageButton) {
+                // 영어
+                EasyLocalization.of(context)!.setLocale(Locale('en'));
+                languageButton = true;
+              } else {
+                // 한국어
+                EasyLocalization.of(context)!.setLocale(Locale('ko'));
+                languageButton = false;
+              }
+            },
+            icon: Icon(Icons.language_outlined),
+            label: Text(
+              "Language",
+            ),
+          ),
+        ],
         centerTitle: true,
         // 글자 중간으로 위치 지정
         elevation: 0.0,
@@ -60,7 +85,7 @@ class TipScreen extends StatelessWidget{
                                   width: 40,
                                 ), //SizedBox
                                 Text(
-                                  '등산용품 대여 정보',
+                                  'ClimbingEquipmentRentalInformation'.tr(),
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.green[900],
@@ -106,7 +131,7 @@ class TipScreen extends StatelessWidget{
                                   width: 40,
                                 ), //SizedBox
                                 Text(
-                                  '등산 TIP',
+                                  'hikerTip'.tr(),
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.green[900],
@@ -151,7 +176,7 @@ class TipScreen extends StatelessWidget{
                                   width: 40,
                                 ), //SizedBox
                                 Text(
-                                  '등산 준비물',
+                                  'hikerItem'.tr(),
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.green[900],
