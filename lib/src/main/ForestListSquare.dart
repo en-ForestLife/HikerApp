@@ -45,7 +45,7 @@ class ForestListSquare extends GetView<ForestInformationController>{
                   context,
                   MaterialPageRoute(
                       builder: (context) {
-                        return ForestDetailSquare(information);
+                        return ForestDetailSquare(controller.forestInformation[index]);
                       }),
                 );
               },
@@ -117,10 +117,19 @@ class ForestListSquare extends GetView<ForestInformationController>{
 
 
                           GetBuilder<translateLanguage>(
-                            builder:(_) => Text(getAddress('${change.result_papago[index]}'), style:TextStyle(fontSize:7)),
+                              builder:(_) =>savedLanguage ?
+                              Text((information[index].mntninfopoflc ?? ''),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              ) : Text(getAddress('${change.result_papago[index]}'),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              )
                           ),
-                          Text(information[index].mntninfopoflc ?? '',
-                              style: TextStyle(fontSize: 14,)),
 
                           Text(getHeightFormat(information),
                               style: TextStyle(fontSize: 14,)),
@@ -318,6 +327,7 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
+           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red

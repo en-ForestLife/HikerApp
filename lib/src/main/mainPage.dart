@@ -49,6 +49,8 @@ class ListPage extends GetView<ForestInformationController> {
     }
   }
 
+  translateLanguage change = Get.put(translateLanguage());
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -87,7 +89,9 @@ class ListPage extends GetView<ForestInformationController> {
               else {
                 return Column(
                   children: [
+
                     changeButton(key: languageKey, information: information,),
+
                     Expanded(
                       child: ListView.builder(
                           itemCount: length,
