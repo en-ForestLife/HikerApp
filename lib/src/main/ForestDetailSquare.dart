@@ -39,74 +39,68 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
         ),
 
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(50),
-          child: Column(
-            children: [
-              Obx((){
-                var info = controller.thumnailList.value;
-                imgList.clear();
-                for (int i = 0; i<info.length; i++){
-                  if (info[i].thumbnail != ""){
-                    imgList.add(info[i].thumbnail);
-                  }
-                }
+            padding: const EdgeInsets.all(50),
+            child: Column(
+                children: [
+                  Obx((){
+                    var info = controller.thumnailList.value;
+                    imgList.clear();
+                    for (int i = 0; i<info.length; i++){
+                      if (info[i].thumbnail != ""){
+                        imgList.add(info[i].thumbnail);
+                      }
+                    }
 
-                return Container(
-                    height: 200,
-                    child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Swiper(
-                          autoplay: true,
-                          scale: 1,
-                          control: SwiperControl(),
-                          pagination: SwiperPagination(),
-                          itemCount: imgList.length,
-                          itemBuilder: (BuildContext context, int index){
-                            return Image.network(
-                                imgList[index]!,
-                                fit: BoxFit.fitWidth,
-                                //fit:BoxFit.cover
-                            );
-                          },
+                    return Container(
+                        height: 200,
+                        child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Swiper(
+                              autoplay: true,
+                              scale: 1,
+                              control: SwiperControl(),
+                              pagination: SwiperPagination(),
+                              itemCount: imgList.length,
+                              itemBuilder: (BuildContext context, int index){
+                                return Image.network(
+                                  imgList[index]!,
+                                  fit: BoxFit.fitWidth,
+                                  //fit:BoxFit.cover
+                                );
+                              },
+                            )
                         )
-                    )
-                );
-              }),
+                    );
+                  }),
 
-              const SizedBox(
-                height: 20,
-              ), //SizedBox
+                  const SizedBox(
+                    height: 20,
+                  ), //SizedBox
 
-              Text(mountainInformation.mntnnm!), // 산이름
-              Text(mountainInformation.mntninfohght! + 'm'), //산 높이
-              const SizedBox(
-                height: 40,
-              ), //SizedBox
+                  Text(mountainInformation.mntnnm!), // 산이름
+                  Text(mountainInformation.mntninfohght! + 'm'), //산 높이
+                  const SizedBox(
+                    height: 40,
+                  ), //SizedBox
 
-              //Text(TranslateLanguage(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)).getOtherLanguage()), // 상세정보내용
-              Text(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)), // 상세정보내용
-              const SizedBox(
-                height: 40,
-              ), //SizedBox
-              Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
+                  //Text(TranslateLanguage(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)).getOtherLanguage()), // 상세정보내용
+                  Text(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)), // 상세정보내용
+                  const SizedBox(
+                    height: 40,
+                  ), //SizedBox
+                  Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
 
-              const SizedBox(
-                height: 40,
-              ), //SizedBox
-              Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
+                  const SizedBox(
+                    height: 40,
+                  ), //SizedBox
+                  Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
 
-              const SizedBox(
-                height: 40,
-              ), //SizedBox
-              Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
-
-
-
-
-
-
-            ]
-        )
+                  const SizedBox(
+                    height: 40,
+                  ), //SizedBox
+                  Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
+                ]
+            )
         )
     );
   }
