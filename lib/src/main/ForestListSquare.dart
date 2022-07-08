@@ -80,37 +80,57 @@ class ForestListSquare extends GetView<ForestInformationController>{
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children:[
                               GetBuilder<translateLanguage>(
-                                builder:(_) => Text(getTitle('${change.result_papago[index]}')),
+                                  builder:(_) =>savedLanguage ?
+                                  Text((information[index].mntnnm ?? ''),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0),
+                                  ) : Text(getTitle('${change.result_papago[index]}'),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0),
+                                  )
                               ),
-                              //savedLanguage ? Text('${change.result_papago[index] }') : Text(information[index].mntnnm ?? '')),
-                              Text(information[index].mntnnm ?? '', style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2.0),),
 
                               ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
                                   subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
                                   height : getHeightFormat(information))
                             ],
                           ),
-                          Row(
-                            children:[
-                              GetBuilder<translateLanguage>(
-                                builder:(_) => Text(getSubtitle('${change.result_papago[index]}')),
-                              ),
-                              Text(addSubtitle(information),
-                                  style: TextStyle(fontSize: 14,)),
-                            ],
+
+                          GetBuilder<translateLanguage>(
+                              builder:(_) =>savedLanguage ?
+                              Text((addSubtitle(information)),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              ) : Text(getSubtitle('${change.result_papago[index]}'),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              )
                           ),
-                          Row(
-                              children:[
-                                GetBuilder<translateLanguage>(
-                                  builder:(_) => Text(getAddress('${change.result_papago[index]}'), style:TextStyle(fontSize:7)),
-                                ),
-                                Text(information[index].mntninfopoflc ?? '',
-                                    style: TextStyle(fontSize: 14,)),
-                              ],
+
+
+                          GetBuilder<translateLanguage>(
+                              builder:(_) =>savedLanguage ?
+                              Text((information[index].mntninfopoflc ?? ''),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              ) : Text(getAddress('${change.result_papago[index]}'),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2.0),
+                              )
                           ),
+
                           Text(getHeightFormat(information),
                               style: TextStyle(fontSize: 14,)),
                         ]
@@ -185,22 +205,9 @@ class ForestListSquare extends GetView<ForestInformationController>{
   String getAddress(String allString) {
     int index = allString.lastIndexOf('♡');
 
-    return allString.substring(index + 1).trimLeft().replaceAll(', ', ',\n');
+    return allString.substring(index + 1).trimLeft();
   }
 }
-
-void Print(int index){
-  print(index);
-}
-
-void Print(int index){
-  print(index);
-}
-
-void Print(int index){
-  print(index);
-}
-
 
 class ForestList extends StatefulWidget{
   const ForestList({
@@ -293,7 +300,7 @@ class ForestListState extends State<ForestList> {
                       'description' : widget.description,
                       'height' : widget.height,
                     }
-                    ).then(
+                ).then(
                         (value) => print("DocumentSnapshot successfully updated!"),
                     onError: (e) => print("Error updating document $e"));
                 ++count;
@@ -311,7 +318,7 @@ class ForestListState extends State<ForestList> {
                   content: Text('로그인 후 이용가능합니다.'),
                   actions: <Widget>[
                     FlatButton(
-                          child: Text('yes'),
+                        child: Text('yes'),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
