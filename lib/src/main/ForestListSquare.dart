@@ -10,11 +10,14 @@ import 'package:hiker/src/main/ForestDetailSquare.dart';
 import 'package:intl/intl.dart';
 import '../controller/forestInformationController.dart';
 import '../controller/translateLanguage.dart';
+import 'package:get/get.dart';
 
-class ForestListSquare extends GetView<ForestInformationController> {
+class ForestListSquare extends GetView<ForestInformationController>{
   int index;
   String languageString = '';
-  ForestListSquare(this.index, {Key? key}) : super(key: key);
+  ForestInformationController forestInformationController;
+  var information;
+  ForestListSquare(this.information, this.forestInformationController, this.index, {Key? key}) : super(key: key);
 
   @override
   GlobalKey<ForestListState> key = GlobalKey<ForestListState>();
@@ -28,9 +31,11 @@ class ForestListSquare extends GetView<ForestInformationController> {
         width: 450,
         height: 510,
         child: Obx(() {
-          var information = controller.forestInformation.value;
+          //translateLanguage change = Get.put(translateLanguage());
+          //var information = forestInformationController.forestInformation.value;
           String imageUrl = getUrl(information);
           return  Container(
+
             child: InkWell(
               onTap: () {
                 Navigator.push(
@@ -41,55 +46,56 @@ class ForestListSquare extends GetView<ForestInformationController> {
                       }),
                 );
               },
-            child : Column(
-                children: <Widget>[
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child:
-                          Image.network(imageUrl,
-                            width: double.infinity,
-                            height: 400,
-                            fit: BoxFit.fill,
-                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
-                              if(loadingProgress == null){
-                                return child;
-                              }
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        Text('\n', style: TextStyle(fontSize: 5)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:[
-                            Text(information[index].mntnnm ?? '', style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2.0),),
 
-                            ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
-                                subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
-                                height : getHeightFormat(information))
-                          ],
-                        ),
-                        Text(addSubtitle(information),
-                            style: TextStyle(fontSize: 14,)),
-                        Text(information[index].mntninfopoflc ?? '',
-                            style: TextStyle(fontSize: 14,)),
-                        Text(getHeightFormat(information),
-                            style: TextStyle(fontSize: 14,)),
-                      ]
-                  )
-                ]
-            ),
+              child : Column(
+                  children: <Widget>[
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child:
+                            Image.network(imageUrl,
+                              width: double.infinity,
+                              height: 400,
+                              fit: BoxFit.fill,
+                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress){
+                                if(loadingProgress == null){
+                                  return child;
+                                }
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Text('\n', style: TextStyle(fontSize: 5)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:[
+                              Text(information[index].mntnnm ?? '', style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2.0),),
+
+                              ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
+                                  subtitle : addSubtitle(information), description : information[index].mntninfopoflc ?? '',
+                                  height : getHeightFormat(information))
+                            ],
+                          ),
+                          Text(addSubtitle(information),
+                              style: TextStyle(fontSize: 14,)),
+                          Text(information[index].mntninfopoflc ?? '',
+                              style: TextStyle(fontSize: 14,)),
+                          Text(getHeightFormat(information),
+                              style: TextStyle(fontSize: 14,)),
+                        ]
+                    )
+                  ]
+              ),
             ),
           );
         }),
@@ -120,8 +126,7 @@ class ForestListSquare extends GetView<ForestInformationController> {
     String subTitle = information[index].mntnsbttlinfo.toString();
     if(subTitle.length == 1) { // 주의 - 부제가 안나오지만 길이는 1로 계산됨
       print('hi');
-      print(TranslateLanguage('공기 맑은 산'). getOtherLanguage());
-      return TranslateLanguage('공기 맑은 산').getOtherLanguage(); //
+      return '공기 맑은 산';
     }
     return subTitle;
   }
@@ -152,6 +157,7 @@ class ForestList extends StatefulWidget{
 
 class ForestListState extends State<ForestList> {
   final authentification = FirebaseAuth.instance;
+
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
   bool savedFavorite = true;
   User? loggedUser;
@@ -198,7 +204,10 @@ class ForestListState extends State<ForestList> {
             else {
               savedFavorite = true;
             }
+            title='ddd';
           });
+
+          /*
           await FirebaseFirestore.instance
               .collection('User')
               .get()
@@ -244,6 +253,7 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
+           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red
@@ -251,4 +261,5 @@ class ForestListState extends State<ForestList> {
       // 언어 바꿀 수 있는 버튼
     );
   }
+
 }
