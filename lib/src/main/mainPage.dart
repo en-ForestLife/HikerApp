@@ -59,7 +59,6 @@ class ListPage extends GetView<ForestInformationController> {
         body: SizedBox(
           child: Obx(() {
             var information = controller.forestInformation.value;
-            var informationMini;
             int length = controller.forestInformation.value.length;
             try {
               if (length == 0) {
@@ -95,7 +94,6 @@ class ListPage extends GetView<ForestInformationController> {
                       child: ListView.builder(
                           itemCount: length,
                           itemBuilder: (context, index) {
-                            //ForestListSquare(information.obs, controller, index);
                             return ForestListSquare(information.obs, controller, index);
                           }),
                     )

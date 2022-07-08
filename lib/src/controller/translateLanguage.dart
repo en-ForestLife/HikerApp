@@ -6,6 +6,12 @@ class translateLanguage extends GetxController{
 
   var language = 'ko';
   var result_papago = List<String>.filled(10, '');
+  var result_detail = '';
+  var title= '';
+  var description= '';
+  var bus= '';
+  var point= '';
+  var information= '';
 
 
   Future<void> getLanguage_papago() async {
@@ -74,4 +80,60 @@ class translateLanguage extends GetxController{
       print(trans.statusCode);
     }
   }
+
+
+
+
+
+
+  Future<void> Translation_papago(var changeLanguage, int index) async {
+    String _client_id = "IcZhZqxeAyF8rEBuNHpB";
+    String _client_secret = "8CeYkndl4V";
+    String _content_type = "application/x-www-form-urlencoded; charset=UTF-8";
+    String _url = "https://openapi.naver.com/v1/papago/n2mt";
+
+    http.Response trans = await http.post(
+      Uri.parse(_url),
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept",
+        'Content-Type': _content_type,
+        'X-Naver-Client-Id': _client_id,
+        'X-Naver-Client-Secret': _client_secret
+      },
+      body: {
+        'source': language, //위에서 언어 판별 함수에서 사용한 language 변수
+        'target': "en", //원하는 언어를 선택할 수 있다.
+        'text': changeLanguage,
+
+      },
+    );
+    if (trans.statusCode == 200) {
+      var dataJson = jsonDecode(trans.body);
+      result_detail = dataJson['message']['result']['translatedText'];
+
+      switch(index){
+        case 0 :
+          title = result_detail;
+          break;
+        case 1 :
+          description = result_detail;
+          break;
+        case 2 :
+          bus = result_detail;
+          break;
+        case 3 :
+          point = result_detail;
+          break;
+        case 4 :
+          information = result_detail;
+          break;
+      }
+
+      print(result_detail);
+      update();
+    } else {
+      print(trans.statusCode);
+    }
+  }
+
 }
