@@ -10,7 +10,6 @@ import '../model/ForestInformationModel.dart';
 
 class DetailScreen extends StatefulWidget{
   const DetailScreen({Key? key}) : super(key: key);
-
   @override
   DetailScreenState createState()=> DetailScreenState();
 }
