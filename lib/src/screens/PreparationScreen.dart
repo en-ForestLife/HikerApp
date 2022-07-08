@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/PreparationItemModel.dart';
@@ -10,6 +11,8 @@ class PreparationScreen extends StatefulWidget {
 }
 
 class _PreparationScreenState extends State<PreparationScreen> {
+  bool languageButton = false;
+
   Widget infoDialog(){
     return Dialog(
       elevation: 0,
@@ -103,6 +106,28 @@ class _PreparationScreenState extends State<PreparationScreen> {
               fontWeight: FontWeight.bold // 폰트 굵기
           ),
         ),
+        actions: [
+          OutlinedButton.icon(
+            // 언어 바꿀 수 있는 버튼
+            onPressed: () {
+              // 영어로 언어 변경
+              // 이후 앱을 재시작하면 영어로 동작
+              if (!languageButton) {
+                // 영어
+                EasyLocalization.of(context)!.setLocale(Locale('en'));
+                languageButton = true;
+              } else {
+                // 한국어
+                EasyLocalization.of(context)!.setLocale(Locale('ko'));
+                languageButton = false;
+              }
+            },
+            icon: Icon(Icons.language_outlined),
+            label: Text(
+              "Language",
+            ),
+          ),
+        ],
         leading: IconButton(
           // 리딩 부분 (뒤로가기)
           onPressed: () {
@@ -129,49 +154,49 @@ class _PreparationScreenState extends State<PreparationScreen> {
                     width: double.infinity,
                     child: Column(
                       children: [
-                        materialCardWidget(PreparationItemModel().itemImagePath[0], PreparationItemModel().itemName[0], PreparationItemModel().itemDetailInfo[0]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[0], 'HikingBoots'.tr(), 'HikingBootsInfo'.tr()),
 
                         SizedBox(
                           height: 10,
                         ),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[1], PreparationItemModel().itemName[1], PreparationItemModel().itemDetailInfo[1]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[1], 'HikingSocks'.tr(), 'HikingSocksInfo'.tr()),
 
                         SizedBox(
                           height: 10,
                         ),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[2], PreparationItemModel().itemName[2], PreparationItemModel().itemDetailInfo[2]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[2], 'Gloves'.tr(), 'GlovesInfo'.tr()),
 
                         SizedBox(
                           height: 10,
                         ),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[3], PreparationItemModel().itemName[3], PreparationItemModel().itemDetailInfo[3]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[3], 'Water'.tr(), 'WaterInfo'.tr()),
 
                         SizedBox(
                           height: 10,
                         ),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[4], PreparationItemModel().itemName[4], PreparationItemModel().itemDetailInfo[4]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[4], 'Snack'.tr(), 'SnackInfo'.tr()),
 
                         SizedBox(
                           height: 10,
                         ),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[5], PreparationItemModel().itemName[5], PreparationItemModel().itemDetailInfo[5]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[5], 'Bandage'.tr(), 'BandageInfo'.tr()),
 
                         SizedBox(
                           height: 10,
                         ),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[6], PreparationItemModel().itemName[6], PreparationItemModel().itemDetailInfo[6]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[6], 'WetTissue'.tr(), 'WetTissueInfo'.tr()),
 
                         SizedBox(
                           height: 10,
                         ),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[7], PreparationItemModel().itemName[7], PreparationItemModel().itemDetailInfo[7]),
+                        materialCardWidget(PreparationItemModel().itemImagePath[7], 'Pole'.tr(), 'PoleInfo'.tr()),
 
                         SizedBox(
                           height: 10,

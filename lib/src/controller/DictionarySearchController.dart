@@ -6,17 +6,15 @@ class DictionarySearchController extends GetxController{
   var result;
   late NaverDictionaryApi naverDictionaryApi;
   RxList<ThumnailModel> thumnailList = <ThumnailModel>[].obs;
-  String mountainName = '가라산';
 
   @override
   void onInit() {
     super.onInit();
-    naverDictionaryApi = NaverDictionaryApi(mountainName.obs);
-    fetchSearchResult(mountainName);
+    naverDictionaryApi = NaverDictionaryApi();
   }
 
-  void fetchSearchResult(String mountainName) async{
-    result = await naverDictionaryApi.fetchSearchResult(mountainName);
+  void fetchSearchResult(String? mountainName) async{
+    var result = await naverDictionaryApi.fetchSearchApi(mountainName!);
 
     if(result != null){
       thumnailList(result);
