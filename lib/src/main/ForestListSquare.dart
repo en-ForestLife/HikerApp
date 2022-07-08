@@ -327,7 +327,6 @@ class ForestListState extends State<ForestList> {
               },
             );
           };
-           */
         }, icon: Icon(
         savedFavorite ? Icons.favorite_border_outlined : Icons.favorite,
         color : savedFavorite ? null : Colors.red

@@ -49,12 +49,11 @@ class ListPage extends GetView<ForestInformationController> {
     }
   }
 
-  translateLanguage change = Get.put(translateLanguage());
-
   @override
   Widget build(BuildContext context){
     return MaterialApp(
       home: Scaffold(
+
         backgroundColor: Colors.white,
         appBar: forestSearchingHeader(),
         body: SizedBox(
