@@ -118,7 +118,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     height: 20,
                   ), //SizedBox
 
-                  GetBuilder<translateLanguage>(
+                 GetBuilder<translateLanguage>(
                       builder:(_) =>changedLanguage ?
                       Text((mountainInformation.mntnnm!),
                         style: TextStyle(
@@ -138,11 +138,15 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     height : 10,
                   ),
                   Text(mountainInformation.mntninfohght! + 'm'), //산 높이
+                  
+
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
                   //Text(TranslateLanguage(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)).getOtherLanguage()), // 상세정보내용
+                  
+
                   Text('detail',
                     style: TextStyle(
                       color: Colors.black, // 글자 색상 검정색
@@ -164,9 +168,10 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                             letterSpacing: 2.0),
                       )
                   ),
-                  const SizedBox(
-                    height: 40,
-                  ), //SizedBox
+                  
+
+                  Text('<상세정보>', style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)), // 상세정보내용
 
                   Text('transport',
                     style: TextStyle(
@@ -190,12 +195,12 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                             letterSpacing: 2.0),
                       )
                   ),
-
+                
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
-                  Text('point',
+                 Text('point',
                     style: TextStyle(
                         color: Colors.black, // 글자 색상 검정색
                         fontSize: 20.0, // 폰트 사이즈
@@ -222,7 +227,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     height: 40,
                   ), //SizedBox
 
-                  Text('information',
+                 Text('information',
                     style: TextStyle(
                         color: Colors.black, // 글자 색상 검정색
                         fontSize: 20.0, // 폰트 사이즈
@@ -244,9 +249,17 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                             letterSpacing: 2.0),
                       )
                   ),
+
                 ]
             )
         )
     );
+  }
+
+  String getInformation(String information) {
+    if (information.trim().length == 0) {
+      return '정보 준비중입니다!';
+    }
+    return information;
   }
 }
