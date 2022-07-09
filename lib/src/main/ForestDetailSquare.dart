@@ -105,38 +105,45 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     height: 20,
                   ), //SizedBox
 
-                  Text(mountainInformation.mntnnm!), // 산이름
-                  Text(mountainInformation.mntninfohght! + 'm'), //산 높이
+                  Text(mountainInformation.mntnnm!, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)), // 산이름
+                  Text(mountainInformation.mntninfohght! + 'm', style: TextStyle(fontWeight: FontWeight.bold),), //산 높이
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
                   //Text(TranslateLanguage(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)).getOtherLanguage()), // 상세정보내용
-                  Text('<상세정보>'),
+                  Text('<상세정보>', style: TextStyle(fontWeight: FontWeight.bold),),
                   Text(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)), // 상세정보내용
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
-                  Text('<대중교통정보>'),
-                  Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
+                  Text('<대중교통정보>', style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(getInformation(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!))), //대중교통정보설명
 
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
-                  Text('<산행포인트>'),
-                  Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
+                  Text('<산행포인트>', style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(getInformation(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!))), // 산행포인트설명
 
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
-                  Text('<주변관광정보>'),
-                  Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
+                  Text('<주변관광정보>', style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(getInformation(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!))), // 산정보주변관광정보기타코스설명
                 ]
             )
         )
     );
+  }
+
+  String getInformation(String information) {
+    if (information.trim().length == 0) {
+      return '정보 준비중입니다!';
+    }
+    return information;
   }
 }
