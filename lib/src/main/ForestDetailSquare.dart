@@ -18,6 +18,8 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
   ForestDetailSquare(this.mountainInformation);
   translateLanguage change = Get.put(translateLanguage());
   static bool changedLanguage = true;
+  String koreanAlert = '정보 준비중입니다!';
+  String englishAlert = 'Coming Soon!';
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
     controller.fetchSearchResult(mountainInformation.mntnnm);
     return Scaffold(
         appBar: AppBar(
+          elevation: 0.0,
           title: Text(
             'Detailed',
             style: TextStyle(
@@ -151,29 +154,33 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     style: TextStyle(
                       color: Colors.black, // 글자 색상 검정색
                       fontSize: 20.0, // 폰트 사이즈
-                      fontWeight: FontWeight.bold // 폰트 굵기
+                      fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
                   ),
                   ).tr(),
                   SizedBox(height : 20),
                   //Text(XmlUtils.deleteTag(mountainInformation.mntnnm!)), // 상세정보내용
                   GetBuilder<translateLanguage>(
                       builder:(_) =>changedLanguage ?
-                      Text((XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)),
+                      Text(getInformation(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!), koreanAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
-                      ) : Text(('${change.description}'),
+                      ) : Text(getInformation('${change.description}', englishAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
                       )
                   ),
 
+                  SizedBox(height : 20),
+
                   Text('transport',
                     style: TextStyle(
                         color: Colors.black, // 글자 색상 검정색
                         fontSize: 20.0, // 폰트 사이즈
-                        fontWeight: FontWeight.bold // 폰트 굵기
+                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
                     ),).tr(),
                   //Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
                   SizedBox(
@@ -181,11 +188,11 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                   ),
                   GetBuilder<translateLanguage>(
                       builder:(_) =>changedLanguage ?
-                      Text((XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)),
+                      Text(getInformation(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!), koreanAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
-                      ) : Text(('${change.bus}'),
+                      ) : Text(getInformation('${change.bus}', englishAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
@@ -200,7 +207,8 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     style: TextStyle(
                         color: Colors.black, // 글자 색상 검정색
                         fontSize: 20.0, // 폰트 사이즈
-                        fontWeight: FontWeight.bold // 폰트 굵기
+                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
                     ),).tr(),
                   //Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
                   SizedBox(
@@ -208,11 +216,11 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                   ),
                   GetBuilder<translateLanguage>(
                       builder:(_) =>changedLanguage ?
-                      Text((XmlUtils.deleteTag(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!))),
+                      Text(getInformation(XmlUtils.deleteTag(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), koreanAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
-                      ) : Text(('${change.point}'),
+                      ) : Text(getInformation('${change.point}', englishAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
@@ -227,7 +235,8 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     style: TextStyle(
                         color: Colors.black, // 글자 색상 검정색
                         fontSize: 20.0, // 폰트 사이즈
-                        fontWeight: FontWeight.bold // 폰트 굵기
+                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
                     ),).tr(),
                   //Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
                   SizedBox(
@@ -235,11 +244,11 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                   ),
                   GetBuilder<translateLanguage>(
                       builder:(_) =>changedLanguage ?
-                      Text((XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)),
+                      Text(getInformation(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!), koreanAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
-                      ) : Text(('${change.information}'),
+                      ) : Text(getInformation('${change.information}', englishAlert),
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 2.0),
@@ -252,9 +261,9 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
     );
   }
 
-  String getInformation(String information) {
+  String getInformation(String information, String alert) {
     if (information.trim().length == 0) {
-      return '정보 준비중입니다!';
+      return alert;
     }
     return information;
   }

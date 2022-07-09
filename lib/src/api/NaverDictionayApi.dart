@@ -11,7 +11,7 @@ class NaverDictionaryApi {
       BaseOptions(
         headers: {
           'X-Naver-Client-Id': 'DRcw6CjBMSp8GXiBdVKr',
-          'X-Naver-Client-Secret': 'hQoH2b9GnQ',
+          'X-Naver-Client-Secret': 'tZdTgWkFpX',
         },
         baseUrl: "https://openapi.naver.com",
         queryParameters: {

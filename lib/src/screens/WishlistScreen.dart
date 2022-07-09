@@ -117,7 +117,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               return Row(
                                 children: [
                                   Expanded(
-                                    child: ListView.builder(
+                                    child: ListView.separated(
                                       itemCount: forestList.length,
                                       itemBuilder: (context,
                                           index,) {
@@ -193,7 +193,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                   ],),
                                               ],
                                             ));
-                                      },
+                                      },separatorBuilder: (BuildContext context, int index) { return Divider(thickness: 1); }, // 구분선 추가
                                     ),
                                   ),
                                 ],
