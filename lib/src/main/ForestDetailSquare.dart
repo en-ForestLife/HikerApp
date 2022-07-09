@@ -169,7 +169,6 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                       )
                   ),
 
-
                   Text('transport',
                     style: TextStyle(
                         color: Colors.black, // 글자 색상 검정색
