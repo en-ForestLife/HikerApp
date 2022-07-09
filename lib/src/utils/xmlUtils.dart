@@ -14,6 +14,6 @@ class XmlUtils {
   }
 
   static String deleteTag(String targetString){
-    return targetString.replaceAll('<BR>', '').replaceAll('&gt', '').replaceAll('&amp;nbsp;', '').replaceAll('&lt;br /;', '');
+    return targetString.replaceAll('<BR>', '').replaceAll('&gt', '').replaceAll('&amp;nbsp;', '').replaceAll('&lt;br /;', '').replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll('<strong>', '').replaceAll('</strong>', '');
   }
 }

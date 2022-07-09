@@ -168,10 +168,6 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                             letterSpacing: 2.0),
                       )
                   ),
-                  
-
-                  Text('<상세정보>', style: TextStyle(fontWeight: FontWeight.bold),),
-                  Text(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)), // 상세정보내용
 
                   Text('transport',
                     style: TextStyle(
