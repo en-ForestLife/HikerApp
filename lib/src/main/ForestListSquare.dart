@@ -38,7 +38,6 @@ class ForestListSquare extends GetView<ForestInformationController>{
           //var information = forestInformationController.forestInformation.value;
           String imageUrl = getUrl(information);
           return  Container(
-
             child: InkWell(
               onTap: () {
                 Navigator.push(
