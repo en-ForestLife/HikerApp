@@ -42,10 +42,10 @@ class ListPage extends GetView<ForestInformationController> {
 
   String getImageUrl(String name) {
     if (name == '') {
-      return 'https://ifh.cc/g/j91LL1.png';
+      return 'assets/로딩중.png';
     }
     else {
-    return 'https://ifh.cc/g/kmlSb3.png';
+    return 'assets/로딩중.png';
     }
   }
 
