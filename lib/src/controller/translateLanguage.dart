@@ -42,8 +42,8 @@ class translateLanguage extends GetxController{
   }
 
   Future<void> getTranslation_papago(var information, int index) async {
-    String _client_id = "SjKAIQrtcmNrweSn7_0L";
-    String _client_secret = "b3PLXN2kp5";
+    String _client_id = "n2mR_G2k3j0VzAiyThBU";
+    String _client_secret = "xRPuNzdLVz";
     String _content_type = "application/x-www-form-urlencoded; charset=UTF-8";
     String _url = "https://openapi.naver.com/v1/papago/n2mt";
     //await getLanguage_papago();
@@ -87,8 +87,8 @@ class translateLanguage extends GetxController{
 
 
   Future<void> Translation_papago(var changeLanguage, int index) async {
-    String _client_id = "55C3UhmxOyRzD_FgfuDd";
-    String _client_secret = "f1yCSRdaxn";
+    String _client_id = "n2mR_G2k3j0VzAiyThBU";
+    String _client_secret = "xRPuNzdLVz";
     String _content_type = "application/x-www-form-urlencoded; charset=UTF-8";
     String _url = "https://openapi.naver.com/v1/papago/n2mt";
 
