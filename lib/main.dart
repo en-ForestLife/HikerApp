@@ -1,16 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import '../screens/HomePage.dart';
+import 'src/screens/HomePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import '../controller/forestInformationController.dart';
-import '../api/NaverDictionayApi.dart';
-import '../screens/test.dart';
+import 'src/controller/forestInformationController.dart';
+import 'src/api/NaverDictionayApi.dart';
+import 'src/screens/test.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-
   await Firebase.initializeApp(
     options: FirebaseOptions(
     apiKey: 'AIzaSyCixnmrkfi9PHOKja6DKeIsj_K3yExnXlk',
