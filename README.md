@@ -1,16 +1,7 @@
 # hiker
 
-A new Flutter project.
+2022 산림 공공 빅데이터 창업 경진대회 - 외국인을 위한 등산로 추천 앱
 
-## Getting Started
+## 사용 이미지 링크
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- <a href="https://www.flaticon.com/kr/free-icons/" title="느낌표 아이콘">느낌표 아이콘  제작자: DinosoftLabs - Flaticon</a>
