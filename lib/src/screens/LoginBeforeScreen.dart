@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
 
@@ -16,6 +15,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 60),
         child: Column(

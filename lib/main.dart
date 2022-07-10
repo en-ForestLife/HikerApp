@@ -10,6 +10,7 @@ import 'src/screens/test.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
   await Firebase.initializeApp(
     options: FirebaseOptions(
     apiKey: 'AIzaSyCixnmrkfi9PHOKja6DKeIsj_K3yExnXlk',
