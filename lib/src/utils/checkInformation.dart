@@ -50,7 +50,7 @@ class CheckValidate {
     if(value.isEmpty){
       return '이름을 입력하세요.';
     }else {
-      Pattern pattern = r'^[가-힣]{2,4}$';
+      Pattern pattern = r'^[가-힣a-zA-Z]{2,15}$';
       RegExp regExp = RegExp(pattern.toString());
 
       if(!regExp.hasMatch(value)){
