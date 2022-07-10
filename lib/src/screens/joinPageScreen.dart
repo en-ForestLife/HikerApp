@@ -42,6 +42,7 @@ class _joinPage extends State<joinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false, // 키보드로 인한 화면 안밀리게 하기? 크롬웹으로 테스트 불가한 부분
       appBar: AppBar(
         title: Text(
           'joinMember'.tr(),
