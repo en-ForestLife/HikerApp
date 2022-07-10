@@ -1,11 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get.dart';
-import 'package:hiker/src/model/ForestInformationModel.dart';
-import '../api/forestInformationApi.dart';
 import '../controller/forestInformationController.dart';
 import 'package:hiker/src/controller/forestInformationController.dart';
 import '../controller/DictionarySearchController.dart';
@@ -42,10 +39,10 @@ class ListPage extends GetView<ForestInformationController> {
 
   String getImageUrl(String name) {
     if (name == '') {
-      return 'https://ifh.cc/g/j91LL1.png';
+      return 'assets/로딩중.png';
     }
     else {
-    return 'https://ifh.cc/g/kmlSb3.png';
+    return 'assets/로딩중.png';
     }
   }
 
@@ -53,13 +50,12 @@ class ListPage extends GetView<ForestInformationController> {
   Widget build(BuildContext context){
     return MaterialApp(
       home: Scaffold(
-
+        resizeToAvoidBottomInset : false, // 키보드로 인한 화면 안밀리게 하기? 크롬웹으로 테스트 불가한 부분
         backgroundColor: Colors.white,
         appBar: forestSearchingHeader(),
         body: SizedBox(
           child: Obx(() {
             var information = controller.forestInformation.value;
-            var informationMini;
             int length = controller.forestInformation.value.length;
             try {
               if (length == 0) {
@@ -95,7 +91,6 @@ class ListPage extends GetView<ForestInformationController> {
                       child: ListView.builder(
                           itemCount: length,
                           itemBuilder: (context, index) {
-                            //ForestListSquare(information.obs, controller, index);
                             return ForestListSquare(information.obs, controller, index);
                           }),
                     )
@@ -133,6 +128,7 @@ class ListPage extends GetView<ForestInformationController> {
   AppBar forestSearchingHeader() { // 상단 검색창
     return AppBar(
         backgroundColor: Colors.white,
+        elevation: 0.0,
         title: TextFormField(
             cursorColor: Colors.red,
             controller: textEditingController,
@@ -195,7 +191,7 @@ class _changeButtonState extends State<changeButton> {
       },
       //ForestList(key: key, image : imageUrl, title : information[index].mntnnm??'',
 
-      child: Text('language'),
+      child: Text('Language'),
         style: ElevatedButton.styleFrom(
           // background 속성이 없다.
             primary: Colors.black,

@@ -16,6 +16,10 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
   List<String?> imgList = [];
   ForestInformationModel mountainInformation;
   ForestDetailSquare(this.mountainInformation);
+  translateLanguage change = Get.put(translateLanguage());
+  static bool changedLanguage = true;
+  String koreanAlert = '정보 준비중입니다!';
+  String englishAlert = 'Coming Soon!';
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +27,15 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
     controller.fetchSearchResult(mountainInformation.mntnnm);
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            '상세',
+          elevation: 0.0,
+          title: Text(
+            'Detailed',
             style: TextStyle(
                 color: Colors.black, // 글자 색상 검정색
                 fontSize: 22.0, // 폰트 사이즈
                 fontWeight: FontWeight.bold // 폰트 굵기
             ),
-          ),
+          ).tr(),
           actions: [
             OutlinedButton.icon(
               // 언어 바꿀 수 있는 버튼
@@ -39,13 +44,24 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                 // 이후 앱을 재시작하면 영어로 동작
                 if (!languageButton) {
                   // 영어
-                  //EasyLocalization.of(context)!.setLocale(Locale('en'));
+                  EasyLocalization.of(context)!.setLocale(Locale('en'));
                   languageButton = true;
+                  changedLanguage = false;
                 } else {
                   // 한국어
                   EasyLocalization.of(context)!.setLocale(Locale('ko'));
                   languageButton = false;
+                  changedLanguage = true;
                 }
+                change.Translation_papago(mountainInformation.mntnnm!, 0); // 제목
+                change.Translation_papago(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!), 1); // 설명
+                change.Translation_papago(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!), 2); // 대중교통
+                change.Translation_papago(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!), 3); // 산행포인트
+                change.Translation_papago(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!), 4); // 주변관광정보
+                //mntnnm!
+                //pbtrninfodscrt!
+                //hkngpntdscrt!
+                //crcmrsghtnginfoetcdscrt!
               },
               icon: Icon(Icons.language_outlined),
               label: Text(
@@ -105,38 +121,150 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     height: 20,
                   ), //SizedBox
 
-                  Text(mountainInformation.mntnnm!), // 산이름
+                 GetBuilder<translateLanguage>(
+                      builder:(_) =>changedLanguage ?
+                      Text((mountainInformation.mntnnm!),
+                        style: TextStyle(
+                            fontSize: 20,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.bold // 폰트 굵기
+                        ),
+                      ) : Text(('${change.title}'),
+                        style: TextStyle(
+                            fontSize: 20,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.bold // 폰트 굵기
+                          ),
+                      )
+                  ),
+                  SizedBox(
+                    height : 10,
+                  ),
                   Text(mountainInformation.mntninfohght! + 'm'), //산 높이
+                  
+
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
                   //Text(TranslateLanguage(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)).getOtherLanguage()), // 상세정보내용
-                  Text('<상세정보>'),
-                  Text(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)), // 상세정보내용
+                  
+
+                  Text('detail',
+                    style: TextStyle(
+                      color: Colors.black, // 글자 색상 검정색
+                      fontSize: 20.0, // 폰트 사이즈
+                      fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
+                  ),
+                  ).tr(),
+                  SizedBox(height : 20),
+                  //Text(XmlUtils.deleteTag(mountainInformation.mntnnm!)), // 상세정보내용
+                  GetBuilder<translateLanguage>(
+                      builder:(_) =>changedLanguage ?
+                      Text(getInformation(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!), koreanAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      ) : Text(getInformation('${change.description}', englishAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      )
+                  ),
+
+                  SizedBox(height : 20),
+
+                  Text('transport',
+                    style: TextStyle(
+                        color: Colors.black, // 글자 색상 검정색
+                        fontSize: 20.0, // 폰트 사이즈
+                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
+                    ),).tr(),
+                  //Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
+                  SizedBox(
+                    height : 10,
+                  ),
+                  GetBuilder<translateLanguage>(
+                      builder:(_) =>changedLanguage ?
+                      Text(getInformation(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!), koreanAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      ) : Text(getInformation('${change.bus}', englishAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      )
+                  ),
+                
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
-                  Text('<대중교통정보>'),
-                  Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
+                 Text('point',
+                    style: TextStyle(
+                        color: Colors.black, // 글자 색상 검정색
+                        fontSize: 20.0, // 폰트 사이즈
+                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
+                    ),).tr(),
+                  //Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
+                  SizedBox(
+                    height : 10,
+                  ),
+                  GetBuilder<translateLanguage>(
+                      builder:(_) =>changedLanguage ?
+                      Text(getInformation(XmlUtils.deleteTag(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), koreanAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      ) : Text(getInformation('${change.point}', englishAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      )
+                  ),
 
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
-                  Text('<산행포인트>'),
-                  Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
+                 Text('information',
+                    style: TextStyle(
+                        color: Colors.black, // 글자 색상 검정색
+                        fontSize: 20.0, // 폰트 사이즈
+                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      letterSpacing: 2.0,
+                    ),).tr(),
+                  //Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
+                  SizedBox(
+                    height : 10,
+                  ),
+                  GetBuilder<translateLanguage>(
+                      builder:(_) =>changedLanguage ?
+                      Text(getInformation(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!), koreanAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      ) : Text(getInformation('${change.information}', englishAlert),
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.0),
+                      )
+                  ),
 
-                  const SizedBox(
-                    height: 40,
-                  ), //SizedBox
-
-                  Text('<주변관광정보>'),
-                  Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
                 ]
             )
         )
     );
+  }
+
+  String getInformation(String information, String alert) {
+    if (information.trim().length == 0) {
+      return alert;
+    }
+    return information;
   }
 }
