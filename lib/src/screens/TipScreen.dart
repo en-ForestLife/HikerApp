@@ -54,7 +54,7 @@ class TipScreen extends StatelessWidget{
           children: [
             Positioned(
               child: Container(
-                  padding: EdgeInsets.all(60.0),
+                  padding: EdgeInsets.all(30.0),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.white), // 테두리
                     borderRadius: BorderRadius.circular(5), //모서리 둥글게
