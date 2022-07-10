@@ -16,6 +16,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 60),
         child: Column(

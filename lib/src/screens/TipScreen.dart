@@ -74,7 +74,6 @@ class TipScreen extends StatelessWidget{
                           },
                           child: SizedBox(
                             child: Row(
-
                               children: [
                                 CircleAvatar(
                                   backgroundColor: Colors.green[500],

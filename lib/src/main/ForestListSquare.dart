@@ -131,7 +131,11 @@ class ForestListSquare extends GetView<ForestInformationController>{
                           ),
 
                           Text(getHeightFormat(information),
-                              style: TextStyle(fontSize: 14,)),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2.0
+                              )),
                         ]
                     )
                   ]
@@ -147,13 +151,13 @@ class ForestListSquare extends GetView<ForestInformationController>{
     String imageUrl = information[index].mntnattchimageseq.toString();
 
     if(imageUrl.contains("FILE_000000000423986") || imageUrl.contains("FILE_000000000424249")) { // 특수 예외
-      return 'https://ifh.cc/g/FapjP1.png';
+      return 'https://ifh.cc/g/tVnPQH.png';
     }
 
     if (imageUrl.contains("FILE")) {
       return imageUrl;
     }
-    return 'https://ifh.cc/g/FapjP1.png';
+    return 'https://ifh.cc/g/tVnPQH.png';
   }
 
   String getHeightFormat(var information) { // 산 높이 값 콤마 표시 및 단위 추가 함수
