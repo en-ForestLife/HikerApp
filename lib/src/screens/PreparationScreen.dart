@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:scroll_navigation/scroll_navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/PreparationItemModel.dart';
 
@@ -144,70 +145,98 @@ class _PreparationScreenState extends State<PreparationScreen> {
         backgroundColor: Colors.white, // 배경색상 흰색
       ),
 
-      body: SingleChildScrollView(
-        child : Stack(
-          children: [
-            Positioned(
-              child: Container(
-                padding: EdgeInsets.all(50.0),
-                child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        materialCardWidget(PreparationItemModel().itemImagePath[0], 'HikingBoots'.tr(), 'HikingBootsInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[1], 'HikingSocks'.tr(), 'HikingSocksInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[2], 'Gloves'.tr(), 'GlovesInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[3], 'Water'.tr(), 'WaterInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[4], 'Snack'.tr(), 'SnackInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[5], 'Bandage'.tr(), 'BandageInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[6], 'WetTissue'.tr(), 'WetTissueInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[7], 'Pole'.tr(), 'PoleInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    )
-                ),
-              ),
-            ),
-          ],
+      body:
+      TitleScrollNavigation(
+        barStyle: TitleNavigationBarStyle(
+          style: TextStyle(fontWeight: FontWeight.bold),
+          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+          spaceBetween: 40,
         ),
+        titles: [
+          "공통",
+          "여름",
+          "겨울",
+        ],
+        pages: [
+          ListView.builder(
+            itemCount: 1,
+            //controller: controller,
+            padding: EdgeInsets.zero,
+            itemBuilder: (_, __) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child:
+                SingleChildScrollView(
+                  child : Stack(
+                    children: [
+                      Positioned(
+                        child: Container(
+                          padding: EdgeInsets.all(50.0),
+                          child: Container(
+                              width: double.infinity,
+                              child: Column(
+                                children: [
+                                  materialCardWidget(PreparationItemModel().itemImagePath[0], 'HikingBoots'.tr(), 'HikingBootsInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[1], 'HikingSocks'.tr(), 'HikingSocksInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[2], 'Gloves'.tr(), 'GlovesInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[3], 'Water'.tr(), 'WaterInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[4], 'Snack'.tr(), 'SnackInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[5], 'Bandage'.tr(), 'BandageInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[6], 'WetTissue'.tr(), 'WetTissueInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[7], 'Pole'.tr(), 'PoleInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              )
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          Container(color: Colors.red[50]),
+          Container(color: Colors.yellow[50]),
+        ],
       ),
     );
   }
