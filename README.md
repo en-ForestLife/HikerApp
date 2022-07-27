@@ -16,3 +16,12 @@
 - <a href="https://www.flaticon.com/kr/free-icons/" title="벽토 아이콘">벽토 아이콘  제작자: photo3idea_studio - Flaticon</a>
 - <a href="https://www.flaticon.com/kr/free-icons/" title="물티슈 아이콘">물티슈 아이콘  제작자: Nhor Phai - Flaticon</a>
 - <a href="https://www.flaticon.com/kr/free-icons/" title="등산 아이콘">등산 아이콘  제작자: surang - Flaticon</a>
+- <a href="https://www.flaticon.com/free-icons/hat" title="hat icons">Hat icons created by Soodesign - Flaticon</a>
+- <a href="https://www.flaticon.com/free-icons/cap" title="cap icons">Cap icons created by Smashicons - Flaticon</a>
+- <a href="https://www.flaticon.com/kr/free-icons/-" title="목욕 수건 아이콘">목욕 수건 아이콘  제작자: smashingstocks - Flaticon</a>
+- <a href="https://www.flaticon.com/kr/free-icons/" title="목도리 아이콘">목도리 아이콘  제작자: Luvdat - Flaticon</a>
+- <a href="https://www.flaticon.com/free-icons/crampons" title="crampons icons">Crampons icons created by Flat Icons - Flaticon</a>
+- <a href="https://www.flaticon.com/kr/free-icons/" title="귀마개 아이콘">귀마개 아이콘  제작자: Freepik - Flaticon</a>
+- <a href="https://www.flaticon.com/kr/free-icons/" title="바닷가 아이콘">바닷가 아이콘  제작자: Freepik - Flaticon</a>
+- <a href="https://www.flaticon.com/free-icons/arm" title="arm icons">Arm icons created by Fliqqer - Flaticon</a>
+- <a href="https://www.flaticon.com/free-icons/no-bugs" title="no bugs icons">No bugs icons created by Freepik - Flaticon</a>
