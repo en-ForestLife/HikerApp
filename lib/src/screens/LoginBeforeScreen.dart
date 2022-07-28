@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'joinPageScreen.dart';
 import 'loginPageScreen.dart';
 
@@ -18,7 +17,7 @@ class _loginBeforeScreenState extends State<loginBeforeScreen> {
     return Scaffold(
 
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 60),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(height: 50),
