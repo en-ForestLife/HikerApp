@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:scroll_navigation/scroll_navigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/PreparationItemModel.dart';
 
@@ -67,7 +68,7 @@ class _PreparationScreenState extends State<PreparationScreen> {
               ), //SizedBox
 
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children:[
                     Text(
                       name,
@@ -144,70 +145,211 @@ class _PreparationScreenState extends State<PreparationScreen> {
         backgroundColor: Colors.white, // 배경색상 흰색
       ),
 
-      body: SingleChildScrollView(
-        child : Stack(
-          children: [
-            Positioned(
-              child: Container(
-                padding: EdgeInsets.all(50.0),
-                child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        materialCardWidget(PreparationItemModel().itemImagePath[0], 'HikingBoots'.tr(), 'HikingBootsInfo'.tr()),
+      body:
+      TitleScrollNavigation(
+        identiferStyle: NavigationIdentiferStyle(
+          color:Colors.green,
+        ),
+        barStyle: TitleNavigationBarStyle(
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
 
-                        SizedBox(
-                          height: 10,
+          spaceBetween: 170,
+        ),
+        titles: [
+          "공통",
+          "여름",
+          "겨울",
+        ],
+        pages: [
+          ListView.builder(
+            itemCount: 1,
+            //controller: controller,
+            padding: EdgeInsets.zero,
+            itemBuilder: (_, __) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child:
+                SingleChildScrollView(
+                  child : Stack(
+                    children: [
+                      Positioned(
+                        child: Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.all(50.0),
+                          child: Container(
+                              width: double.infinity,
+                              child: Column(
+                                children: [
+                                  materialCardWidget(PreparationItemModel().itemImagePath[0], 'HikingBoots'.tr(), 'HikingBootsInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[1], 'HikingSocks'.tr(), 'HikingSocksInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[2], 'Gloves'.tr(), 'GlovesInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[3], 'Water'.tr(), 'WaterInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[4], 'Snack'.tr(), 'SnackInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[5], 'Bandage'.tr(), 'BandageInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[6], 'WetTissue'.tr(), 'WetTissueInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[7], 'Pole'.tr(), 'PoleInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              )
+                          ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ListView.builder(
+          itemCount: 1,
+          //controller: controller,
+          padding: EdgeInsets.zero,
+          itemBuilder: (_, __) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child:
+              SingleChildScrollView(
+                child : Stack(
+                  children: [
+                    Positioned(
+                      child: Container(
+                        padding: EdgeInsets.all(50.0),
+                        child: Container(
+                            width: double.infinity,
+                            child: Column(
+                              children: [
+                                materialCardWidget(PreparationItemModel().itemImagePath[8], 'Cap'.tr(), 'CapInfo'.tr()),
 
-                        materialCardWidget(PreparationItemModel().itemImagePath[1], 'HikingSocks'.tr(), 'HikingSocksInfo'.tr()),
+                                SizedBox(
+                                  height: 10,
+                                ),
 
-                        SizedBox(
-                          height: 10,
+                                materialCardWidget(PreparationItemModel().itemImagePath[9], 'Towel'.tr(), 'TowelInfo'.tr()),
+
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                materialCardWidget(PreparationItemModel().itemImagePath[10], 'No-bugs'.tr(), 'No-bugsInfo'.tr()),
+
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                materialCardWidget(PreparationItemModel().itemImagePath[11], 'Sunglasses'.tr(), 'SunglassesInfo'.tr()),
+
+                                SizedBox(
+                                  height: 10,
+                                ),
+
+                                materialCardWidget(PreparationItemModel().itemImagePath[12], 'Sleeve'.tr(), 'SleeveInfo'.tr()),
+
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            )
                         ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[2], 'Gloves'.tr(), 'GlovesInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[3], 'Water'.tr(), 'WaterInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[4], 'Snack'.tr(), 'SnackInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[5], 'Bandage'.tr(), 'BandageInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[6], 'WetTissue'.tr(), 'WetTissueInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        materialCardWidget(PreparationItemModel().itemImagePath[7], 'Pole'.tr(), 'PoleInfo'.tr()),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    )
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
+          ListView.builder(
+            itemCount: 1,
+            //controller: controller,
+            padding: EdgeInsets.zero,
+            itemBuilder: (_, __) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child:
+                SingleChildScrollView(
+                  child : Stack(
+                    children: [
+                      Positioned(
+                        child: Container(
+                          padding: EdgeInsets.all(50.0),
+                          child: Container(
+                              width: double.infinity,
+                              child: Column(
+                                children: [
+                                  materialCardWidget(PreparationItemModel().itemImagePath[13], 'Crampons'.tr(), 'CramponsInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[14], 'Earmuffs'.tr(), 'EarmuffsInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[15], 'Neckwarmer'.tr(), 'NeckwarmerInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  materialCardWidget(PreparationItemModel().itemImagePath[16], 'Hat'.tr(), 'HatInfo'.tr()),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              )
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
