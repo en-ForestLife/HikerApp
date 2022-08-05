@@ -98,7 +98,13 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     return Container(
                         height: 200,
                         child: Padding(
-                            padding: EdgeInsets.all(20),
+                          padding: EdgeInsets.all(20),
+                          child:
+                          Image.network(
+                              getUrl(mountainInformation)
+                            //mountainInformation.mntnattchimageseq!
+                          ),
+                          /*
                             child: Swiper(
                               autoplay: true,
                               scale: 1,
@@ -113,6 +119,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                                 );
                               },
                             )
+                            */
                         )
                     );
                   }),
@@ -121,7 +128,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     height: 20,
                   ), //SizedBox
 
-                 GetBuilder<translateLanguage>(
+                  GetBuilder<translateLanguage>(
                       builder:(_) =>changedLanguage ?
                       Text((mountainInformation.mntnnm!),
                         style: TextStyle(
@@ -134,21 +141,21 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                             fontSize: 20,
                             letterSpacing: 2.0,
                             fontWeight: FontWeight.bold // 폰트 굵기
-                          ),
+                        ),
                       )
                   ),
                   SizedBox(
                     height : 10,
                   ),
                   Text(mountainInformation.mntninfohght! + 'm'), //산 높이
-                  
+
 
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
                   //Text(TranslateLanguage(XmlUtils.deleteTag(mountainInformation.mntninfodtlinfocont!)).getOtherLanguage()), // 상세정보내용
-                  
+
 
                   Text('detail',
                     style: TextStyle(
@@ -156,7 +163,7 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                       fontSize: 20.0, // 폰트 사이즈
                       fontWeight: FontWeight.bold, // 폰트 굵기
                       letterSpacing: 2.0,
-                  ),
+                    ),
                   ).tr(),
                   SizedBox(height : 20),
                   //Text(XmlUtils.deleteTag(mountainInformation.mntnnm!)), // 상세정보내용
@@ -177,9 +184,9 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
 
                   Text('transport',
                     style: TextStyle(
-                        color: Colors.black, // 글자 색상 검정색
-                        fontSize: 20.0, // 폰트 사이즈
-                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      color: Colors.black, // 글자 색상 검정색
+                      fontSize: 20.0, // 폰트 사이즈
+                      fontWeight: FontWeight.bold, // 폰트 굵기
                       letterSpacing: 2.0,
                     ),).tr(),
                   //Text(XmlUtils.deleteTag(mountainInformation.pbtrninfodscrt!)), //대중교통정보설명
@@ -198,16 +205,16 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                             letterSpacing: 2.0),
                       )
                   ),
-                
+
                   const SizedBox(
                     height: 40,
                   ), //SizedBox
 
-                 Text('point',
+                  Text('point',
                     style: TextStyle(
-                        color: Colors.black, // 글자 색상 검정색
-                        fontSize: 20.0, // 폰트 사이즈
-                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      color: Colors.black, // 글자 색상 검정색
+                      fontSize: 20.0, // 폰트 사이즈
+                      fontWeight: FontWeight.bold, // 폰트 굵기
                       letterSpacing: 2.0,
                     ),).tr(),
                   //Text(XmlUtils.deleteTag(mountainInformation.hkngpntdscrt!)), // 산행포인트설명
@@ -231,11 +238,11 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
                     height: 40,
                   ), //SizedBox
 
-                 Text('information',
+                  Text('information',
                     style: TextStyle(
-                        color: Colors.black, // 글자 색상 검정색
-                        fontSize: 20.0, // 폰트 사이즈
-                        fontWeight: FontWeight.bold, // 폰트 굵기
+                      color: Colors.black, // 글자 색상 검정색
+                      fontSize: 20.0, // 폰트 사이즈
+                      fontWeight: FontWeight.bold, // 폰트 굵기
                       letterSpacing: 2.0,
                     ),).tr(),
                   //Text(XmlUtils.deleteTag(mountainInformation.crcmrsghtnginfoetcdscrt!)), // 산정보주변관광정보기타코스설명
@@ -266,5 +273,19 @@ class ForestDetailSquare extends GetView<DictionarySearchController> {
       return alert;
     }
     return information;
+  }
+
+
+  String getUrl(var information) { // api ui 이미지 불러와지는지 판단한 후 이미지 내보내는 함수
+    String imageUrl = information.mntnattchimageseq.toString();
+
+    if(imageUrl.contains("FILE_000000000423986") || imageUrl.contains("FILE_000000000424249")) { // 특수 예외
+      return 'https://ifh.cc/g/tVnPQH.png';
+    }
+
+    if (imageUrl.contains("FILE")) {
+      return imageUrl;
+    }
+    return 'https://ifh.cc/g/tVnPQH.png';
   }
 }
