@@ -157,9 +157,9 @@ class _PreparationScreenState extends State<PreparationScreen> {
           spaceBetween: 50,
         ),
         titles: [
-          "공통",
-          "여름",
-          "겨울",
+          "Common".tr(),
+          "summer".tr(),
+          "winter".tr(),
         ],
         pages: [
           ListView.builder(
