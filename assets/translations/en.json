@@ -98,5 +98,8 @@
   "CramponsInfo" : "Snowy mountains are beautiful, but they are slippery and dangerous because of the accumulated snow. \nEspecially when you go down the mountain, you feel dizzy when you look at the frozen rock and ice sheet road due to the melting snow. \nIt's dangerous without Crampons, so be sure to take it with you! \nGaiter also cover your ankles and knees. \nIt protects your feet and feet from moisture and protects your hiking boots and keeps you warm, so check it out!",
   "EarmuffsInfo" : " Your ears really hurt when I face the cold wind in winter.\nNo matter how much you wear a hat on your clothes, it is not enough to endure the cold that makes your ears fall off.\nSo it's important to protect your body temperature with earmuffs!\nWe feel the coldest mountain climbing from the summit to the lower part of the mountain.\nIf your body temperature drops, you may lose strength and become dangerous.\nIn winter, be sure to prepare something that can keep you warm before you go!",
   "NeckwarmerInfo" : "We feel the coldest mountain climbing from the summit to the lower part of the mountain.\nIf your body temperature drops, you may lose strength and become dangerous. \nIn winter, be sure to prepare something that can keep you warm before you go!",
-  "HatInfo" : "In addition to protecting against ultraviolet rays, it is recommended to use it in winter to prevent the wind."
+  "HatInfo" : "In addition to protecting against ultraviolet rays, it is recommended to use it in winter to prevent the wind.",
+  "Common" : "Common",
+  "summer" : "Summer",
+  "winter" : "Winter"
 }
